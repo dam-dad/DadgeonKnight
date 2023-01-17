@@ -115,7 +115,7 @@ public class Player extends Entity<Rectangle> {
 		    animation.update(deltaTime);
 		
 		    
-		    System.out.println(movement + " " + "[" + screenX + " " + screenY + "]" +  "  " + "[" + posX + " " + posY + "]");
+//		    System.out.println(movement + " " + "[" + screenX + " " + screenY + "]" +  "  " + "[" + posX + " " + posY + "]");
 	}
 
 	@Override

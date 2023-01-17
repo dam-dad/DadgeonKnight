@@ -3,6 +3,7 @@ package nx.engine.tile;
 import java.io.BufferedReader;
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import nx.engine.Game;
 import nx.engine.entity.Entity;
+import nx.engine.entity.Orco;
 import nx.engine.entity.Player;
 import nx.engine.entity.Pueblo;
 import nx.util.CSV;
@@ -33,6 +35,8 @@ public class TileManager {
 
 	public TileManager(Game g, Entity...entities) {
 		this.g = g;
+		
+		this.entities = new ArrayList<Entity<Shape>>();
 		
 		for(int i = 0 ; i < entities.length; i++) {
 			this.entities.add(entities[i]);
@@ -104,7 +108,6 @@ public class TileManager {
 
 		while (worldCol < maxWorldCol && worldRow < maxWorldRow) {
 			
-//			int tileNumMap = mapTiles[worldRow][worldCol];
 			int tileNumDetail = details[worldRow][worldCol];
 
 			int worldX = worldCol * Game.tileSize;
@@ -139,7 +142,7 @@ public class TileManager {
 		}
 		
 		entities.forEach(e -> {
-			gc.drawImage(e.image,e.posX,e.posY);
+			e.draw(gc);
 		});
 		
 		

@@ -36,20 +36,18 @@ public class Game extends AnimationTimer {
 	private long timer = 0;
 	
 	private GraphicsContext graphicsContext;
+	private InputHandler input;
 	
-	private InputHandler input = new InputHandler();
+	private TileManager tm;
+	
 	
 	public Player player;
-	
-	private Orco o = new Orco(50, 50);
-	
-	private TileManager tm = new TileManager(this,o);
-	
-
+	private Orco orc;
 	
 	public Game(Canvas canvas) {
 		
 		this.graphicsContext = canvas.getGraphicsContext2D();
+		input = new InputHandler();
 		
 		canvas.setWidth(screenWidth);
 		canvas.setHeight(screenheigth);
@@ -65,6 +63,8 @@ public class Game extends AnimationTimer {
 	
 	public void init() {
 		player = new Player(10 * tileSize, 10 * tileSize,4,input);
+		orc = new Orco(12 * tileSize, 10 * tileSize,player);
+		tm = new TileManager(this,orc);
 		
 //		Music music = new Music("Tour du Jugement_The Legend of Zelda Twilight Princess HD_OST");
 //		music.play();
@@ -110,15 +110,20 @@ public class Game extends AnimationTimer {
 			for(int j = 0; j < a[0].length; j++) {
 				if(a[i][j].isCollider() && a[i][j].checkCollision(player)) {
 					input.ClearActiveKeys();
-					player.pushOut(a[i][j],0.05);
+					player.pushOut(a[i][j],0.01);
 				}
 			}
+		}
+		
+		if(orc.checkCollision(player)) {
+			input.ClearActiveKeys();
+			player.pushOut(orc,0.01);
 		}
 
 	}
 	public void update() {
 		player.update(input.getActiveKeys(),deltaTime);
-		o.update(deltaTime);
+		orc.update(deltaTime);
 	}
 	
 	public void draw(GraphicsContext gc) {
@@ -126,8 +131,6 @@ public class Game extends AnimationTimer {
 		gc.fillRect(0, 0, screenWidth, screenheigth);
 		
 		tm.draw(gc);
-		
-//		o.draw(gc);
 		
 		player.draw(gc);
 	}

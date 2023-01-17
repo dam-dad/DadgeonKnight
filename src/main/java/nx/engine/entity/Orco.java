@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import nx.engine.Animation;
 import nx.engine.Game;
@@ -12,13 +13,6 @@ import nx.util.Direction;
 public class Orco extends MobEntity<Rectangle> {
 	
 	String walkTileSet = "/assets/textures/orc/muscleman.png";
-	
-	private static final double ANIMATION_SPEED = 0.15;
-	private static final int sizeTextureX = 32;
-	private static final int sizeTextureY = 64;
-	
-	private Direction direction;
-	private Animation animation;
 	
 	private final Map<Direction, Animation> idle = new HashMap<>() {{
 		put(Direction.SOUTH, new Animation(walkTileSet,0,sizeTextureX,sizeTextureY));
@@ -34,25 +28,25 @@ public class Orco extends MobEntity<Rectangle> {
 		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,3,sizeTextureX,sizeTextureY));
 	}};
 	
-	public Orco(double posX, double posY) {
-		super();
+	public Orco(double posX, double posY,Player player) {
+		super(player);
 		
 		this.posX = posX;
 		this.posY = posY;
 		
 		direction = Direction.SOUTH;
 		
-		animation = wakl.get(direction);
+		this.animation = wakl.get(direction);
 		
 	}
 	
 	public void update(double deltaTime) {
 		animation.update(deltaTime);
 	}
+	
 	@Override
-	public void draw(GraphicsContext gc) {
-		
-		gc.drawImage(animation.getCurrentFrame(),posX,posY,sizeTextureX,sizeTextureY);
+	public Rectangle getCollisionShape() {
+		return new Rectangle(posX,posY,sizeTextureX * 2,sizeTextureY * 2);
 	}
 	
 

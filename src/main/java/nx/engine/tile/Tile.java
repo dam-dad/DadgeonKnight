@@ -43,6 +43,7 @@ public class Tile extends Entity<Rectangle> {
 
 	@Override
 	public void draw(GraphicsContext gc) {
+		
 		gc.setFill(Color.WHITE);
 		gc.fillRect(posX, posY, width, height);
 	}
