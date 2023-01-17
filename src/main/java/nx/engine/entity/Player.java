@@ -71,7 +71,7 @@ public class Player extends Entity {
 		
 		this.direction = Direction.SOUTH;
 		this.camera = camera;
-		
+
 		this.image = new Image("/assets/textures/player/kevin_idle_00.png");
 		
 		keyBinds = new KeyCode[] {KeyCode.A,KeyCode.D,KeyCode.W,KeyCode.S};
@@ -121,19 +121,10 @@ public class Player extends Entity {
 		int halfX = ((Game.screenWidth / 2) - (Game.tileSize / 2));
 		int halfY = ((Game.screenheigth / 2) - (Game.tileSize / 2));
 
-		if (this.posX + movement.getX() > halfX && this.posX + movement.getX() < TileManager.worldWidth - halfX - Game.tileSize) {
-			this.posX += movementX;
-		} else {
-			this.posX += movementX;
-			this.screenX += movementX;
-		}
+		this.posX += movementX;
+		this.posY += movementY;
 
-		if (this.posY + movement.getY() > halfY && this.posY + movement.getY() < TileManager.worldHeigth - halfY - Game.tileSize) {
-			this.posY += movementY;
-		} else {
-			this.posY += movementY;
-			this.screenY += movementY;
-		}
+		camera.setPosition(posX, posY);
 
 		if (isWalking) {
 			animation = wakl.get(direction);
@@ -142,8 +133,6 @@ public class Player extends Entity {
 		}
 
 		animation.update(deltaTime);
-
-		camera.setPosition(posX, posY);
 		
 	}
 

@@ -1,18 +1,16 @@
 package nx.engine;
 
-
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import nx.engine.entity.Player;
-import nx.engine.entity.Pueblo;
 import nx.engine.entity.Wizard;
 import nx.engine.level.Level;
+import nx.engine.particles.ParticleSource;
 import nx.engine.tile.Tile;
 import nx.engine.tile.TileManager;
-import nx.util.Music;
 
 public class Game extends AnimationTimer {
 	
@@ -40,10 +38,14 @@ public class Game extends AnimationTimer {
 	public static GraphicsContext graphicsContext;
 	
 	public static InputHandler input = new InputHandler();
-	
+
+	public static int SCREEN_CENTER_X = Game.screenWidth / 2 - (Game.tileSize/2);
+	public static int SCREEN_CENTER_Y = Game.screenheigth / 2 - (Game.tileSize/2);
+
 	public static Player player;
 	private Wizard wizard;
 	private Level level;
+	private ParticleSource particleSource;
 
 	public static Camera camera;
 	
@@ -70,6 +72,7 @@ public class Game extends AnimationTimer {
 		player = new Player(10 * tileSize, 10 * tileSize,4, camera);
 		wizard = new Wizard();
 		level = new Level("/assets/levels/dungeon/DungeonLevel_Mapa.csv", "/assets/levels/dungeon/DungeonLevel_Mapa.csv");
+		particleSource = new ParticleSource(8 * 48, 6 * 48, "/assets/textures/player/kevin_idle_00.png");
 		
 //		Music music = new Music("Tour du Jugement_The Legend of Zelda Twilight Princess HD_OST");
 //		music.play();
@@ -125,17 +128,19 @@ public class Game extends AnimationTimer {
 	}
 	public void update() {
 		player.update(deltaTime);
+		wizard.update(deltaTime);
+		particleSource.update(deltaTime);
 	}
 	
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, screenWidth, screenheigth);
-		
-//		tm.draw(gc);
 
 		level.draw(gc, camera);
+
 		player.draw(gc);
 		wizard.draw(gc);
+		particleSource.draw(gc);
 	}
 
 
