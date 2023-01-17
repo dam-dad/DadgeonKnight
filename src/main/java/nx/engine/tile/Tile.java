@@ -1,16 +1,6 @@
 package nx.engine.tile;
 
-
-import java.util.Set;
-
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import nx.engine.Game;
-import nx.engine.entity.Entity;
-
+@Deprecated
 public class Tile {
 
 	private final int id;

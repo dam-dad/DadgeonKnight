@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import nx.engine.Game;
 
+@Deprecated
 public class TileSet {
 	
 	private Image set;
@@ -14,6 +15,10 @@ public class TileSet {
 	public TileSet(String image) {
 		set = new Image(image);
 		setTiles(loadTiles(set,0));
+	}
+
+	public static void loadTiles(String image) {
+		TileSet.tiles = loadTiles(new Image(image),0);
 	}
 	
 	public static Image loadImageFromTileSet(Image tileSet,int id,int width,int height,int spacing) {
@@ -31,8 +36,7 @@ public class TileSet {
 		return null;
 	}
 
-	
-	public static Image[]  loadTiles(Image tileSet,int spacing) {
+	private static Image[] loadTiles(Image tileSet,int spacing) {
 		
 		ArrayList<Image> tiles = new ArrayList<>();
 		

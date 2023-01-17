@@ -1,14 +1,10 @@
-package nx.engine.level;
+package nx.engine.world;
 
 import javafx.scene.canvas.GraphicsContext;
 import nx.engine.Camera;
 import nx.engine.Game;
-import nx.engine.tile.Tile;
-import nx.engine.tile.TileManager;
 import nx.engine.tile.TileSet;
-import nx.util.CSV;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,17 +38,14 @@ public class Level {
             int worldX = worldCol * Game.tileSize;
             int worldY = worldRow * Game.tileSize;
 
-            double screenX = worldX - camera.getX() + Game.player.screenX;
-            double screenY = worldY - camera.getY() + Game.player.screenY;
-
             //draw just the tiles around the player
-            if(worldX + Game.tileSize > Game.player.posX - Game.screenWidth &&
-                    worldX - Game.tileSize < Game.player.posX + Game.screenWidth &&
-                    worldY + Game.tileSize > Game.player.posY - Game.screenheigth &&
-                    worldY - Game.tileSize  < Game.player.posY + Game.screenheigth) {
+            if(worldX + Game.tileSize > camera.getX() - Game.screenWidth &&
+                    worldX - Game.tileSize < camera.getX() + Game.screenWidth &&
+                    worldY + Game.tileSize > camera.getY() - Game.screenheigth &&
+                    worldY - Game.tileSize  < camera.getY() + Game.screenheigth) {
 
                 //Map base
-                gc.drawImage(TileSet.tiles[layers.get(0).getTiles()[worldRow][worldCol]], screenX, screenY, Game.tileSize, Game.tileSize);
+                gc.drawImage(TileSet.tiles[layers.get(0).getTiles()[worldRow][worldCol]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
             }
 
             worldCol++;

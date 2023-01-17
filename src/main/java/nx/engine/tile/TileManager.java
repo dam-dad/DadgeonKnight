@@ -1,17 +1,10 @@
 package nx.engine.tile;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import nx.engine.Game;
-import nx.engine.entity.Player;
-import nx.engine.entity.Pueblo;
 import nx.util.CSV;
 
 public class TileManager {
@@ -36,10 +29,10 @@ public class TileManager {
 		
 		tileSet = new TileSet("/assets/textures/levels/DungeonTiles.png");
 		
-		mapTiles = loadMapTiles("/assets/levels/dungeon/DungeonLevel_Mapa.csv",
-								"/assets/levels/dungeon/DungeonLevel_Collitions.csv");
-		
-		details = loadMapValues("/assets/levels/dungeon/DungeonLevel_Entidades.csv");
+//		mapTiles = loadMapTiles("/assets/levels/dungeon/DungeonLevel_Mapa.csv",
+//								"/assets/levels/dungeon/DungeonLevel_Collitions.csv");
+//
+//		details = loadMapValues("/assets/levels/dungeon/DungeonLevel_Entidades.csv");
 	}
 	
 	public Tile[][] loadMapTiles(String mapa,String collition) {

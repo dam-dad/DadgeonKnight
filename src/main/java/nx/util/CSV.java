@@ -8,7 +8,7 @@ import java.util.List;
 
 import com.opencsv.CSVReader;
 import nx.engine.Game;
-import nx.engine.level.Level;
+import nx.engine.world.Level;
 import nx.engine.tile.TileManager;
 
 public class CSV {
