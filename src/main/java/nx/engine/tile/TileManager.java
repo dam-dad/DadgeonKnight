@@ -9,7 +9,9 @@ import java.util.List;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import nx.engine.Game;
+import nx.engine.entity.Entity;
 import nx.engine.entity.Player;
 import nx.engine.entity.Pueblo;
 import nx.util.CSV;
@@ -27,9 +29,14 @@ public class TileManager {
 	private TileSet tileSet;
 	private Tile[][] mapTiles;
 	private int[][] details;
+	private List<Entity<Shape>> entities;
 
-	public TileManager(Game g) {
+	public TileManager(Game g, Entity...entities) {
 		this.g = g;
+		
+		for(int i = 0 ; i < entities.length; i++) {
+			this.entities.add(entities[i]);
+		}
 		
 //		tileSet = new TileSet("/assets/textures/levels/WorldTiles.png");
 //		mapTiles = loadMap("/assets/levels/level1.csv");
@@ -130,6 +137,10 @@ public class TileManager {
 				worldRow++;
 			}
 		}
+		
+		entities.forEach(e -> {
+			gc.drawImage(e.image,e.posX,e.posY);
+		});
 		
 		
 	}

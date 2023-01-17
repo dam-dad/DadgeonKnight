@@ -1,22 +1,13 @@
 package nx.engine.entity;
 
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.math3.exception.MathArithmeticException;
-import org.apache.commons.math3.geometry.Point;
-import org.apache.commons.math3.geometry.Space;
-import org.apache.commons.math3.geometry.Vector;
-import org.apache.commons.math3.geometry.euclidean.twod.Euclidean2D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import nx.engine.Animation;
 import nx.engine.Game;
@@ -28,8 +19,8 @@ public class Player extends Entity<Rectangle> {
 	
 	private int speed;
 	
-	public int screenX;
-	public int screenY;
+	public double screenX;
+	public double screenY;
 	
 	private static final double ANIMATION_SPEED = 0.15;
 	
@@ -41,17 +32,17 @@ public class Player extends Entity<Rectangle> {
 	String walkTileSet = "/assets/textures/player/Character_007.png";
 	
 	private final Map<Direction, Animation> idle = new HashMap<>() {{
-		put(Direction.SOUTH, new Animation(walkTileSet,0));
-		put(Direction.EAST, new Animation(walkTileSet,1));
-		put(Direction.WEST, new Animation(walkTileSet,2));
-		put(Direction.NORTH, new Animation(walkTileSet,3));
+		put(Direction.SOUTH, new Animation(walkTileSet,0,Game.tileSize,Game.tileSize));
+		put(Direction.EAST, new Animation(walkTileSet,1,Game.tileSize,Game.tileSize));
+		put(Direction.WEST, new Animation(walkTileSet,2,Game.tileSize,Game.tileSize));
+		put(Direction.NORTH, new Animation(walkTileSet,3,Game.tileSize,Game.tileSize));
 	}};
 	
 	private final Map<Direction, Animation> wakl = new HashMap<>() {{
-		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkTileSet,0));
-		put(Direction.EAST, new Animation(ANIMATION_SPEED,walkTileSet,1));
-		put(Direction.WEST, new Animation(ANIMATION_SPEED,walkTileSet,2));
-		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,3));
+		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkTileSet,0,Game.tileSize,Game.tileSize));
+		put(Direction.EAST, new Animation(ANIMATION_SPEED,walkTileSet,1,Game.tileSize,Game.tileSize));
+		put(Direction.WEST, new Animation(ANIMATION_SPEED,walkTileSet,2,Game.tileSize,Game.tileSize));
+		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,3,Game.tileSize,Game.tileSize));
 	}};
 	
 	public Player(double posX, double posY, int speed,InputHandler input) {
@@ -113,25 +104,7 @@ public class Player extends Entity<Rectangle> {
 		    double realSpeed = Math.ceil(this.speed * Game.LastFrameRate * deltaTime);
 		    movement = movement.scalarMultiply(realSpeed);
 
-		    double movementX = Math.round(movement.getX()); 
-		    double movementY = Math.round(movement.getY());
-
-		    int halfX = ((Game.screenWidth/2) - (Game.tileSize/2));
-		    int halfY = ((Game.screenheigth/2) - (Game.tileSize/2));
-
-		    if(this.posX + movement.getX() > halfX  && this.posX + movement.getX() < TileManager.worldWidth - halfX - Game.tileSize) {
-		        this.posX += movementX;
-		    } else {
-		    	this.posX += movementX;
-		        this.screenX += movementX;
-		    }
-
-		    if(this.posY + movement.getY() > halfY && this.posY + movement.getY() < TileManager.worldHeigth - halfY - Game.tileSize) {
-		        this.posY += movementY;
-		    } else {
-		    	this.posY += movementY;
-		        this.screenY += movementY;
-		    }
+		    movePlayer(movement);
 
 		    if(isWalking) {
 		        animation = wakl.get(direction);
@@ -141,6 +114,8 @@ public class Player extends Entity<Rectangle> {
 
 		    animation.update(deltaTime);
 		
+		    
+		    System.out.println(movement + " " + "[" + screenX + " " + screenY + "]" +  "  " + "[" + posX + " " + posY + "]");
 	}
 
 	@Override
@@ -164,19 +139,41 @@ public class Player extends Entity<Rectangle> {
 		Vector2D collisionNormal = new Vector2D(
 				((collition.posX + (Game.tileSize/2))  - collition.width/2) - ((this.posX + (Game.tileSize/2)) - this.width/2), 
 				((collition.posY + (Game.tileSize/2)) - collition.height/2) - ((this.posY + ((Game.tileSize/2) * 1.5)) - this.height/2));
-		collisionNormal.normalize();
+		collisionNormal = collisionNormal.normalize();
 		
-		Vector2D movement = collisionNormal.scalarMultiply(distance);
+		Vector2D movement = collisionNormal.scalarMultiply(distance).scalarMultiply(force).scalarMultiply(-1);
+			
+		movePlayer(movement);
 		
-		this.posX -= Math.floor(movement.getX() * force);
-		this.posY -= Math.floor(movement.getY() * force);
-		if(this.screenX < ((Game.screenWidth/2) - Game.tileSize) ||  this.screenX > ((Game.screenWidth/2) + Game.tileSize)) {
-			this.screenX -= Math.floor(movement.getX() * force);
-		}
-		if(this.screenY < ((Game.screenheigth/2) - Game.tileSize) ||  this.screenY > ((Game.screenheigth/2) + Game.tileSize)) {
-			this.screenY -= Math.floor(movement.getY() * force);
-		}
 		return distance;
+	}
+	
+	public void movePlayer(Vector2D movement) {
+	    int halfX = ((Game.screenWidth/2) - (Game.tileSize/2));
+	    int halfY = ((Game.screenheigth/2) - (Game.tileSize/2));
+	    
+	    double movementX = movement.getX();
+	    double movementY = movement.getY();
+
+	    if(this.posX + movement.getX() > halfX  && this.posX + movement.getX() < TileManager.worldWidth - halfX - Game.tileSize) {
+	        this.posX += movementX;
+	        if(this.screenX != 350.0) {
+	        	this.screenX = 350.0;
+	        }
+	    } else {
+	    	this.posX += movementX;
+	        this.screenX += movementX;
+	    }
+
+	    if(this.posY + movement.getY() > halfY && this.posY + movement.getY() < TileManager.worldHeigth - halfY - Game.tileSize) {
+	        this.posY += movementY;
+	        if(this.screenY != 264.0) {
+	        	this.screenY = 264.0;
+	        }
+	    } else {
+	    	this.posY += movementY;
+	        this.screenY += movementY;
+	    }
 	}
 
 }

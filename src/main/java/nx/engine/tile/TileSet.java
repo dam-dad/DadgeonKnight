@@ -51,12 +51,12 @@ public class TileSet {
 		return tiles.toArray(new Image[tiles.size()]);
 	}
 	
-	public static Image[]  loadLineOfTiles(Image tileSet,int line,int spacing) {
+	public static Image[]  loadLineOfTiles(Image tileSet,int line,int tileSizeX,int tileSizeY) {
 		
 		ArrayList<Image> tiles = new ArrayList<Image>();
 		
-		for(int i = 0; i < tileSet.getWidth() ; i+= Game.tileSize + spacing) {
-			WritableImage croppedImage = new WritableImage(tileSet.getPixelReader(), i, line * Game.tileSize, Game.tileSize, Game.tileSize);
+		for(int i = 0; i < tileSet.getWidth() ; i+= tileSizeX) {
+			WritableImage croppedImage = new WritableImage(tileSet.getPixelReader(), i, line * tileSizeY, tileSizeX, tileSizeY);
 			tiles.add(croppedImage);
 		}
 		

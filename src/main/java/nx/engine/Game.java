@@ -5,6 +5,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import nx.engine.entity.Orco;
 import nx.engine.entity.Player;
 import nx.engine.entity.Pueblo;
 import nx.engine.tile.Tile;
@@ -40,7 +41,11 @@ public class Game extends AnimationTimer {
 	
 	public Player player;
 	
-	private TileManager tm = new TileManager(this);
+	private Orco o = new Orco(50, 50);
+	
+	private TileManager tm = new TileManager(this,o);
+	
+
 	
 	public Game(Canvas canvas) {
 		
@@ -89,7 +94,7 @@ public class Game extends AnimationTimer {
 
 		
 		if(timer >= 1000000000) {
-			System.out.println("FPS: " + drawCount);
+//			System.out.println("FPS: " + drawCount);s
 			LastFrameRate = drawCount;
 			drawCount = 0;
 			timer = 0;
@@ -105,7 +110,7 @@ public class Game extends AnimationTimer {
 			for(int j = 0; j < a[0].length; j++) {
 				if(a[i][j].isCollider() && a[i][j].checkCollision(player)) {
 					input.ClearActiveKeys();
-					player.pushOut(a[i][j],0.001);
+					player.pushOut(a[i][j],0.05);
 				}
 			}
 		}
@@ -113,6 +118,7 @@ public class Game extends AnimationTimer {
 	}
 	public void update() {
 		player.update(input.getActiveKeys(),deltaTime);
+		o.update(deltaTime);
 	}
 	
 	public void draw(GraphicsContext gc) {
@@ -120,6 +126,8 @@ public class Game extends AnimationTimer {
 		gc.fillRect(0, 0, screenWidth, screenheigth);
 		
 		tm.draw(gc);
+		
+//		o.draw(gc);
 		
 		player.draw(gc);
 	}
