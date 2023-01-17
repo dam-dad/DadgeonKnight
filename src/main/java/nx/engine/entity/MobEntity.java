@@ -7,7 +7,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Shape;
 
 public class MobEntity<T extends Shape> extends Entity<T> {
+	
+	private int speed;
+	private boolean hasDamage;
+	private double damageValue;
 
+	
+	
 	@Override
 	public void update(Set<KeyCode> activeKeys, double deltaTime) {
 		// TODO Auto-generated method stub
