@@ -13,4 +13,13 @@ public class Vector2f {
         this.y = y;
     }
 
+    public Vector2f normalize() {
+        float length = (float) Math.sqrt(x*x + y*y);
+        return new Vector2f(x / length, y / length);
+    }
+
+    public float distance(double x, double y) {
+        return (float) Math.sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
+    }
+
 }

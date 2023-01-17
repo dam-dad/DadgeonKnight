@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javafx.scene.paint.Color;
 import nx.engine.Camera;
 import nx.engine.world.Entity;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -16,6 +17,9 @@ import nx.engine.Game;
 import nx.util.Direction;
 
 public class Player extends Entity {
+
+	private static final int MAX_PLAYER_HEALTH = 10;
+	private static final double TIME_SHOWING_ATTACK = 0.5;
 
 	private final Map<Direction, Animation> idle = new HashMap<>() {{
 		put(Direction.SOUTH, new Animation(walkTileSet,0));
@@ -45,6 +49,9 @@ public class Player extends Entity {
 	private Direction direction;
 	private Animation animation;
 	private final Camera camera;
+
+	private int health;
+	private double timeSinceLastHit;
 	
 	public Player(double posX, double posY, int speed, Camera camera) {
 		this.posX = posX;
@@ -57,6 +64,8 @@ public class Player extends Entity {
 		this.height = Game.tileSize;
 		
 		this.speed = speed;
+		this.health = MAX_PLAYER_HEALTH;
+		this.timeSinceLastHit = TIME_SHOWING_ATTACK;
 		
 		this.direction = Direction.SOUTH;
 		this.camera = camera;
@@ -70,6 +79,8 @@ public class Player extends Entity {
 
 	@Override
 	public void update(double deltaTime) {
+		System.out.println("player update");
+
 		Set<KeyCode> activeKeys = Game.input.getActiveKeys();
 
 		isWalking = false;
@@ -117,9 +128,12 @@ public class Player extends Entity {
 		} else {
 			animation = idle.get(direction);
 		}
+		System.out.println("test");
+		System.out.println(animation);
 
 		animation.update(deltaTime);
-		
+
+		timeSinceLastHit += deltaTime;
 	}
 
 	@Override
@@ -127,8 +141,14 @@ public class Player extends Entity {
 //		gc.fillRect(screenX, screenY, Game.tileSize, Game.tileSize);
 //		gc.setFill(Color.WHITE);
 //		gc.fillRect(screenX + (Game.tileSize/2)/2, screenY + (Game.tileSize/2), (Game.tileSize/2), (Game.tileSize/2));
-		
+
 		gc.drawImage(animation.getCurrentFrame(), screenX - ((Game.tileSize/2) * 0.5), screenY - Game.tileSize/2,Game.tileSize * 1.5,Game.tileSize * 1.5);
+
+		if (timeSinceLastHit < TIME_SHOWING_ATTACK) {
+			double alpha = (1.0 - timeSinceLastHit / TIME_SHOWING_ATTACK) * 0.9;
+			gc.setFill(Color.rgb(255, 0, 0, alpha));
+			gc.fillOval(screenX - ((Game.tileSize/2) * 0.5), screenY - Game.tileSize/2,Game.tileSize * 1.5,Game.tileSize * 1.5);
+		}
 	}
 	
 //	public double pushOut(Entity collition,double force) {
@@ -151,5 +171,13 @@ public class Player extends Entity {
 //		}
 //		return distance;
 //	}
+
+	// TODO
+	public void attack(int damage) {
+		health -= damage;
+		timeSinceLastHit = 0;
+
+		System.out.println(health);
+	}
 
 }
