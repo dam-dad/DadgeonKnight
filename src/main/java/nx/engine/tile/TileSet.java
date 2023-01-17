@@ -9,12 +9,7 @@ import nx.engine.Game;
 public class TileSet {
 	
 	private Image set;
-	private Image[] tiles;
-	
-	
-	public TileSet() {
-		
-	}
+	public static Image[] tiles;
 	
 	public TileSet(String image) {
 		set = new Image(image);
@@ -39,7 +34,7 @@ public class TileSet {
 	
 	public static Image[]  loadTiles(Image tileSet,int spacing) {
 		
-		ArrayList<Image> tiles = new ArrayList<Image>();
+		ArrayList<Image> tiles = new ArrayList<>();
 		
 		for(int i = 0; i < tileSet.getWidth() ; i+= Game.tileSize + spacing) {
 			for(int j = 0; j < tileSet.getHeight() ; j+= Game.tileSize + spacing) {

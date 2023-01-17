@@ -51,16 +51,16 @@ public class TileManager {
 		
 		Tile[][] tileSetMap = new Tile[mapTiles.length][mapTiles[0].length];
 		
-		for(int i = 0; i < tileSetMap.length; i++) {
-			for(int j = 0; j < tileSetMap[0].length; j++) {
-				boolean c = collitions[j][i] != -1 ? true : false;
-				tileSetMap[j][i] = new Tile(
-						tileSet.getTiles()[mapTiles[j][i]],
-						i * Game.tileSize,
-						j * Game.tileSize,
-						c);
-			}
-		}
+//		for(int i = 0; i < tileSetMap.length; i++) {
+//			for(int j = 0; j < tileSetMap[0].length; j++) {
+//				boolean c = collitions[j][i] != -1 ? true : false;
+//				tileSetMap[j][i] = new Tile(
+//						tileSet.getTiles()[mapTiles[j][i]],
+//						i * Game.tileSize,
+//						j * Game.tileSize,
+//						c);
+//			}
+//		}
 		
 		return tileSetMap;
 	}
@@ -92,45 +92,45 @@ public class TileManager {
 
 	public void draw(GraphicsContext gc) {
 
-		int worldCol = 0;
-		int worldRow = 0;
-
-		while (worldCol < maxWorldCol && worldRow < maxWorldRow) {
-			
-//			int tileNumMap = mapTiles[worldRow][worldCol];
-			int tileNumDetail = details[worldRow][worldCol];
-
-			int worldX = worldCol * Game.tileSize;
-			int worldY = worldRow * Game.tileSize;
-
-			double screenX = worldX - g.player.posX + g.player.screenX;
-			double screenY = worldY - g.player.posY + g.player.screenY;
-			
-			
-			//draw just the tiles around the player
-			if(worldX + Game.tileSize > g.player.posX - Game.screenWidth && 
-					   worldX - Game.tileSize < g.player.posX + Game.screenWidth &&
-					   worldY + Game.tileSize > g.player.posY - Game.screenheigth && 
-					   worldY - Game.tileSize  < g.player.posY + Game.screenheigth) {
-				
-				//Map base
-				gc.drawImage(mapTiles[worldRow][worldCol].getImage(), screenX, screenY, Game.tileSize, Game.tileSize);
-				
-				//Map detail
-				
-				if(tileNumDetail != -1) {
-					gc.drawImage(tileSet.getTiles()[tileNumDetail], screenX, screenY, Game.tileSize, Game.tileSize);
-				}
-			}
-			
-			worldCol++;
-
-			if (worldCol == maxWorldCol) {
-				worldCol = 0;
-				worldRow++;
-			}
-		}
-		
+//		int worldCol = 0;
+//		int worldRow = 0;
+//
+//		while (worldCol < maxWorldCol && worldRow < maxWorldRow) {
+//
+////			int tileNumMap = mapTiles[worldRow][worldCol];
+//			int tileNumDetail = details[worldRow][worldCol];
+//
+//			int worldX = worldCol * Game.tileSize;
+//			int worldY = worldRow * Game.tileSize;
+//
+//			double screenX = worldX - g.player.posX + g.player.screenX;
+//			double screenY = worldY - g.player.posY + g.player.screenY;
+//
+//
+//			//draw just the tiles around the player
+//			if(worldX + Game.tileSize > g.player.posX - Game.screenWidth &&
+//					   worldX - Game.tileSize < g.player.posX + Game.screenWidth &&
+//					   worldY + Game.tileSize > g.player.posY - Game.screenheigth &&
+//					   worldY - Game.tileSize  < g.player.posY + Game.screenheigth) {
+//
+//				//Map base
+//				gc.drawImage(mapTiles[worldRow][worldCol].getImage(), screenX, screenY, Game.tileSize, Game.tileSize);
+//
+//				//Map detail
+//
+//				if(tileNumDetail != -1) {
+//					gc.drawImage(tileSet.getTiles()[tileNumDetail], screenX, screenY, Game.tileSize, Game.tileSize);
+//				}
+//			}
+//
+//			worldCol++;
+//
+//			if (worldCol == maxWorldCol) {
+//				worldCol = 0;
+//				worldRow++;
+//			}
+//		}
+//
 		
 	}
 	

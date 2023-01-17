@@ -5,8 +5,11 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import nx.engine.entity.Player;
 import nx.engine.entity.Pueblo;
+import nx.engine.entity.Wizard;
+import nx.engine.level.Level;
 import nx.engine.tile.Tile;
 import nx.engine.tile.TileManager;
 import nx.util.Music;
@@ -34,11 +37,15 @@ public class Game extends AnimationTimer {
 	private int drawCount = 0;
 	private long timer = 0;
 	
-	private GraphicsContext graphicsContext;
+	public static GraphicsContext graphicsContext;
 	
-	private InputHandler input = new InputHandler();
+	public static InputHandler input = new InputHandler();
 	
-	public Player player;
+	public static Player player;
+	private Wizard wizard;
+	private Level level;
+
+	public static Camera camera;
 	
 	private TileManager tm = new TileManager(this);
 	
@@ -59,7 +66,10 @@ public class Game extends AnimationTimer {
 	}
 	
 	public void init() {
-		player = new Player(10 * tileSize, 10 * tileSize,4,input);
+		camera = new Camera();
+		player = new Player(10 * tileSize, 10 * tileSize,4, camera);
+		wizard = new Wizard();
+		level = new Level("/assets/levels/dungeon/DungeonLevel_Mapa.csv", "/assets/levels/dungeon/DungeonLevel_Mapa.csv");
 		
 //		Music music = new Music("Tour du Jugement_The Legend of Zelda Twilight Princess HD_OST");
 //		music.play();
@@ -79,7 +89,7 @@ public class Game extends AnimationTimer {
 		timer += (currentNanoTime - lastTime);
 		
 		if(delta >= 1) {
-			checkCollisions();
+//			checkCollisions();
 			update();
 			draw(graphicsContext);
 			
@@ -97,31 +107,35 @@ public class Game extends AnimationTimer {
 		
 		lastTime = currentNanoTime;
 	}
+
 	private void checkCollisions() {
 		
 		Tile[][] a = tm.getMapTiles();
 		
 		for(int i = 0; i < a.length; i++) {
 			for(int j = 0; j < a[0].length; j++) {
-				if(a[i][j].isCollider() && a[i][j].checkCollision(player)) {
+				if(a[i][j].isSolid() && new Rectangle(i * Game.tileSize, j * Game.tileSize, Game.tileSize, Game.tileSize).intersects(player.getCollisionShape().getLayoutBounds())) {
 					input.ClearActiveKeys();
-					player.pushOut(a[i][j],0.001);
+					System.out.println("collision");
+//					player.pushOut(a[i][j],0.01);
 				}
 			}
 		}
 
 	}
 	public void update() {
-		player.update(input.getActiveKeys(),deltaTime);
+		player.update(deltaTime);
 	}
 	
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, screenWidth, screenheigth);
 		
-		tm.draw(gc);
-		
+//		tm.draw(gc);
+
+		level.draw(gc, camera);
 		player.draw(gc);
+		wizard.draw(gc);
 	}
 
 

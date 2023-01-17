@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javafx.scene.shape.Shape;
+import nx.engine.Camera;
 import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.geometry.Point;
 import org.apache.commons.math3.geometry.Space;
@@ -24,9 +26,25 @@ import nx.engine.InputHandler;
 import nx.engine.tile.TileManager;
 import nx.util.Direction;
 
-public class Player extends Entity<Rectangle> {
+public class Player extends Entity {
+
+	private final Map<Direction, Animation> idle = new HashMap<>() {{
+		put(Direction.SOUTH, new Animation(walkTileSet,0));
+		put(Direction.EAST, new Animation(walkTileSet,1));
+		put(Direction.WEST, new Animation(walkTileSet,2));
+		put(Direction.NORTH, new Animation(walkTileSet,3));
+	}};
+
+	private final Map<Direction, Animation> wakl = new HashMap<>() {{
+		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkTileSet,0));
+		put(Direction.EAST, new Animation(ANIMATION_SPEED,walkTileSet,1));
+		put(Direction.WEST, new Animation(ANIMATION_SPEED,walkTileSet,2));
+		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,3));
+	}};
+
+	private static final String walkTileSet = "/assets/textures/player/Character_007.png";
 	
-	private int speed;
+	private final int speed;
 	
 	public int screenX;
 	public int screenY;
@@ -37,26 +55,9 @@ public class Player extends Entity<Rectangle> {
 	private boolean isWalking = false;
 	private Direction direction;
 	private Animation animation;
+	private Camera camera;
 	
-	String walkTileSet = "/assets/textures/player/Character_007.png";
-	
-	private final Map<Direction, Animation> idle = new HashMap<>() {{
-		put(Direction.SOUTH, new Animation(walkTileSet,0));
-		put(Direction.EAST, new Animation(walkTileSet,1));
-		put(Direction.WEST, new Animation(walkTileSet,2));
-		put(Direction.NORTH, new Animation(walkTileSet,3));
-	}};
-	
-	private final Map<Direction, Animation> wakl = new HashMap<>() {{
-		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkTileSet,0));
-		put(Direction.EAST, new Animation(ANIMATION_SPEED,walkTileSet,1));
-		put(Direction.WEST, new Animation(ANIMATION_SPEED,walkTileSet,2));
-		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,3));
-	}};
-	
-	public Player(double posX, double posY, int speed,InputHandler input) {
-		super();
-		
+	public Player(double posX, double posY, int speed, Camera camera) {
 		this.posX = posX;
 		this.posY = posY;
 		
@@ -69,77 +70,80 @@ public class Player extends Entity<Rectangle> {
 		this.speed = speed;
 		
 		this.direction = Direction.SOUTH;
+		this.camera = camera;
 		
 		this.image = new Image("/assets/textures/player/kevin_idle_00.png");
 		
 		keyBinds = new KeyCode[] {KeyCode.A,KeyCode.D,KeyCode.W,KeyCode.S};
 //		keyBinds = new KeyCode[] {KeyCode.LEFT,KeyCode.RIGHT,KeyCode.UP,KeyCode.DOWN};
-		
+
 	}
 
 	@Override
-	public void update(Set<KeyCode> activeKeys,double deltaTime) {
-		
-		   isWalking = false;
+	public void update(double deltaTime) {
+		Set<KeyCode> activeKeys = Game.input.getActiveKeys();
 
-		    Vector2D movement = new Vector2D(0.0,0.0);
+		isWalking = false;
+		Vector2D movement = new Vector2D(0.0, 0.0);
 
-		    if(activeKeys.contains(keyBinds[0])) {
-		        isWalking = true;
-		        movement = movement.add(new Vector2D(-1, 0));
-		        this.direction = Direction.EAST;
-		    }
-		    if(activeKeys.contains(keyBinds[1])) {
-		        isWalking = true;
-		        movement = movement.add(new Vector2D(1, 0));
-		        this.direction = Direction.WEST;
-		    }
-		    if(activeKeys.contains(keyBinds[2])) {
-		        isWalking = true;
-		        movement = movement.add(new Vector2D(0, -1));
-		        this.direction = Direction.NORTH;
-		    }
-		    if(activeKeys.contains(keyBinds[3])) {
-		        isWalking = true;
-		        movement = movement.add(new Vector2D(0, 1));
-		        this.direction = Direction.SOUTH;
-		    }
-		    
-		    if(movement.getNorm() != 0) {
-		    	movement = movement.normalize();
-		    }
+		// Update animation
+		if (activeKeys.contains(keyBinds[0])) {
+			isWalking = true;
+			movement = movement.add(new Vector2D(-1, 0));
+			this.direction = Direction.EAST;
+		}
+		if (activeKeys.contains(keyBinds[1])) {
+			isWalking = true;
+			movement = movement.add(new Vector2D(1, 0));
+			this.direction = Direction.WEST;
+		}
+		if (activeKeys.contains(keyBinds[2])) {
+			isWalking = true;
+			movement = movement.add(new Vector2D(0, -1));
+			this.direction = Direction.NORTH;
+		}
+		if (activeKeys.contains(keyBinds[3])) {
+			isWalking = true;
+			movement = movement.add(new Vector2D(0, 1));
+			this.direction = Direction.SOUTH;
+		}
 
-		    
-		    double realSpeed = Math.ceil(this.speed * Game.LastFrameRate * deltaTime);
-		    movement = movement.scalarMultiply(realSpeed);
+		if (movement.getNorm() != 0) {
+			movement = movement.normalize();
+		}
 
-		    double movementX = Math.round(movement.getX()); 
-		    double movementY = Math.round(movement.getY());
+		double realSpeed = Math.ceil(this.speed * Game.LastFrameRate * deltaTime);
+		movement = movement.scalarMultiply(realSpeed);
 
-		    int halfX = ((Game.screenWidth/2) - (Game.tileSize/2));
-		    int halfY = ((Game.screenheigth/2) - (Game.tileSize/2));
+		double movementX = Math.round(movement.getX());
+		double movementY = Math.round(movement.getY());
 
-		    if(this.posX + movement.getX() > halfX  && this.posX + movement.getX() < TileManager.worldWidth - halfX - Game.tileSize) {
-		        this.posX += movementX;
-		    } else {
-		    	this.posX += movementX;
-		        this.screenX += movementX;
-		    }
+		int halfX = ((Game.screenWidth / 2) - (Game.tileSize / 2));
+		int halfY = ((Game.screenheigth / 2) - (Game.tileSize / 2));
 
-		    if(this.posY + movement.getY() > halfY && this.posY + movement.getY() < TileManager.worldHeigth - halfY - Game.tileSize) {
-		        this.posY += movementY;
-		    } else {
-		    	this.posY += movementY;
-		        this.screenY += movementY;
-		    }
+		if (this.posX + movement.getX() > halfX && this.posX + movement.getX() < TileManager.worldWidth - halfX - Game.tileSize) {
+			this.posX += movementX;
+		} else {
+			this.posX += movementX;
+			this.screenX += movementX;
+		}
 
-		    if(isWalking) {
-		        animation = wakl.get(direction);
-		    }else {
-		        animation = idle.get(direction);
-		    }
+		if (this.posY + movement.getY() > halfY && this.posY + movement.getY() < TileManager.worldHeigth - halfY - Game.tileSize) {
+			this.posY += movementY;
+		} else {
+			this.posY += movementY;
+			this.screenY += movementY;
+		}
 
-		    animation.update(deltaTime);
+		if (isWalking) {
+			animation = wakl.get(direction);
+		} else {
+			animation = idle.get(direction);
+		}
+
+		animation.update(deltaTime);
+
+		camera.setPosition(posX, posY);
 		
 	}
 
@@ -153,8 +157,7 @@ public class Player extends Entity<Rectangle> {
 	}
 
 	@Override
-	public Rectangle getCollisionShape() {
-//		return new Rectangle(posX,posY,(Game.tileSize),(Game.tileSize));
+	public Shape getCollisionShape() {
 		return new Rectangle(posX + (Game.tileSize/2)/2,posY + (Game.tileSize/2),(Game.tileSize/2),(Game.tileSize/2));
 	}
 	
