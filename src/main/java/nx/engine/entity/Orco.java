@@ -33,20 +33,29 @@ public class Orco extends MobEntity<Rectangle> {
 		
 		this.posX = posX;
 		this.posY = posY;
+	
 		
-		direction = Direction.SOUTH;
+		this.scale = 2;
+		
+		direction = Direction.values()[(int) (Math.random() + (Direction.values().length - 1))];
+		
+		this.ANIMATION_SPEED = 0;
 		
 		this.animation = wakl.get(direction);
 		
 	}
 	
 	public void update(double deltaTime) {
+		
+		
+		
+		
 		animation.update(deltaTime);
 	}
 	
 	@Override
 	public Rectangle getCollisionShape() {
-		return new Rectangle(posX,posY,sizeTextureX * 2,sizeTextureY * 2);
+		return new Rectangle(posX,posY,sizeTextureX * scale,sizeTextureY * scale);
 	}
 	
 

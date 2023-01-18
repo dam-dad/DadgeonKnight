@@ -16,12 +16,14 @@ public class MobEntity<T extends Shape> extends Entity<T> {
 	private int speed;
 	private boolean hasDamage;
 	private double damageValue;
+
 	protected Direction direction;
 	protected Animation animation;
 	
-	public static final double ANIMATION_SPEED = 0.15;
-	public static final int sizeTextureX = 32;
-	public static final int sizeTextureY = 64;
+	public double ANIMATION_SPEED = 0.15;
+	public int sizeTextureX = 32;
+	public int sizeTextureY = 64;
+	public int scale = 1;
 	
 	public MobEntity(Player player) {
 		this.player = player;
@@ -39,7 +41,7 @@ public class MobEntity<T extends Shape> extends Entity<T> {
 				posX - Game.tileSize < player.posX + Game.screenWidth &&
 				posY + Game.tileSize > player.posY - Game.screenheigth && 
 				posY - Game.tileSize  < player.posY + Game.screenheigth){
-			gc.drawImage(animation.getCurrentFrame(), screenX, screenY,sizeTextureX * 2,sizeTextureY * 2);
+			gc.drawImage(animation.getCurrentFrame(), screenX, screenY,sizeTextureX * scale,sizeTextureY * scale);
 		}
 		
 	}
