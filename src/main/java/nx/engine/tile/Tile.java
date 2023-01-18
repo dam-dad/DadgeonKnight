@@ -22,21 +22,29 @@ public class Tile extends Entity<Rectangle> {
 	
 	public Tile(Image image) {
 		setImage(image);
+		this.width = Game.tileSize;
+		this.height = Game.tileSize;
 	}
 	public Tile(Image image,boolean a) {
 		setImage(image);
 		hasCollition = a;
+		this.width = Game.tileSize;
+		this.height = Game.tileSize;
 	}
 	public Tile(Image image,int posX,int posY) {
 		setImage(image);
 		this.posX = posX;
 		this.posY = posY;
+		this.width = Game.tileSize;
+		this.height = Game.tileSize;
 	}
 	public Tile(Image image,int posX,int posY,boolean a) {
 		setImage(image);
 		hasCollition = a;
 		this.posX = posX;
 		this.posY = posY;
+		this.width = Game.tileSize;
+		this.height = Game.tileSize;
 	}
 	@Override
 	public void update(Set<KeyCode> activeKeys, double deltaTime) {}

@@ -69,7 +69,7 @@ public class Game extends AnimationTimer {
 	public void init() {
 		player = new Player(10 * tileSize, 10 * tileSize,4,input);
 		entities = new ArrayList<Entity>();
-		entities.add(new Orco(12 * tileSize, 10 * tileSize,player));
+		entities.add(new Orco(12 * tileSize, 10 * tileSize,0.5,player));
 		tm = new TileManager(this);
 	}
 	
@@ -97,7 +97,7 @@ public class Game extends AnimationTimer {
 
 		
 		if(timer >= 1000000000) {
-//			System.out.println("FPS: " + drawCount);
+			System.out.println("FPS: " + drawCount);
 			LastFrameRate = drawCount;
 			drawCount = 0;
 			timer = 0;
@@ -113,9 +113,25 @@ public class Game extends AnimationTimer {
 			for(int j = 0; j < a[0].length; j++) {
 				if(a[i][j].isCollider() && a[i][j].checkCollision(player)) {
 					input.ClearActiveKeys();
-					player.pushOut(a[i][j],0.01);
+					player.pushOut(a[i][j],0.05);
+				}
+				if(a[i][j].isCollider() && a[i][j].checkCollision(entities.get(0))) {
+					Orco orc = (Orco) entities.get(0);
+					orc.pushOut(a[i][j], 0.05);
+					orc.changeDirection();
 				}
 			}
+		}
+
+		if(entities.get(0).checkCollision(player)) {
+			Orco orc = (Orco) entities.get(0);
+			orc.stop();
+			
+			
+			input.ClearActiveKeys();
+			player.pushOut(entities.get(0),0.05);
+			
+//			orc.reset();
 		}
 
 	}
@@ -125,7 +141,7 @@ public class Game extends AnimationTimer {
 		
 		entities.forEach(e -> {
 			Orco a = (Orco) e;
-			a.update(deltaTime);
+			a.update(null,deltaTime);
 		});
 
 	}

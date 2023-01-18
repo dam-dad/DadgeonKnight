@@ -8,6 +8,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import nx.engine.Animation;
 import nx.engine.Game;
@@ -121,8 +122,8 @@ public class Player extends Entity<Rectangle> {
 	@Override
 	public void draw(GraphicsContext gc) {
 //		gc.fillRect(screenX, screenY, Game.tileSize, Game.tileSize);
-//		gc.setFill(Color.WHITE);
-//		gc.fillRect(screenX + (Game.tileSize/2)/2, screenY + (Game.tileSize/2), (Game.tileSize/2), (Game.tileSize/2));
+		gc.setFill(Color.WHITE);
+		gc.fillRect(screenX + (Game.tileSize/2)/2, screenY + (Game.tileSize/2), (Game.tileSize/2), (Game.tileSize/2));
 		
 		gc.drawImage(animation.getCurrentFrame(), screenX - ((Game.tileSize/2) * 0.5), screenY - Game.tileSize/2,Game.tileSize * 1.5,Game.tileSize * 1.5);
 	}
@@ -132,7 +133,7 @@ public class Player extends Entity<Rectangle> {
 //		return new Rectangle(posX,posY,(Game.tileSize),(Game.tileSize));
 		return new Rectangle(posX + (Game.tileSize/2)/2,posY + (Game.tileSize/2),(Game.tileSize/2),(Game.tileSize/2));
 	}
-	
+	@Override
 	public double pushOut(Entity collition,double force) {
 		double distance = Math.sqrt(Math.pow((collition.posX + (Game.tileSize/2)) - (this.posX + (Game.tileSize/2)), 2) + Math.pow((collition.posY + (Game.tileSize/2)) - (this.posY + ((Game.tileSize/2) * 1.5)), 2));
 		
