@@ -14,6 +14,8 @@ public class Orco extends MobEntity<Rectangle> {
 	
 	String walkTileSet = "/assets/textures/orc/muscleman.png";
 	
+	public double ANIMATION_SPEED = 0.4;
+	
 	private final Map<Direction, Animation> idle = new HashMap<>() {{
 		put(Direction.SOUTH, new Animation(walkTileSet,0,sizeTextureX,sizeTextureY));
 		put(Direction.EAST, new Animation(walkTileSet,1,sizeTextureX,sizeTextureY));
@@ -37,18 +39,13 @@ public class Orco extends MobEntity<Rectangle> {
 		
 		this.scale = 2;
 		
-		direction = Direction.values()[(int) (Math.random() + (Direction.values().length - 1))];
-		
-		this.ANIMATION_SPEED = 0;
+		direction = Direction.values()[0];
 		
 		this.animation = wakl.get(direction);
 		
 	}
 	
 	public void update(double deltaTime) {
-		
-		
-		
 		
 		animation.update(deltaTime);
 	}

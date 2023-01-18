@@ -20,7 +20,6 @@ public class MobEntity<T extends Shape> extends Entity<T> {
 	protected Direction direction;
 	protected Animation animation;
 	
-	public double ANIMATION_SPEED = 0.15;
 	public int sizeTextureX = 32;
 	public int sizeTextureY = 64;
 	public int scale = 1;

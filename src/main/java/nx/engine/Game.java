@@ -1,16 +1,20 @@
 package nx.engine;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import nx.engine.entity.Entity;
+import nx.engine.entity.MobEntity;
 import nx.engine.entity.Orco;
 import nx.engine.entity.Player;
-import nx.engine.entity.Pueblo;
 import nx.engine.tile.Tile;
 import nx.engine.tile.TileManager;
-import nx.util.Music;
 
 public class Game extends AnimationTimer {
 	
@@ -42,7 +46,8 @@ public class Game extends AnimationTimer {
 	
 	
 	public Player player;
-	private Orco orc;
+	
+	private List<Entity> entities;
 	
 	public Game(Canvas canvas) {
 		
@@ -63,11 +68,9 @@ public class Game extends AnimationTimer {
 	
 	public void init() {
 		player = new Player(10 * tileSize, 10 * tileSize,4,input);
-		orc = new Orco(12 * tileSize, 10 * tileSize,player);
-		tm = new TileManager(this,orc);
-		
-//		Music music = new Music("Tour du Jugement_The Legend of Zelda Twilight Princess HD_OST");
-//		music.play();
+		entities = new ArrayList<Entity>();
+		entities.add(new Orco(12 * tileSize, 10 * tileSize,player));
+		tm = new TileManager(this);
 	}
 	
 	@Override
@@ -94,7 +97,7 @@ public class Game extends AnimationTimer {
 
 		
 		if(timer >= 1000000000) {
-//			System.out.println("FPS: " + drawCount);s
+//			System.out.println("FPS: " + drawCount);
 			LastFrameRate = drawCount;
 			drawCount = 0;
 			timer = 0;
@@ -114,16 +117,17 @@ public class Game extends AnimationTimer {
 				}
 			}
 		}
-		
-		if(orc.checkCollision(player)) {
-			input.ClearActiveKeys();
-			player.pushOut(orc,0.01);
-		}
 
 	}
 	public void update() {
 		player.update(input.getActiveKeys(),deltaTime);
-		orc.update(deltaTime);
+		
+		
+		entities.forEach(e -> {
+			Orco a = (Orco) e;
+			a.update(deltaTime);
+		});
+
 	}
 	
 	public void draw(GraphicsContext gc) {
@@ -131,6 +135,10 @@ public class Game extends AnimationTimer {
 		gc.fillRect(0, 0, screenWidth, screenheigth);
 		
 		tm.draw(gc);
+		
+		entities.forEach(e -> {
+			e.draw(gc);
+		});
 		
 		player.draw(gc);
 	}
