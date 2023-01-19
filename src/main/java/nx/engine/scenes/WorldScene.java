@@ -16,7 +16,7 @@ public class WorldScene implements Scene {
     private final World world;
 
     private final Player player;
-    private final Wizard wizard;
+//    private final Wizard wizard;
     private final ParticleManager particleManager;
     private final Orco orco;
 
@@ -29,12 +29,12 @@ public class WorldScene implements Scene {
         // TODO: Custom particle image
         this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
 
-        this.player = new Player(10 * Game.tileSize, 10 * Game.tileSize,4, camera);
-        this.wizard = new Wizard();
+        this.player = new Player(10 * Game.tileSize, 10 * Game.tileSize,8, camera);
+//        this.wizard = new Wizard();
         this.orco = new Orco(14 * Game.tileSize, 10 * Game.tileSize, 1, player);
 
         world.addEntity(player);
-        world.addEntity(wizard);
+//        world.addEntity(wizard);
         world.addEntity(orco);
     }
 

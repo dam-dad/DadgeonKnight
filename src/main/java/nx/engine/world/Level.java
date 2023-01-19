@@ -19,6 +19,9 @@ public class Level {
     private final List<Layer> layers;
     private final Layer collisionLayer;
 
+    private final int levelWidth;
+    private final int levelHeight;
+
     public Level(String... fileNames) {
         this.layers = new ArrayList<>();
 
@@ -27,6 +30,9 @@ public class Level {
         }
 
         this.collisionLayer = new Layer(fileNames[fileNames.length - 1]);
+
+        this.levelWidth = collisionLayer.getLayerWidth();
+        this.levelHeight = collisionLayer.getLayerHeight();
     }
 
     public void draw(GraphicsContext gc, Camera camera) {
@@ -62,6 +68,8 @@ public class Level {
     }
 
     public boolean isSolid(int x, int y) {
+        if (x < 0 || x >= levelWidth) return true;
+        if (y < 0 || y >= levelHeight) return true;
         return collisionLayer.getTiles()[x][y] != -1;
     }
 

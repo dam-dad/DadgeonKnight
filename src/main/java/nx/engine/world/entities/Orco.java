@@ -6,6 +6,8 @@ import java.util.Random;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import nx.engine.Camera;
 import nx.engine.world.MobEntity;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -52,7 +54,7 @@ public class Orco extends MobEntity {
 		this.width = this.sizeTextureX * this.scale;
 		this.height = this.sizeTextureY * this.scale;
 		
-		direction = Direction.values()[2];
+		direction = Direction.values()[3];
 		
 		this.animation = walk.get(direction);
 		
@@ -66,6 +68,7 @@ public class Orco extends MobEntity {
 		this.state = "stop";
 		this.speed = 0.0;
 	}
+
 	public void reset() {
 		this.state = "walk";
 		this.speed = initialSpeed;
@@ -105,9 +108,11 @@ public class Orco extends MobEntity {
 
 				if(direction == Direction.EAST) {
 					this.posX += realSpeed;
+					move(realSpeed, 0);
 				}
 				else if(direction == Direction.WEST) {
 					this.posX -= realSpeed;
+					move(-realSpeed, 0);
 				}
 				else if(direction == Direction.NORTH) {
 					this.posY -= realSpeed;
@@ -138,10 +143,17 @@ public class Orco extends MobEntity {
 		double screenX = Game.SCREEN_CENTER_X - camera.getX() + posX;
 		double screenY = Game.SCREEN_CENTER_Y - camera.getY() + posY;
 
-		gc.fillRect(screenX, screenY, sizeTextureX * scale, sizeTextureY * scale);
+//		gc.fillRect(screenX, screenY, sizeTextureX * scale, sizeTextureY * scale);
 		gc.setFill(Color.WHEAT);
-		gc.fillOval(screenX + ((sizeTextureX * scale)/2) - (sizePlayerDetection * 2)/2, screenY + ((sizeTextureY * scale)/2) - (sizePlayerDetection * 2)/2 , sizePlayerDetection * 2, sizePlayerDetection * 2);
+//		gc.fillOval(screenX + ((sizeTextureX * scale)/2) - (sizePlayerDetection * 2)/2, screenY + ((sizeTextureY * scale)/2) - (sizePlayerDetection * 2)/2 , sizePlayerDetection * 2, sizePlayerDetection * 2);
 //		gc.drawImage(animation.getCurrentFrame(), screenX, screenY,sizeTextureX * scale,sizeTextureY * scale);
+		gc.fillRect(Game.SCREEN_CENTER_X - camera.getX() + posX, Game.SCREEN_CENTER_Y - camera.getY() + posY + sizeTextureY, Game.tileSize, Game.tileSize);
 		gc.drawImage(animation.getCurrentFrame(), Game.SCREEN_CENTER_X - camera.getX() + posX, Game.SCREEN_CENTER_Y - camera.getY() + posY, sizeTextureX * scale,sizeTextureY * scale);
 	}
+
+	@Override
+	public Shape getCollisionShape() {
+		return new Rectangle(posX, posY + sizeTextureY, Game.tileSize, Game.tileSize);
+	}
+
 }

@@ -19,9 +19,7 @@ public class Tile {
 		if (entity.getCollisionShape() == null)
 			return false;
 
-		boolean collide = new Rectangle(posX * Game.tileSize, posY * Game.tileSize, Game.tileSize, Game.tileSize).intersects(entity.getCollisionShape().getLayoutBounds());
-		System.out.println(collide);
-		return collide;
+		return new Rectangle(posX * Game.tileSize - Game.tileSize, posY * Game.tileSize + Game.tileSize, Game.tileSize, Game.tileSize).intersects(entity.getCollisionShape().getLayoutBounds());
 	}
 
 	public int getId() {
