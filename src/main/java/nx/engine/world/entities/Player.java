@@ -116,8 +116,10 @@ public class Player extends Entity {
 		double movementX = Math.round(movement.getX());
 		double movementY = Math.round(movement.getY());
 
-		this.posX += movementX;
-		this.posY += movementY;
+		move(movementX, movementY);
+
+//		this.posX += movementX;
+//		this.posY += movementY;
 
 		camera.setPosition(posX, posY);
 
@@ -172,8 +174,10 @@ public class Player extends Entity {
 	public void attack(int damage) {
 		health -= damage;
 		timeSinceLastHit = 0;
+	}
 
-		System.out.println(health);
+	public int getHealth() {
+		return health;
 	}
 
 }

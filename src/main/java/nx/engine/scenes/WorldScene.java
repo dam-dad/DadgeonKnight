@@ -1,6 +1,8 @@
 package nx.engine.scenes;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import nx.engine.Camera;
 import nx.engine.Game;
 import nx.engine.particles.ParticleManager;
@@ -19,7 +21,7 @@ public class WorldScene implements Scene {
     private final Camera camera;
 
     public WorldScene() {
-        this.world = new World("/assets/levels/dungeon/DungeonLevel_Mapa.csv", "/assets/levels/dungeon/DungeonLevel_Mapa.csv");
+        this.world = new World("/assets/levels/dungeon/DungeonLevel_Mapa.csv", "/assets/levels/dungeon/DungeonLevel_Collitions.csv");
         this.camera = new Camera();
 
         // TODO: Custom particle image
@@ -38,9 +40,15 @@ public class WorldScene implements Scene {
         particleManager.update(delta);
     }
 
+    Font font = new Font(50);
+
     @Override
     public void draw(GraphicsContext gc) {
         world.draw(gc, camera);
+
+        gc.setFont(font);
+        gc.setFill(Color.WHITESMOKE);
+        gc.fillText(String.format("Vida: %d", player.getHealth()), 0 + 10, Game.screenheigth - 10);
     }
 
 }

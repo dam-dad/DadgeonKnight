@@ -54,4 +54,8 @@ public class World {
         return entities;
     }
 
+    public Level getLevel() {
+        return level;
+    }
+
 }

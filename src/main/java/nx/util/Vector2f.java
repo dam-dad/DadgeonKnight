@@ -18,6 +18,10 @@ public class Vector2f {
         return new Vector2f(x / length, y / length);
     }
 
+    public Vector2f mul(float amount) {
+        return new Vector2f(x * amount, y * amount);
+    }
+
     public float distance(double x, double y) {
         return (float) Math.sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
     }
