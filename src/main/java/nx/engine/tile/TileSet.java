@@ -6,19 +6,19 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import nx.engine.Game;
 
+@Deprecated
 public class TileSet {
 	
 	private Image set;
-	private Image[] tiles;
-	
-	
-	public TileSet() {
-		
-	}
+	public static Image[] tiles;
 	
 	public TileSet(String image) {
 		set = new Image(image);
 		setTiles(loadTiles(set,0));
+	}
+
+	public static void loadTiles(String image) {
+		TileSet.tiles = loadTiles(new Image(image),0);
 	}
 	
 	public static Image loadImageFromTileSet(Image tileSet,int id,int width,int height,int spacing) {
@@ -36,10 +36,9 @@ public class TileSet {
 		return null;
 	}
 
-	
-	public static Image[]  loadTiles(Image tileSet,int spacing) {
+	private static Image[] loadTiles(Image tileSet,int spacing) {
 		
-		ArrayList<Image> tiles = new ArrayList<Image>();
+		ArrayList<Image> tiles = new ArrayList<>();
 		
 		for(int i = 0; i < tileSet.getWidth() ; i+= Game.tileSize + spacing) {
 			for(int j = 0; j < tileSet.getHeight() ; j+= Game.tileSize + spacing) {

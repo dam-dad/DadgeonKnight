@@ -1,15 +1,12 @@
 package nx.engine;
 
-
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import nx.engine.entity.Player;
-import nx.engine.entity.Pueblo;
-import nx.engine.tile.Tile;
-import nx.engine.tile.TileManager;
-import nx.util.Music;
+import nx.engine.scenes.Scene;
+import nx.engine.scenes.WorldScene;
+import nx.engine.tile.TileSet;
 
 public class Game extends AnimationTimer {
 	
@@ -27,23 +24,23 @@ public class Game extends AnimationTimer {
 	public static int fps = 60;
 	public static int LastFrameRate = 60;
 	
-	double drawInterval = 1000000000/fps;
+	double drawInterval = 1000000000d / fps;
 	private long lastTime;
 	double delta = 0;
 	private double deltaTime = 0;
 	private int drawCount = 0;
 	private long timer = 0;
 	
-	private GraphicsContext graphicsContext;
-	
-	private InputHandler input = new InputHandler();
-	
-	public Player player;
-	
-	private TileManager tm = new TileManager(this);
+	private final GraphicsContext graphicsContext;
+
+	public static InputHandler input = new InputHandler();
+
+	public static int SCREEN_CENTER_X = Game.screenWidth / 2 - (Game.tileSize/2);
+	public static int SCREEN_CENTER_Y = Game.screenheigth / 2 - (Game.tileSize/2);
+
+	private Scene scene;
 	
 	public Game(Canvas canvas) {
-		
 		this.graphicsContext = canvas.getGraphicsContext2D();
 		
 		canvas.setWidth(screenWidth);
@@ -54,15 +51,13 @@ public class Game extends AnimationTimer {
 		canvas.setFocusTraversable(true);
 		canvas.requestFocus();
 
-		
 		init();
 	}
 	
 	public void init() {
-		player = new Player(10 * tileSize, 10 * tileSize,4,input);
-		
-//		Music music = new Music("Tour du Jugement_The Legend of Zelda Twilight Princess HD_OST");
-//		music.play();
+		TileSet.loadTiles("/assets/textures/levels/DungeonTiles.png");
+
+		scene = new WorldScene();
 	}
 	
 	@Override
@@ -73,22 +68,19 @@ public class Game extends AnimationTimer {
 	
 	@Override
 	public void handle(long currentNanoTime) {
-		
 		deltaTime = (currentNanoTime - lastTime) / 1000000000.0;
 		delta += (currentNanoTime - lastTime) / drawInterval;
 		timer += (currentNanoTime - lastTime);
 		
-		if(delta >= 1) {
-			checkCollisions();
+		if (delta >= 1) {
 			update();
 			draw(graphicsContext);
 			
 			delta--;
 			drawCount++;
 		}
-
 		
-		if(timer >= 1000000000) {
+		if (timer >= 1000000000) {
 			System.out.println("FPS: " + drawCount);
 			LastFrameRate = drawCount;
 			drawCount = 0;
@@ -97,31 +89,16 @@ public class Game extends AnimationTimer {
 		
 		lastTime = currentNanoTime;
 	}
-	private void checkCollisions() {
-		
-		Tile[][] a = tm.getMapTiles();
-		
-		for(int i = 0; i < a.length; i++) {
-			for(int j = 0; j < a[0].length; j++) {
-				if(a[i][j].isCollider() && a[i][j].checkCollision(player)) {
-					input.ClearActiveKeys();
-					player.pushOut(a[i][j],0.001);
-				}
-			}
-		}
 
-	}
 	public void update() {
-		player.update(input.getActiveKeys(),deltaTime);
+		scene.update(deltaTime);
 	}
 	
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, screenWidth, screenheigth);
-		
-		tm.draw(gc);
-		
-		player.draw(gc);
+
+		scene.draw(gc);
 	}
 
 

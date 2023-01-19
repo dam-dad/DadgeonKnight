@@ -1,65 +1,26 @@
 package nx.engine.tile;
 
+@Deprecated
+public class Tile {
 
-import java.util.Set;
-
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import nx.engine.Game;
-import nx.engine.entity.Entity;
-import nx.engine.entity.MobEntity;
-
-public class Tile extends Entity<Rectangle> {
+	private final int id;
+	private final boolean solid;
 	
-	private boolean hasCollition = false;
-	
-	public Tile() {
-	}
-	
-	public Tile(Image image) {
-		setImage(image);
-	}
-	public Tile(Image image,boolean a) {
-		setImage(image);
-		hasCollition = a;
-	}
-	public Tile(Image image,int posX,int posY) {
-		setImage(image);
-		this.posX = posX;
-		this.posY = posY;
-	}
-	public Tile(Image image,int posX,int posY,boolean a) {
-		setImage(image);
-		hasCollition = a;
-		this.posX = posX;
-		this.posY = posY;
-	}
-	@Override
-	public void update(Set<KeyCode> activeKeys, double deltaTime) {}
-
-	@Override
-	public void draw(GraphicsContext gc) {
-		gc.setFill(Color.WHITE);
-		gc.fillRect(posX, posY, width, height);
+	public Tile(int id) {
+		this(id, false);
 	}
 
-	@Override
-	public Rectangle getCollisionShape() {
-		return hasCollition ? new Rectangle(posX,posY,Game.tileSize,Game.tileSize) : null;
-	}
-	
-	public void setImage(Image image) {
-		this.image = image;
-	}
-	
-	public boolean isCollider() {
-		return hasCollition;
+	public Tile(int id, boolean solid) {
+		this.id = id;
+		this.solid = solid;
 	}
 
-	
+	public int getId() {
+		return id;
+	}
+
+	public boolean isSolid() {
+		return solid;
+	}
 
 }
