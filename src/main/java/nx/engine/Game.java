@@ -97,7 +97,7 @@ public class Game extends AnimationTimer {
 
 		
 		if(timer >= 1000000000) {
-			System.out.println("FPS: " + drawCount);
+//			System.out.println("FPS: " + drawCount);
 			LastFrameRate = drawCount;
 			drawCount = 0;
 			timer = 0;
@@ -111,25 +111,28 @@ public class Game extends AnimationTimer {
 		
 		for(int i = 0; i < a.length; i++) {
 			for(int j = 0; j < a[0].length; j++) {
+				//Collision entity with player
 				if(a[i][j].isCollider() && a[i][j].checkCollision(player)) {
 					input.ClearActiveKeys();
-					player.pushOut(a[i][j],0.05);
+					player.pushOut(a[i][j],Player.PLAYER_FORCE);
 				}
+				//Collision entity with map
 				if(a[i][j].isCollider() && a[i][j].checkCollision(entities.get(0))) {
 					Orco orc = (Orco) entities.get(0);
-					orc.pushOut(a[i][j], 0.05);
+					orc.pushOut(a[i][j], Player.PLAYER_FORCE);
 					orc.changeDirection();
 				}
 			}
 		}
-
+		
+		//Collision entities with player
 		if(entities.get(0).checkCollision(player)) {
 			Orco orc = (Orco) entities.get(0);
 			orc.stop();
 			
 			
 			input.ClearActiveKeys();
-			player.pushOut(entities.get(0),0.05);
+			player.pushOut(entities.get(0),Player.PLAYER_FORCE);
 			
 //			orc.reset();
 		}

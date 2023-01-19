@@ -36,7 +36,7 @@ public abstract class Entity<T extends Shape> {
 	    
 	    return direction;
 	}
-	public Direction getDirectionOverAVector2D(Vector2D direction) {
+	public Direction getDirectionFromVector2D(Vector2D direction) {
 		double angle = Math.atan2(direction.getY(), direction.getX());
 		if (angle >= -Math.PI/4 && angle < Math.PI/4) {
 		    return Direction.EAST;
@@ -48,15 +48,29 @@ public abstract class Entity<T extends Shape> {
 		    return Direction.NORTH;
 		}
 	}
+	
 	public double pushOut(Entity collition,double force) {
 		double distance = getDistanceToEntity(collition);
 		
 		Vector2D collisionNormal = getVector2DToEntity(collition);
-		
-		Direction directionCollition = getDirectionOverAVector2D(collisionNormal);
-		System.out.println(directionCollition);
-		
-		Vector2D movement = collisionNormal.scalarMultiply(distance).scalarMultiply(force).scalarMultiply(-1);
+		Vector2D movement = new Vector2D(0,0);
+		switch (getDirectionFromVector2D(collisionNormal.scalarMultiply(-1))) {
+		case WEST:
+			movement = new Vector2D(-1,0);
+			break;
+		case EAST:
+			movement = new Vector2D(1,0);
+			break;
+		case NORTH:
+			movement = new Vector2D(0,-1);
+			break;
+		case SOUTH:
+			movement = new Vector2D(0,1);
+			break;
+		default:
+			break;
+		}
+		movement = movement.scalarMultiply(distance).scalarMultiply(force);
 		
 		this.posX += movement.getX();
 		this.posY += movement.getY();

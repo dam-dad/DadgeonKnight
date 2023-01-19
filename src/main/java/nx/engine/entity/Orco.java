@@ -127,7 +127,7 @@ public class Orco extends MobEntity<Rectangle> {
 				break;
 			case "follow":
 				Vector2D direction = getVector2DToEntity(player);
-				this.direction = getDirectionOverAVector2D(direction);
+				this.direction = getDirectionFromVector2D(direction);
 				animation = walk.get(this.direction);
 				direction = direction.scalarMultiply(realSpeed);
 				

@@ -23,7 +23,8 @@ public class Player extends Entity<Rectangle> {
 	public double screenX;
 	public double screenY;
 	
-	private static final double ANIMATION_SPEED = 0.15;
+	public static final double ANIMATION_SPEED = 0.15;
+	public static final double PLAYER_FORCE = 0.1;
 	
 	private KeyCode[] keyBinds;
 	private boolean isWalking = false;
@@ -137,12 +138,25 @@ public class Player extends Entity<Rectangle> {
 	public double pushOut(Entity collition,double force) {
 		double distance = Math.sqrt(Math.pow((collition.posX + (Game.tileSize/2)) - (this.posX + (Game.tileSize/2)), 2) + Math.pow((collition.posY + (Game.tileSize/2)) - (this.posY + ((Game.tileSize/2) * 1.5)), 2));
 		
-		Vector2D collisionNormal = new Vector2D(
-				((collition.posX + (Game.tileSize/2))  - collition.width/2) - ((this.posX + (Game.tileSize/2)) - this.width/2), 
-				((collition.posY + (Game.tileSize/2)) - collition.height/2) - ((this.posY + ((Game.tileSize/2) * 1.5)) - this.height/2));
-		collisionNormal = collisionNormal.normalize();
-		
-		Vector2D movement = collisionNormal.scalarMultiply(distance).scalarMultiply(force).scalarMultiply(-1);
+		Vector2D collisionNormal = getVector2DToEntity(collition);
+		Vector2D movement = new Vector2D(0,0);
+		switch (getDirectionFromVector2D(collisionNormal.scalarMultiply(-1))) {
+		case WEST:
+			movement = new Vector2D(-1,0);
+			break;
+		case EAST:
+			movement = new Vector2D(1,0);
+			break;
+		case NORTH:
+			movement = new Vector2D(0,-1);
+			break;
+		case SOUTH:
+			movement = new Vector2D(0,1);
+			break;
+		default:
+			break;
+		}
+		movement = movement.scalarMultiply(distance).scalarMultiply(force);
 			
 		movePlayer(movement);
 		
