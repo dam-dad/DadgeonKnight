@@ -1,18 +1,15 @@
-package nx.engine.entity;
-
-import java.util.Set;
+package nx.engine.world.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.shape.Rectangle;
+import nx.engine.Camera;
 import nx.engine.Game;
 import nx.engine.tile.TileSet;
 
-public class Pueblo extends Entity<Rectangle> {
+@Deprecated
+public class Pueblo extends Entity {
 	
 	public Pueblo(double posX,double posY) {
-		
 		this.posX = posX;
 		this.posY = posY;
 		this.image =
@@ -25,16 +22,11 @@ public class Pueblo extends Entity<Rectangle> {
 	}
 
 	@Override
-	public void update(Set<KeyCode> activeKeys, double deltaTime) {}
+	public void update(double deltaTime) {}
 
 	@Override
-	public void draw(GraphicsContext gc) {
+	public void draw(GraphicsContext gc, Camera camera) {
 		gc.drawImage(image, posX, posY);
-	}
-
-	@Override
-	public Rectangle getCollisionShape() {
-		return new Rectangle(posX,posY,Game.tileSize,Game.tileSize);
 	}
 
 }

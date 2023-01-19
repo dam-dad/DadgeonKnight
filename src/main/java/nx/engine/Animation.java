@@ -5,8 +5,8 @@ import java.util.List;
 
 import javafx.scene.image.Image;
 import nx.engine.tile.TileSet;
+
 public class Animation {
-	
 	
 	private double duration;
 	private double timeAcc = 0;

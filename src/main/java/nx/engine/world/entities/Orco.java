@@ -1,23 +1,20 @@
-package nx.engine.entity;
+package nx.engine.world.entities;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
+import javafx.scene.paint.Color;
+import nx.engine.Camera;
+import nx.engine.world.MobEntity;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
 import nx.engine.Animation;
 import nx.engine.Game;
 import nx.util.Direction;
 
-public class Orco extends MobEntity<Rectangle> {
+public class Orco extends MobEntity {
 	
 	String walkTileSet = "/assets/textures/orc/muscleman.png";
 	
@@ -28,6 +25,7 @@ public class Orco extends MobEntity<Rectangle> {
 	
 	public String state = "walk";
 	private double initialSpeed;
+	private Player player;
 	
 	private final Map<Direction, Animation> idle = new HashMap<>() {{
 		put(Direction.SOUTH, new Animation(walkTileSet,0,sizeTextureX,sizeTextureY));
@@ -43,15 +41,13 @@ public class Orco extends MobEntity<Rectangle> {
 		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,3,sizeTextureX,sizeTextureY));
 	}};
 	
-	public Orco(double posX, double posY,double speed,Player player) {
-		super(player);
-		
-		this.posX = posX;
-		this.posY = posY;
+	public Orco(double posX, double posY, double speed, Player player) {
+		super(posX, posY);
 		
 		this.speed = speed;
 		initialSpeed = speed;
 		this.scale = 2;
+		this.player = player;
 		
 		this.width = this.sizeTextureX * this.scale;
 		this.height = this.sizeTextureY * this.scale;
@@ -74,44 +70,39 @@ public class Orco extends MobEntity<Rectangle> {
 		this.state = "walk";
 		this.speed = initialSpeed;
 	}
-	
+
 	@Override
-	public void update(Set<KeyCode> activeKeys,double deltaTime) {
-		if(posX + Game.tileSize > player.posX - Game.screenWidth && 
-				posX - Game.tileSize < player.posX + Game.screenWidth &&
-				posY + Game.tileSize > player.posY - Game.screenheigth && 
-				posY - Game.tileSize  < player.posY + Game.screenheigth)
-		{
-			double distance = getDistanceToEntity(player);
-			
-			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
-			
-			if(!state.equals("stop")) {
-				if(distance > this.sizePlayerDetection) {
-					if(!state.equals("walk")) {
-						state = "walk";
-						this.speed = initialSpeed;
-					}
-				}else {
-					if (!state.equals("follow")) {
-						state = "follow";
-						this.speed = initialSpeed * 2;
-					}
+	public void update(double deltaTime) {
+		double distance = getDistanceToEntity(player);
+
+		double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
+
+		if(!state.equals("stop")) {
+			if(distance > this.sizePlayerDetection) {
+				if(!state.equals("walk")) {
+					state = "walk";
+					this.speed = initialSpeed;
+				}
+			}else {
+				if (!state.equals("follow")) {
+					state = "follow";
+					this.speed = initialSpeed * 2;
 				}
 			}
+		}
 
-			
-			switch (state) {
+
+		switch (state) {
 			case "stop":
 				break;
 			case "walk":
 				time += deltaTime;
-				
+
 				if(time > timeToChange) {
 					changeDirection();
 					time = 0;
 				}
-				
+
 				if(direction == Direction.EAST) {
 					this.posX += realSpeed;
 				}
@@ -130,25 +121,27 @@ public class Orco extends MobEntity<Rectangle> {
 				this.direction = getDirectionFromVector2D(direction);
 				animation = walk.get(this.direction);
 				direction = direction.scalarMultiply(realSpeed);
-				
+
 				this.posX += direction.getX();
 				this.posY += direction.getY();
 				break;
 			default:
 				break;
-			
-			}
-			
-			animation.update(deltaTime);
+
 		}
-		
+
+		animation.update(deltaTime);
 	}
 
-	
 	@Override
-	public Rectangle getCollisionShape() {
-		return new Rectangle(posX,posY,sizeTextureX * scale,sizeTextureY * scale);
-	}
-	
+	public void draw(GraphicsContext gc, Camera camera) {
+		double screenX = Game.SCREEN_CENTER_X - camera.getX() + posX;
+		double screenY = Game.SCREEN_CENTER_Y - camera.getY() + posY;
 
+		gc.fillRect(screenX, screenY, sizeTextureX * scale, sizeTextureY * scale);
+		gc.setFill(Color.WHEAT);
+		gc.fillOval(screenX + ((sizeTextureX * scale)/2) - (sizePlayerDetection * 2)/2, screenY + ((sizeTextureY * scale)/2) - (sizePlayerDetection * 2)/2 , sizePlayerDetection * 2, sizePlayerDetection * 2);
+//		gc.drawImage(animation.getCurrentFrame(), screenX, screenY,sizeTextureX * scale,sizeTextureY * scale);
+		gc.drawImage(animation.getCurrentFrame(), Game.SCREEN_CENTER_X - camera.getX() + posX, Game.SCREEN_CENTER_Y - camera.getY() + posY, sizeTextureX * scale,sizeTextureY * scale);
+	}
 }

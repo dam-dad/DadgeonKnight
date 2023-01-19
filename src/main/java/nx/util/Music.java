@@ -22,7 +22,7 @@ public class Music {
 	 */
 	public Music(String file) {
 		try { 
-			URL path = getClass().getResource("/music/" + file + ".mp3");
+			URL path = getClass().getResource("/assets/sound/" + file);
 			this.media = new Media(path.toURI().toString());
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
@@ -35,7 +35,6 @@ public class Music {
 	public void play() {
 		player = new MediaPlayer(media);
 		player.setVolume(1);
-		player.setCycleCount(Transition.INDEFINITE);
 		player.play();
 	}
 	

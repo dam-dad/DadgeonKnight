@@ -1,74 +1,35 @@
 package nx.engine.tile;
 
-
-import java.util.Set;
-
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import nx.engine.Game;
-import nx.engine.entity.Entity;
-import nx.engine.entity.MobEntity;
+import nx.engine.world.entities.Entity;
 
-public class Tile extends Entity<Rectangle> {
-	
-	private boolean hasCollition = false;
-	
-	public Tile() {
-	}
-	
-	public Tile(Image image) {
-		setImage(image);
-		this.width = Game.tileSize;
-		this.height = Game.tileSize;
-	}
-	public Tile(Image image,boolean a) {
-		setImage(image);
-		hasCollition = a;
-		this.width = Game.tileSize;
-		this.height = Game.tileSize;
-	}
-	public Tile(Image image,int posX,int posY) {
-		setImage(image);
-		this.posX = posX;
-		this.posY = posY;
-		this.width = Game.tileSize;
-		this.height = Game.tileSize;
-	}
-	public Tile(Image image,int posX,int posY,boolean a) {
-		setImage(image);
-		hasCollition = a;
-		this.posX = posX;
-		this.posY = posY;
-		this.width = Game.tileSize;
-		this.height = Game.tileSize;
-	}
-	@Override
-	public void update(Set<KeyCode> activeKeys, double deltaTime) {}
+@Deprecated
+public class Tile {
 
-	@Override
-	public void draw(GraphicsContext gc) {
-		
-		gc.setFill(Color.WHITE);
-		gc.fillRect(posX, posY, width, height);
+	private final int id;
+	private final boolean solid;
+
+	public Tile(int id, boolean solid) {
+		this.id = id;
+		this.solid = solid;
 	}
 
-	@Override
-	public Rectangle getCollisionShape() {
-		return hasCollition ? new Rectangle(posX,posY,Game.tileSize,Game.tileSize) : null;
-	}
-	
-	public void setImage(Image image) {
-		this.image = image;
-	}
-	
-	public boolean isCollider() {
-		return hasCollition;
+	public static boolean checkCollision(Entity entity, int posX, int posY) {
+		if (entity.getCollisionShape() == null)
+			return false;
+
+		boolean collide = new Rectangle(posX * Game.tileSize, posY * Game.tileSize, Game.tileSize, Game.tileSize).intersects(entity.getCollisionShape().getLayoutBounds());
+		System.out.println(collide);
+		return collide;
 	}
 
-	
+	public int getId() {
+		return id;
+	}
+
+	public boolean isSolid() {
+		return solid;
+	}
 
 }
