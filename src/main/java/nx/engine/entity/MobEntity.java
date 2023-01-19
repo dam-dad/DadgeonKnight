@@ -57,18 +57,7 @@ public class MobEntity<T extends Shape> extends Entity<T> {
 		
 	}
 	
-	public Direction getDirectionOverADirection(Vector2D direction) {
-		double angle = Math.atan2(direction.getY(), direction.getX());
-		if (angle >= -Math.PI/4 && angle < Math.PI/4) {
-		    return Direction.EAST;
-		} else if (angle >= Math.PI/4 && angle < 3*Math.PI/4) {
-		    return Direction.SOUTH;
-		} else if (angle >= 3*Math.PI/4 || angle < -3*Math.PI/4) {
-		    return Direction.WEST;
-		} else {
-		    return Direction.NORTH;
-		}
-	}
+
 
 	@Override
 	public T getCollisionShape() {

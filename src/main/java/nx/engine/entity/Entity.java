@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Shape;
 import nx.engine.Game;
+import nx.util.Direction;
 
 public abstract class Entity<T extends Shape> {
 	
@@ -29,20 +30,31 @@ public abstract class Entity<T extends Shape> {
 		return Math.sqrt(Math.pow((e.posX + (e.width/2)) - (this.posX + (this.width/2)), 2) + Math.pow((e.posY + (e.height/2)) - (this.posY + (this.height/1.5)), 2));
 	}
 	
-	public Vector2D getDirectionToEntity(Entity e) {
-		Vector2D direction = new Vector2D((e.posX + (e.width/2)) - (this.posX + (this.width/2)), (e.posY + (e.height/2)) - (this.posY + (this.height/2)));
+	public Vector2D getVector2DToEntity(Entity e) {
+		Vector2D direction = new Vector2D((e.posX + (e.width/2)) - (this.posX + (this.width/2)), (e.posY + (e.height/2)) - (this.posY + (this.height/1.5)));
 	    direction = direction.normalize();
 	    
 	    return direction;
 	}
+	public Direction getDirectionOverAVector2D(Vector2D direction) {
+		double angle = Math.atan2(direction.getY(), direction.getX());
+		if (angle >= -Math.PI/4 && angle < Math.PI/4) {
+		    return Direction.EAST;
+		} else if (angle >= Math.PI/4 && angle < 3*Math.PI/4) {
+		    return Direction.SOUTH;
+		} else if (angle >= 3*Math.PI/4 || angle < -3*Math.PI/4) {
+		    return Direction.WEST;
+		} else {
+		    return Direction.NORTH;
+		}
+	}
 	public double pushOut(Entity collition,double force) {
 		double distance = getDistanceToEntity(collition);
 		
-		Vector2D collisionNormal = new Vector2D(
-				(collition.posX + collition.width/2) - (this.posX + (this.width/2)), 
-				(collition.posY + collition.height/2) - (this.posY + (this.height/1.5))
-				);
-		collisionNormal = collisionNormal.normalize();
+		Vector2D collisionNormal = getVector2DToEntity(collition);
+		
+		Direction directionCollition = getDirectionOverAVector2D(collisionNormal);
+		System.out.println(directionCollition);
 		
 		Vector2D movement = collisionNormal.scalarMultiply(distance).scalarMultiply(force).scalarMultiply(-1);
 		
