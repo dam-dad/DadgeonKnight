@@ -1,6 +1,7 @@
 /target/
 .idea/
 *.iml
+.gitignore
 # Created by https://www.gitignore.io/api/eclipse
 
 ### Eclipse ###
