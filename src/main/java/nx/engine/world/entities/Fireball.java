@@ -2,10 +2,13 @@ package nx.engine.world.entities;
 
 import javafx.scene.image.Image;
 import nx.engine.Game;
+import nx.engine.particles.Particle;
 import nx.engine.world.Entity;
+import nx.util.Music;
 import nx.util.Vector2f;
 
 import java.util.Optional;
+import java.util.Random;
 
 public class Fireball extends Entity {
 
@@ -46,6 +49,21 @@ public class Fireball extends Entity {
 
             player.attack(3);
             getWorld().removeEntity(this);
+
+            Music music = new Music("explosion.wav");
+            music.play();
+
+            createParticleEffect(posX, posY);
+        }
+    }
+
+    private void createParticleEffect(double posX, double posY) {
+        Random random = new Random();
+
+        for (int i = 0; i < 20; i++) {
+            float directionX = (random.nextFloat(2) - 1);
+            float directionY = (random.nextFloat(2) - 1);
+            getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(directionX, directionY).normalize(), image, random.nextFloat(200) + 300));
         }
     }
 

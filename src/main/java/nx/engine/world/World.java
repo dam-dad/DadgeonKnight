@@ -24,13 +24,13 @@ public class World {
     }
 
     public void update(double delta) {
-        entities.forEach(entity -> entity.update(delta));
-
         entities.removeAll(entitiesToRemove);
         entitiesToRemove.clear();
 
         entities.addAll(entitiesToAdd);
         entitiesToAdd.clear();
+
+        entities.forEach(entity -> entity.update(delta));
     }
 
     public void draw(GraphicsContext gc, Camera camera) {

@@ -79,8 +79,6 @@ public class Player extends Entity {
 
 	@Override
 	public void update(double deltaTime) {
-		System.out.println("player update");
-
 		Set<KeyCode> activeKeys = Game.input.getActiveKeys();
 
 		isWalking = false;
@@ -128,8 +126,6 @@ public class Player extends Entity {
 		} else {
 			animation = idle.get(direction);
 		}
-		System.out.println("test");
-		System.out.println(animation);
 
 		animation.update(deltaTime);
 

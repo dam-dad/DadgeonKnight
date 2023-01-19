@@ -11,18 +11,20 @@ public class Particle extends Entity {
 
     private Vector2f direction;
     private double timeAlive;
+    private double speed;
 
-    public Particle(float posX, float posY, Vector2f direction, Image image) {
+    public Particle(float posX, float posY, Vector2f direction, Image image, double speed) {
         super(posX, posY, image);
         height = Game.tileSize * 0.25;
 
         this.direction = direction;
+        this.speed = speed;
     }
 
     @Override
     public void update(double delta) {
-        posX += direction.x * delta;
-        posY += direction.y * delta;
+        posX += direction.x * delta * speed;
+        posY += direction.y * delta * speed;
 
         timeAlive += delta;
     }

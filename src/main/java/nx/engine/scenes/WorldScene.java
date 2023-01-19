@@ -23,7 +23,7 @@ public class WorldScene implements Scene {
         this.camera = new Camera();
 
         // TODO: Custom particle image
-        this.particleManager = new ParticleManager(world, "/assets/textures/player/kevin_idle_00.png");
+        this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
 
         this.player = new Player(10 * Game.tileSize, 10 * Game.tileSize,4, camera);
         this.wizard = new Wizard();

@@ -91,12 +91,10 @@ public class Game extends AnimationTimer {
 	}
 
 	public void update() {
-		System.out.println("update");
 		scene.update(deltaTime);
 	}
 	
 	public void draw(GraphicsContext gc) {
-		System.out.println("draw");
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, screenWidth, screenheigth);
 

@@ -43,13 +43,13 @@ public class ParticleManager {
                 iterator.remove();
         }
 
-        timeSinceLastParticle += delta;
-        if (timeSinceLastParticle > DELAY) {
-            float directionX = (random.nextFloat(2) - 1) * PARTICLE_SPEED;
-            float directionY = (random.nextFloat(2) - 1) * PARTICLE_SPEED;
-            world.getEntities().add(new Particle(8 * 48, 6* 48, new Vector2f(directionX, directionY), image));
-            timeSinceLastParticle -= DELAY;
-        }
+//        timeSinceLastParticle += delta;
+//        if (timeSinceLastParticle > DELAY) {
+//            float directionX = (random.nextFloat(2) - 1) * PARTICLE_SPEED;
+//            float directionY = (random.nextFloat(2) - 1) * PARTICLE_SPEED;
+//            world.getEntities().add(new Particle(8 * 48, 6* 48, new Vector2f(directionX, directionY), image));
+//            timeSinceLastParticle -= DELAY;
+//        }
     }
 
 }

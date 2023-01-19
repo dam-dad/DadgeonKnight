@@ -1,8 +1,6 @@
 package nx.engine.world.entities;
 
 import javafx.scene.image.Image;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import nx.engine.Game;
 import nx.engine.world.Entity;
 import nx.util.Vector2f;
