@@ -13,13 +13,13 @@ public class Animation {
 	private List<Image> frames;
 	private int counter = 0;
 	
-	public Animation(double duration,String animationSet,int line) {
+	public Animation(double duration,String animationSet,int line,int tileSizeX,int tileSizeY) {
 		this.duration = duration;
-		frames = Arrays.asList(TileSet.loadLineOfTiles(new Image(animationSet),line, 0));
+		frames = Arrays.asList(TileSet.loadLineOfTiles(new Image(animationSet),line,tileSizeX,tileSizeY));
 	}
 	
-	public Animation(String images,int line) {
-		this(-1, images,line);
+	public Animation(String images,int line,int tileSizeX,int tileSizeY) {
+		this(-1, images,line,tileSizeX,tileSizeY);
 	}
 	
 	public List<Image> getFrames() {

@@ -2,9 +2,8 @@ package nx.engine.particles;
 
 import javafx.scene.image.Image;
 import nx.engine.Game;
-import nx.engine.world.Entity;
+import nx.engine.world.entities.Entity;
 import nx.engine.world.World;
-import nx.util.Vector2f;
 
 import java.util.Iterator;
 import java.util.Random;

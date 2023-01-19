@@ -2,6 +2,7 @@ package nx.engine.world;
 
 import javafx.scene.canvas.GraphicsContext;
 import nx.engine.Camera;
+import nx.engine.world.entities.Entity;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -37,7 +38,7 @@ public class World {
         level.draw(gc, camera);
 
         entities.stream()
-                .sorted(Comparator.comparingDouble(e -> e.posY + e.height))
+                .sorted(Comparator.comparingDouble(e -> e.getPosY() + e.getHeight()))
                 .forEach(entity -> entity.draw(gc, camera));
     }
 

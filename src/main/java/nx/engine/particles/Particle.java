@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import nx.engine.Camera;
 import nx.engine.Game;
-import nx.engine.world.Entity;
+import nx.engine.world.entities.Entity;
 import nx.util.Vector2f;
 
 public class Particle extends Entity {

@@ -5,8 +5,9 @@ import java.util.Map;
 import java.util.Set;
 
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import nx.engine.Camera;
-import nx.engine.world.Entity;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -20,29 +21,30 @@ public class Player extends Entity {
 
 	private static final int MAX_PLAYER_HEALTH = 10;
 	private static final double TIME_SHOWING_ATTACK = 0.5;
+	public static final double PLAYER_FORCE = 0.1;
+
+	private static final String walkTileSet = "/assets/textures/player/Character_007.png";
+
+	private static final double ANIMATION_SPEED = 0.15;
 
 	private final Map<Direction, Animation> idle = new HashMap<>() {{
-		put(Direction.SOUTH, new Animation(walkTileSet,0));
-		put(Direction.EAST, new Animation(walkTileSet,1));
-		put(Direction.WEST, new Animation(walkTileSet,2));
-		put(Direction.NORTH, new Animation(walkTileSet,3));
+		put(Direction.SOUTH, new Animation(walkTileSet,0, Game.tileSize, Game.tileSize));
+		put(Direction.EAST, new Animation(walkTileSet,1, Game.tileSize, Game.tileSize));
+		put(Direction.WEST, new Animation(walkTileSet,2, Game.tileSize, Game.tileSize));
+		put(Direction.NORTH, new Animation(walkTileSet,3, Game.tileSize, Game.tileSize));
 	}};
 
 	private final Map<Direction, Animation> wakl = new HashMap<>() {{
-		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkTileSet,0));
-		put(Direction.EAST, new Animation(ANIMATION_SPEED,walkTileSet,1));
-		put(Direction.WEST, new Animation(ANIMATION_SPEED,walkTileSet,2));
-		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,3));
+		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkTileSet,0, Game.tileSize, Game.tileSize));
+		put(Direction.EAST, new Animation(ANIMATION_SPEED,walkTileSet,1, Game.tileSize, Game.tileSize));
+		put(Direction.WEST, new Animation(ANIMATION_SPEED,walkTileSet,2, Game.tileSize, Game.tileSize));
+		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,3, Game.tileSize, Game.tileSize));
 	}};
-
-	private static final String walkTileSet = "/assets/textures/player/Character_007.png";
 	
 	private final int speed;
 	
 	public int screenX;
 	public int screenY;
-	
-	private static final double ANIMATION_SPEED = 0.15;
 	
 	private KeyCode[] keyBinds;
 	private boolean isWalking = false;
@@ -79,7 +81,7 @@ public class Player extends Entity {
 
 	@Override
 	public void update(double deltaTime) {
-		Set<KeyCode> activeKeys = Game.input.getActiveKeys();
+		Set<KeyCode> activeKeys = Game.inputHandler.getActiveKeys();
 
 		isWalking = false;
 		Vector2D movement = new Vector2D(0.0, 0.0);
@@ -171,7 +173,7 @@ public class Player extends Entity {
 //	}
 
 	// TODO
-	public void attack(int damage) {
+	public void getAttacked(int damage) {
 		health -= damage;
 		timeSinceLastHit = 0;
 	}
@@ -180,4 +182,8 @@ public class Player extends Entity {
 		return health;
 	}
 
+	@Override
+	public Shape getCollisionShape() {
+		return new Rectangle(posX, posY, Game.tileSize, Game.tileSize);
+	}
 }

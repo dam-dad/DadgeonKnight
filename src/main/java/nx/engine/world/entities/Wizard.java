@@ -2,7 +2,6 @@ package nx.engine.world.entities;
 
 import javafx.scene.image.Image;
 import nx.engine.Game;
-import nx.engine.world.Entity;
 import nx.util.Vector2f;
 
 public class Wizard extends Entity {

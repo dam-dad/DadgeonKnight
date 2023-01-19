@@ -3,7 +3,6 @@ package nx.engine.world.entities;
 import javafx.scene.image.Image;
 import nx.engine.Game;
 import nx.engine.particles.Particle;
-import nx.engine.world.Entity;
 import nx.util.Music;
 import nx.util.Vector2f;
 
@@ -47,7 +46,7 @@ public class Fireball extends Entity {
             if (new Vector2f((float) posX, (float) posY).distance(player.getPosX(), player.getPosY()) > RADIUS)
                 return;
 
-            player.attack(3);
+            player.getAttacked(3);
             getWorld().removeEntity(this);
 
             Music music = new Music("explosion.wav");
