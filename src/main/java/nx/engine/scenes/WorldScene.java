@@ -17,8 +17,9 @@ public class WorldScene implements Scene {
 
     private final Player player;
     private final Wizard wizard;
-    private final ParticleManager particleManager;
     private final Orc orco;
+    
+    private final ParticleManager particleManager;
 
     private final Camera camera;
 
@@ -29,12 +30,12 @@ public class WorldScene implements Scene {
         // TODO: Custom particle image
         this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
 
-        this.player = new Player(10 * Game.tileSize, 10 * Game.tileSize,4, camera);
-        this.wizard = new Wizard();
-        this.orco = new Orc(14 * Game.tileSize, 10 * Game.tileSize, 1, player);
+        this.player = new Player(10, 10,4, camera);
+        this.wizard = new Wizard(10,12);
+        this.orco = new Orc(14, 10, 1, player);
 
         world.addEntity(player);
-      world.addEntity(wizard);
+        world.addEntity(wizard);
         world.addEntity(orco);
     }
 
@@ -49,10 +50,10 @@ public class WorldScene implements Scene {
     @Override
     public void draw(GraphicsContext gc) {
         world.draw(gc, camera);
-//
-//        gc.setFont(font);
-//        gc.setFill(Color.WHITESMOKE);
-//        gc.fillText(String.format("Vida: %d", player.getHealth()), 0 + 10, Game.screenheigth - 10);
+
+        gc.setFont(font);
+        gc.setFill(Color.WHITESMOKE);
+        gc.fillText(String.format("Vida: %d", player.getHealth()),10, Game.screenheigth - 10);
     }
 
     public World getWorld() {

@@ -55,15 +55,30 @@ public class Fireball extends Entity {
             createParticleEffect(posX, posY);
         }
     }
+    
+    private float randomFromInterval(float min, float max) { // min and max included 
+    	  return (float) (Math.random() * (max - min + 1) + min);
+    	}
 
     private void createParticleEffect(double posX, double posY) {
-        Random random = new Random();
+    	//TODO No se si es esto pero cuando las particulas son creadas generan un poco de lag.
+    	//cambie Random por Math.random por si pudiera ser eso.
+    	// P.S cambie el tiempo de vida de las particulas y su velocidad para que se queden cerca del jugador.
 
         for (int i = 0; i < 20; i++) {
-            float directionX = (random.nextFloat(2) - 1);
-            float directionY = (random.nextFloat(2) - 1);
-            getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(directionX, directionY).normalize(), image, random.nextFloat(200) + 300));
+            float directionX = randomFromInterval(-1.0f, 1.0f);
+            float directionY = randomFromInterval(-1.0f, 1.0f);
+            getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(directionX, directionY).normalize(), image, randomFromInterval(1.0f, 200.0f) + 100.0f));
         }
+        
+    	
+//      Random random = new Random();
+
+//      for (int i = 0; i < 20; i++) {
+//          float directionX = (random.nextFloat(2) - 1);
+//          float directionY = (random.nextFloat(2) - 1);
+//          getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(directionX, directionY).normalize(), image, random.nextFloat(200) + 300));
+//      }
     }
 
 }

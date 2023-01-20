@@ -42,7 +42,7 @@ public class Orc extends MobEntity {
 	}};
 	
 	public Orc(double posX, double posY, double speed, Player player) {
-		super(posX, posY);
+		super(posX * Game.tileSize, posY * Game.tileSize);
 		
 		this.speed = speed;
 		initialSpeed = speed;

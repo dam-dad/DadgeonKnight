@@ -136,15 +136,6 @@ public class Game extends AnimationTimer {
 	}
 
 	public void update() {
-		// TODO: Adaptar esto (Rama de Alejandro)
-//		player.update(input.getActiveKeys(),deltaTime);
-//
-//
-//		entities.forEach(e -> {
-//			Orco a = (Orco) e;
-//			a.update(null,deltaTime);
-//		});
-
 		scene.update(deltaTime);
 	}
 	

@@ -51,10 +51,10 @@ public class Level {
             		gc.drawImage(TileSet.tiles[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
             	}
             	
-//            	if(isSolid(worldCol, worldRow)) {
-//                	gc.setFill(Color.BLUE);
-//                	gc.fillRect(Game.SCREEN_CENTER_X - camera.getX() + worldX,Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
-//            	}
+            	if(isSolid(worldCol, worldRow)) {
+                	gc.setFill(Color.BLUE);
+                	gc.fillRect(Game.SCREEN_CENTER_X - camera.getX() + worldX,Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
+            	}
 
             }
 

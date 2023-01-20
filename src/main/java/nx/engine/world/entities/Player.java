@@ -56,8 +56,8 @@ public class Player extends Entity {
 	private double timeSinceLastHit;
 	
 	public Player(double posX, double posY, int speed, Camera camera) {
-		this.posX = posX;
-		this.posY = posY;
+		this.posX = posX * Game.tileSize;
+		this.posY = posY * Game.tileSize;
 		
 		screenX = Game.screenWidth / 2 - (Game.tileSize/2);
 		screenY = Game.screenheigth / 2 - (Game.tileSize/2);

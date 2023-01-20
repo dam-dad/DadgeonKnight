@@ -12,8 +12,8 @@ public class Wizard extends Entity {
 
     private double timeSinceLastAttack = 0.0;
 
-    public Wizard() {
-        super(10 * Game.tileSize, 12 * Game.tileSize, sprite);
+    public Wizard(int x,int y) {
+        super(x * Game.tileSize, y * Game.tileSize, sprite);
         height = Game.tileSize;
     }
 
