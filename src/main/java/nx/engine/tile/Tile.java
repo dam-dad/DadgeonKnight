@@ -19,10 +19,10 @@ public class Tile {
 		if (entity.getCollisionShape() == null)
 			return false;
 
+		
 		boolean collide = new Rectangle(posX * Game.tileSize, posY * Game.tileSize, Game.tileSize, Game.tileSize).intersects(entity.getCollisionShape().getLayoutBounds());
 		return collide;
 	}
-
 	public int getId() {
 		return id;
 	}

@@ -132,16 +132,4 @@ public class Orco extends MobEntity {
 
 		animation.update(deltaTime);
 	}
-
-	@Override
-	public void draw(GraphicsContext gc, Camera camera) {
-		double screenX = Game.SCREEN_CENTER_X - camera.getX() + posX;
-		double screenY = Game.SCREEN_CENTER_Y - camera.getY() + posY;
-
-		gc.fillRect(screenX, screenY, sizeTextureX * scale, sizeTextureY * scale);
-		gc.setFill(Color.WHEAT);
-		gc.fillOval(screenX + ((sizeTextureX * scale)/2) - (sizePlayerDetection * 2)/2, screenY + ((sizeTextureY * scale)/2) - (sizePlayerDetection * 2)/2 , sizePlayerDetection * 2, sizePlayerDetection * 2);
-//		gc.drawImage(animation.getCurrentFrame(), screenX, screenY,sizeTextureX * scale,sizeTextureY * scale);
-		gc.drawImage(animation.getCurrentFrame(), Game.SCREEN_CENTER_X - camera.getX() + posX, Game.SCREEN_CENTER_Y - camera.getY() + posY, sizeTextureX * scale,sizeTextureY * scale);
-	}
 }

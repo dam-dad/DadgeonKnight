@@ -34,8 +34,8 @@ public class WorldScene implements Scene {
         this.orco = new Orco(14 * Game.tileSize, 10 * Game.tileSize, 1, player);
 
         world.addEntity(player);
-        world.addEntity(wizard);
-//        world.addEntity(orco);
+      world.addEntity(wizard);
+        world.addEntity(orco);
     }
 
     @Override

@@ -34,13 +34,11 @@ public class CSV {
 
 			for(int i = 0; i < mapValue.length; i++) {
 				for(int j = 0; j < mapValue[0].length; j++) {
-					mapValue[i][j] = Integer.parseInt(mapCSV.get(i)[j]);
+					mapValue[j][i] = Integer.parseInt(mapCSV.get(i)[j]);
 				}
 			}
 			return mapValue;
 		} catch (Exception e) {
 			return null;
 		}
-	}
-
-}
+	}}

@@ -71,8 +71,6 @@ public class Player extends Entity {
 		
 		this.direction = Direction.SOUTH;
 		this.camera = camera;
-
-		this.image = new Image("/assets/textures/player/kevin_idle_00.png");
 		
 		keyBinds = new KeyCode[] {KeyCode.A,KeyCode.D,KeyCode.W,KeyCode.S};
 //		keyBinds = new KeyCode[] {KeyCode.LEFT,KeyCode.RIGHT,KeyCode.UP,KeyCode.DOWN};
@@ -135,9 +133,10 @@ public class Player extends Entity {
 
 	@Override
 	public void draw(GraphicsContext gc, Camera camera) {
-//		gc.fillRect(screenX, screenY, Game.tileSize, Game.tileSize);
-//		gc.setFill(Color.WHITE);s
-//		gc.fillRect(screenX + (Game.tileSize/2)/2, screenY + (Game.tileSize/2), (Game.tileSize/2), (Game.tileSize/2));
+		gc.setFill(Color.BLACK);
+		gc.fillRect(screenX, screenY, Game.tileSize, Game.tileSize);
+		gc.setFill(Color.WHITE);
+		gc.fillRect(screenX + (Game.tileSize/2)/2, screenY + (Game.tileSize/2), (Game.tileSize/2), (Game.tileSize/2));
 
 		gc.drawImage(animation.getCurrentFrame(), screenX - ((Game.tileSize/2) * 0.5), screenY - Game.tileSize/2,Game.tileSize * 1.5,Game.tileSize * 1.5);
 
@@ -160,7 +159,7 @@ public class Player extends Entity {
 
 	@Override
 	public Shape getCollisionShape() {
-		return new Rectangle(posX + (Game.tileSize/2)/2, posY + (Game.tileSize/2), Game.tileSize, Game.tileSize);
+		return new Rectangle(posX +  ((Game.tileSize/2) * 0.5), posY + (Game.tileSize/2), Game.tileSize/2, Game.tileSize/2);
 	}
 	
 	public Camera getCamera() {

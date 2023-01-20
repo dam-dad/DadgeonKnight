@@ -86,7 +86,7 @@ public class Game extends AnimationTimer {
 		}
 
 		if (timer >= 1000000000) {
-			System.out.println("FPS: " + drawCount);
+//			System.out.println("FPS: " + drawCount);
 			LastFrameRate = drawCount;
 			drawCount = 0;
 			timer = 0;
@@ -103,12 +103,13 @@ public class Game extends AnimationTimer {
 		Level level = worldScene.getWorld().getLevel();
 		int levelWidth = level.getLayers().get(0).getLayerWidth();
 		int levelHeight = level.getLayers().get(0).getLayerHeight();
-
-		for (int i = 0; i < levelWidth; i++) {
-			for (int j = 0; j < levelHeight; j++) {
-				if (level.isSolid(i, j) && Tile.checkCollision(player, i, j)) {
+		
+		
+		for (int i = 0; i < levelHeight; i++) {
+			for (int j = 0; j < levelWidth; j++) {
+				if (level.isSolid(i,j) && Tile.checkCollision(player, i, j)) {
 					inputHandler.ClearActiveKeys();
-					player.pushOut(i, j, Player.PLAYER_FORCE,player.getCamera());
+					player.pushOut(i,j, Player.PLAYER_FORCE,player.getCamera());
 				}
 				// TODO
 				//Collision entity with map
