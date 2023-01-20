@@ -37,6 +37,10 @@ public abstract class Entity {
 	}
 
 	// TODO: Make collisions work
+	protected void move(Vector2D v) {
+		this.posX += v.getX();
+		this.posY += v.getY();
+	}
 	protected void move(double x, double y) {
 		this.posX += x;
 		this.posY += y;
@@ -105,12 +109,40 @@ public abstract class Entity {
 		}
 		movement = movement.scalarMultiply(distance).scalarMultiply(force);
 
-		this.posX += movement.getX();
-		this.posY += movement.getY();
+		move(movement);
 
 		return distance;
 	}
+	public double pushOut(Entity collition, double force,Camera camera) {
+		double distance = getDistanceToEntity(collition);
 
+		Vector2D collisionNormal = getVector2DToEntity(collition);
+		Vector2D movement = new Vector2D(0,0);
+		switch (getDirectionFromVector2D(collisionNormal.scalarMultiply(-1))) {
+			case WEST:
+				movement = new Vector2D(-1,0);
+				break;
+			case EAST:
+				movement = new Vector2D(1,0);
+				break;
+			case NORTH:
+				movement = new Vector2D(0,-1);
+				break;
+			case SOUTH:
+				movement = new Vector2D(0,1);
+				break;
+			default:
+				break;
+		}
+		movement = movement.scalarMultiply(distance).scalarMultiply(force);
+
+		move(movement);
+		
+		if(getClass() == Player.class)
+			camera.setPosition(this.posX, this.posY);
+
+		return distance;
+	}
 	public double pushOut(int x, int y, double force) {
 		double distance = getDistanceToTile(x * Game.tileSize, y * Game.tileSize);
 
@@ -133,9 +165,38 @@ public abstract class Entity {
 				break;
 		}
 		movement = movement.scalarMultiply(distance).scalarMultiply(force);
+		
+		move(movement);
 
-		this.posX += movement.getX();
-		this.posY += movement.getY();
+		return distance;
+	}
+	public double pushOut(int x, int y, double force,Camera camera) {
+		double distance = getDistanceToTile(x * Game.tileSize, y * Game.tileSize);
+
+		Vector2D collisionNormal = getVector2DToTile(x * Game.tileSize, y * Game.tileSize);
+		Vector2D movement = new Vector2D(0,0);
+		switch (getDirectionFromVector2D(collisionNormal.scalarMultiply(-1))) {
+			case WEST:
+				movement = new Vector2D(-1,0);
+				break;
+			case EAST:
+				movement = new Vector2D(1,0);
+				break;
+			case NORTH:
+				movement = new Vector2D(0,-1);
+				break;
+			case SOUTH:
+				movement = new Vector2D(0,1);
+				break;
+			default:
+				break;
+		}
+		movement = movement.scalarMultiply(distance).scalarMultiply(force);
+		
+		move(movement);
+		
+		if(getClass() == Player.class)
+			camera.setPosition(this.posX, this.posY);
 
 		return distance;
 	}

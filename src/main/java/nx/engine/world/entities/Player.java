@@ -120,9 +120,6 @@ public class Player extends Entity {
 
 		move(movementX, movementY);
 
-//		this.posX += movementX;
-//		this.posY += movementY;
-
 		camera.setPosition(posX, posY);
 
 		if (isWalking) {
@@ -139,7 +136,7 @@ public class Player extends Entity {
 	@Override
 	public void draw(GraphicsContext gc, Camera camera) {
 //		gc.fillRect(screenX, screenY, Game.tileSize, Game.tileSize);
-//		gc.setFill(Color.WHITE);
+//		gc.setFill(Color.WHITE);s
 //		gc.fillRect(screenX + (Game.tileSize/2)/2, screenY + (Game.tileSize/2), (Game.tileSize/2), (Game.tileSize/2));
 
 		gc.drawImage(animation.getCurrentFrame(), screenX - ((Game.tileSize/2) * 0.5), screenY - Game.tileSize/2,Game.tileSize * 1.5,Game.tileSize * 1.5);
@@ -150,27 +147,6 @@ public class Player extends Entity {
 			gc.fillOval(screenX - ((Game.tileSize/2) * 0.5), screenY - Game.tileSize/2,Game.tileSize * 1.5,Game.tileSize * 1.5);
 		}
 	}
-	
-//	public double pushOut(Entity collition,double force) {
-//		double distance = Math.sqrt(Math.pow((collition.posX + (Game.tileSize/2)) - (this.posX + (Game.tileSize/2)), 2) + Math.pow((collition.posY + (Game.tileSize/2)) - (this.posY + ((Game.tileSize/2) * 1.5)), 2));
-//
-//		Vector2D collisionNormal = new Vector2D(
-//				((collition.posX + (Game.tileSize/2))  - collition.width/2) - ((this.posX + (Game.tileSize/2)) - this.width/2),
-//				((collition.posY + (Game.tileSize/2)) - collition.height/2) - ((this.posY + ((Game.tileSize/2) * 1.5)) - this.height/2));
-//		collisionNormal.normalize();
-//
-//		Vector2D movement = collisionNormal.scalarMultiply(distance);
-//
-//		this.posX -= Math.floor(movement.getX() * force);
-//		this.posY -= Math.floor(movement.getY() * force);
-//		if(this.screenX < ((Game.screenWidth/2) - Game.tileSize) ||  this.screenX > ((Game.screenWidth/2) + Game.tileSize)) {
-//			this.screenX -= Math.floor(movement.getX() * force);
-//		}
-//		if(this.screenY < ((Game.screenheigth/2) - Game.tileSize) ||  this.screenY > ((Game.screenheigth/2) + Game.tileSize)) {
-//			this.screenY -= Math.floor(movement.getY() * force);
-//		}
-//		return distance;
-//	}
 
 	// TODO
 	public void getAttacked(int damage) {
@@ -184,6 +160,10 @@ public class Player extends Entity {
 
 	@Override
 	public Shape getCollisionShape() {
-		return new Rectangle(posX, posY, Game.tileSize, Game.tileSize);
+		return new Rectangle(posX + (Game.tileSize/2)/2, posY + (Game.tileSize/2), Game.tileSize, Game.tileSize);
+	}
+	
+	public Camera getCamera() {
+		return camera;
 	}
 }

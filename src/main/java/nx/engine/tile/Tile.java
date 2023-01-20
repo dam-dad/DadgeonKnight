@@ -4,7 +4,7 @@ import javafx.scene.shape.Rectangle;
 import nx.engine.Game;
 import nx.engine.world.entities.Entity;
 
-@Deprecated
+
 public class Tile {
 
 	private final int id;
@@ -20,7 +20,6 @@ public class Tile {
 			return false;
 
 		boolean collide = new Rectangle(posX * Game.tileSize, posY * Game.tileSize, Game.tileSize, Game.tileSize).intersects(entity.getCollisionShape().getLayoutBounds());
-		System.out.println(collide);
 		return collide;
 	}
 

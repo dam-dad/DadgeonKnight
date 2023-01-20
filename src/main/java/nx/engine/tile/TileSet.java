@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import nx.engine.Game;
 
-@Deprecated
+
 public class TileSet {
 	
 	private Image set;

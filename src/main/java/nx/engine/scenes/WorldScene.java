@@ -35,7 +35,7 @@ public class WorldScene implements Scene {
 
         world.addEntity(player);
         world.addEntity(wizard);
-        world.addEntity(orco);
+//        world.addEntity(orco);
     }
 
     @Override
@@ -49,10 +49,10 @@ public class WorldScene implements Scene {
     @Override
     public void draw(GraphicsContext gc) {
         world.draw(gc, camera);
-
-        gc.setFont(font);
-        gc.setFill(Color.WHITESMOKE);
-        gc.fillText(String.format("Vida: %d", player.getHealth()), 0 + 10, Game.screenheigth - 10);
+//
+//        gc.setFont(font);
+//        gc.setFill(Color.WHITESMOKE);
+//        gc.fillText(String.format("Vida: %d", player.getHealth()), 0 + 10, Game.screenheigth - 10);
     }
 
     public World getWorld() {
