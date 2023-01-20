@@ -14,7 +14,7 @@ import nx.engine.Animation;
 import nx.engine.Game;
 import nx.util.Direction;
 
-public class Orco extends MobEntity {
+public class Orc extends MobEntity {
 	
 	String walkTileSet = "/assets/textures/orc/muscleman.png";
 	
@@ -41,7 +41,7 @@ public class Orco extends MobEntity {
 		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,3,sizeTextureX,sizeTextureY));
 	}};
 	
-	public Orco(double posX, double posY, double speed, Player player) {
+	public Orc(double posX, double posY, double speed, Player player) {
 		super(posX, posY);
 		
 		this.speed = speed;

@@ -9,7 +9,7 @@ import nx.engine.scenes.WorldScene;
 import nx.engine.tile.Tile;
 import nx.engine.tile.TileSet;
 import nx.engine.world.Level;
-import nx.engine.world.entities.Orco;
+import nx.engine.world.entities.Orc;
 import nx.engine.world.entities.Player;
 
 public class Game extends AnimationTimer {
