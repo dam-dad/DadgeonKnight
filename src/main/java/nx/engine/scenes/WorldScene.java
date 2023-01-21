@@ -32,10 +32,10 @@ public class WorldScene implements Scene {
 
         this.player = new Player(10, 10,4, camera);
         this.wizard = new Wizard(10,12);
-        this.orco = new Orc(14, 10, 1, player);
+        this.orco = new Orc(14, 10, 0.2,1.5);
 
         world.addEntity(player);
-        world.addEntity(wizard);
+//        world.addEntity(wizard);
         world.addEntity(orco);
     }
 

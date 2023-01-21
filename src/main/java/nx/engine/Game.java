@@ -94,6 +94,7 @@ public class Game extends AnimationTimer {
 		
 		lastTime = currentNanoTime;
 	}
+	
 
 	private void checkCollisions() {
 		if (!(scene instanceof WorldScene worldScene))

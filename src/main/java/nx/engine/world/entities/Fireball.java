@@ -27,8 +27,8 @@ public class Fireball extends Entity {
 
     @Override
     public void update(double deltaTime) {
-        posX += direction.x * deltaTime * SPEED;
-        posY += direction.y * deltaTime * SPEED;
+        setPosX(getPosX() + direction.x * deltaTime * SPEED);
+        setPosY(getPosY() + direction.y * deltaTime * SPEED);
 
         timeAlive += deltaTime;
         if (timeAlive > MAX_TIME_ALIVE) {
@@ -43,7 +43,7 @@ public class Fireball extends Entity {
 
         if (playerOptional.isPresent()) {
             Player player = playerOptional.get();
-            if (new Vector2f((float) posX, (float) posY).distance(player.getPosX(), player.getPosY()) > RADIUS)
+            if (new Vector2f((float) getPosX(), (float) getPosY()).distance(player.getPosX(), player.getPosY()) > RADIUS)
                 return;
 
             player.getAttacked(3);
@@ -52,13 +52,11 @@ public class Fireball extends Entity {
             Music music = new Music("explosion.wav");
             music.play();
 
-            createParticleEffect(posX, posY);
+            createParticleEffect(getPosX(), getPosY());
         }
     }
     
-    private float randomFromInterval(float min, float max) { // min and max included 
-    	  return (float) (Math.random() * (max - min + 1) + min);
-    	}
+
 
     private void createParticleEffect(double posX, double posY) {
     	//TODO No se si es esto pero cuando las particulas son creadas generan un poco de lag.

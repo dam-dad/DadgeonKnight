@@ -10,8 +10,8 @@ import nx.engine.tile.TileSet;
 public class Pueblo extends Entity {
 	
 	public Pueblo(double posX,double posY) {
-		this.posX = posX;
-		this.posY = posY;
+		this.setPosX(posX);
+		this.setPosY(posY);
 		this.image =
 		TileSet.loadImageFromTileSet(
 				new Image("/assets/textures/levels/WorldTiles.png"),
@@ -26,7 +26,7 @@ public class Pueblo extends Entity {
 
 	@Override
 	public void draw(GraphicsContext gc, Camera camera) {
-		gc.drawImage(image, posX, posY);
+		gc.drawImage(image, getPosX(), getPosY());
 	}
 
 }

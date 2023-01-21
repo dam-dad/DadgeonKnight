@@ -2,6 +2,9 @@ package nx.engine.world;
 
 import nx.engine.world.entities.Entity;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import nx.engine.Animation;
 import nx.engine.Camera;
 import nx.engine.Game;
@@ -16,11 +19,11 @@ public class MobEntity extends Entity {
 	protected Direction direction;
 	protected Animation animation;
 	
-	public int sizeTextureX = 32;
-	public int sizeTextureY = 64;
+	public int sizeTextureX = Game.tileSize;
+	public int sizeTextureY = Game.tileSize;
 	public int scale = 1;
 	
-	protected int sizePlayerDetection = 200;
+	protected int sizePlayerDetection;
 	
 	public MobEntity(double posX, double posY) {
 		super(posX, posY);
@@ -33,16 +36,24 @@ public class MobEntity extends Entity {
 
 	@Override
 	public void draw(GraphicsContext gc, Camera camera) {
-		double screenX = Game.SCREEN_CENTER_X - camera.getX() + posX;
-		double screenY = Game.SCREEN_CENTER_Y - camera.getY() + posY;
+		double screenX = Game.SCREEN_CENTER_X - camera.getX() + getPosX();
+		double screenY = Game.SCREEN_CENTER_Y - camera.getY() + getPosY();
 
-		if(posX + Game.tileSize > camera.getX() - Game.screenWidth &&
-				posX - Game.tileSize < camera.getX() + Game.screenWidth &&
-				posY + Game.tileSize > camera.getY() - Game.screenheigth &&
-				posY - Game.tileSize  < camera.getY() + Game.screenheigth){
+		if(getPosX() + Game.tileSize > camera.getX() - Game.screenWidth &&
+				getPosX() - Game.tileSize < camera.getX() + Game.screenWidth &&
+				getPosY() + Game.tileSize > camera.getY() - Game.screenheigth &&
+				getPosY() - Game.tileSize  < camera.getY() + Game.screenheigth){
+//			gc.setFill(Color.BLACK);
+//			gc.fillRect(screenX, screenY, sizeTextureX * scale, sizeTextureY * scale);
 			gc.drawImage(animation.getCurrentFrame(), screenX, screenY,sizeTextureX * scale,sizeTextureY * scale);
 		}
 
 	}
+	
+	@Override
+	public Shape getCollisionShape() {
+		return new Rectangle(getPosX(), getPosY(), sizeTextureX * scale, sizeTextureY * scale);
+	}
+	
 
 }
