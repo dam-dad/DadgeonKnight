@@ -14,6 +14,19 @@ public class Layer {
         this.layerWidth = tiles.length;
         this.layerHeight = tiles[0].length;
     }
+    
+    public Layer(int width,int height) {
+    	this.tiles = new int[height][width];
+    	
+    	this.layerHeight = height;
+    	this.layerWidth = width;
+    	
+    	for (int[] row : tiles) {
+    	    for (int value : row) {
+    	    	value = -1;
+    	    }
+    	}
+	}
 
     public int getLayerWidth() {
         return layerWidth;

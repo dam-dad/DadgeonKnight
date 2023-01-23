@@ -1,7 +1,6 @@
 package nx.engine.world;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import nx.engine.Camera;
 import nx.engine.Game;
 import nx.engine.tile.TileSet;

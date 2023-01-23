@@ -1,6 +1,7 @@
 package nx.engine.world.entities;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -31,6 +32,8 @@ public class Orc extends MobEntity {
 	private double runSpeed;
 	
 	Optional<Player> playerOptional;
+	
+	private List<? extends Entity> dropItems;
 	
 	private final Map<Direction, Animation> walk = new HashMap<>() {{
 		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkTileSet,0,32,64));

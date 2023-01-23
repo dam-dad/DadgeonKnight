@@ -12,6 +12,8 @@ import nx.engine.world.entities.Entity;
 
 public class Knockback extends Thread {
 	
+	public static boolean isBeingUsed = false;
+	
 	private Entity player;
 	private Entity collition;
 	private double force;
@@ -33,6 +35,7 @@ public class Knockback extends Thread {
 		levelWidth = level.getLayers().get(0).getLayerWidth();
 		levelHeight = level.getLayers().get(0).getLayerHeight();
 		
+		
 	}
 	public double getDistanceBetweenEntity(Entity player,Entity e) {
 		return Math.sqrt(Math.pow((e.getPosX() + (e.getWidth()/2)) - (player.getPosX() + (player.getWidth()/2)), 2) + Math.pow((e.getPosY() + (e.getHeight()/2)) - (player.getPosY() + (player.getHeight()/1.5)), 2));
@@ -46,6 +49,11 @@ public class Knockback extends Thread {
 	
 	@Override
 	public void run() {
+		if(isBeingUsed)
+			return;
+		
+		isBeingUsed = true;
+		
 		while(force > 0) {
 			for (int i = 0; i < levelHeight; i++) {
 				for (int j = 0; j < levelWidth; j++) {
@@ -89,7 +97,7 @@ public class Knockback extends Thread {
 			force -= friction;
 		}
 
-			
+		isBeingUsed = false;
 	}
 	
 	protected void move(Vector2D move) throws InterruptedException {

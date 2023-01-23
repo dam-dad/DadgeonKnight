@@ -50,8 +50,10 @@ public class Game extends AnimationTimer {
 		canvas.setWidth(screenWidth);
 		canvas.setHeight(screenheigth);
 		
-		canvas.setOnKeyPressed(inputHandler);
-		canvas.setOnKeyReleased(inputHandler);
+		canvas.setOnKeyPressed(inputHandler.keyInputHandler);
+		canvas.setOnKeyReleased(inputHandler.keyInputHandler);
+		canvas.setOnMousePressed(inputHandler.mouseInputHandler);
+		canvas.setOnMouseReleased(inputHandler.mouseInputHandler);
 		canvas.setFocusTraversable(true);
 		canvas.requestFocus();
 
@@ -80,6 +82,8 @@ public class Game extends AnimationTimer {
 			checkCollisions();
 			update();
 			draw(graphicsContext);
+			
+			System.out.println(inputHandler.getActiveButtons());
 			
 			delta--;
 			drawCount++;
