@@ -15,6 +15,9 @@ public class MobEntity extends Entity {
 	protected double speed;
 	protected boolean hasDamage;
 	protected double damageValue;
+	
+	protected boolean canDie = true;
+	protected double mobHealth = 5;
 
 	protected Direction direction;
 	protected Animation animation;
@@ -30,8 +33,10 @@ public class MobEntity extends Entity {
 	}
 
 	@Override
-	public void update(double deltaTime) {
-
+	public void update(double deltaTime) {}
+	
+	public void getAttacked(int damage) {
+		mobHealth -= canDie? damage : 0;
 	}
 
 	@Override

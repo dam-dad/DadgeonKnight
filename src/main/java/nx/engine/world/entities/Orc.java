@@ -92,6 +92,10 @@ public class Orc extends MobEntity {
 
 	@Override
 	public void update(double deltaTime) {
+		if(this.mobHealth < 0) {
+			getWorld().removeEntity(this);
+			return;
+		}
 		
 		playerOptional = getWorld().getEntities().stream()
                 .filter(entity -> entity instanceof Player)
@@ -109,7 +113,9 @@ public class Orc extends MobEntity {
 					follow();
 				}
 			}else {
-				walk();
+				if(!state.equals("walk")) {
+					walk();
+				}
 			}
 			
 			if(this.checkCollision(playerOptional.get())) {
@@ -162,8 +168,5 @@ public class Orc extends MobEntity {
 			
 			animation.update(deltaTime);
 		}
-		
-
-
 	}
 }

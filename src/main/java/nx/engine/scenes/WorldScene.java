@@ -35,7 +35,7 @@ public class WorldScene implements Scene {
         this.orco = new Orc(14, 10, 0.2,1.5);
 
         world.addEntity(player);
-//        world.addEntity(wizard);
+        world.addEntity(wizard);
         world.addEntity(orco);
     }
 

@@ -83,8 +83,6 @@ public class Game extends AnimationTimer {
 			update();
 			draw(graphicsContext);
 			
-			System.out.println(inputHandler.getActiveButtons());
-			
 			delta--;
 			drawCount++;
 		}
@@ -110,34 +108,15 @@ public class Game extends AnimationTimer {
 		int levelHeight = level.getLayers().get(0).getLayerHeight();
 		
 		
+		//collisions player with tiles
 		for (int i = 0; i < levelHeight; i++) {
 			for (int j = 0; j < levelWidth; j++) {
 				if (level.isSolid(i,j) && Tile.checkCollision(player, i, j)) {
 					inputHandler.ClearActiveKeys();
 					player.pushOut(i,j, Player.PLAYER_FORCE,player.getCamera());
 				}
-				// TODO
-				//Collision entity with map
-//				if (level.isSolid(i, j) && Tile.checkCollision(worldScene.getWorld().getEntities().get(0), i, j)) {
-//					Orco orc = (Orco) worldScene.getWorld().getEntities().get(0);
-//					orc.pushOut(i, j, Player.PLAYER_FORCE);
-//					orc.changeDirection();
-//				}
 			}
 		}
-
-		// TODO
-//		//Collision entities with player
-//		if (entities.get(0).checkCollision(player)) {
-//			Orco orc = (Orco) entities.get(0);
-//			orc.stop();
-//
-//
-//			input.ClearActiveKeys();
-//			player.pushOut(entities.get(0), Player.PLAYER_FORCE);
-//
-////			orc.reset();
-//		}
 	}
 
 	public void update() {

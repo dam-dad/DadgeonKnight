@@ -12,7 +12,7 @@ import nx.engine.world.entities.Entity;
 
 public class Knockback extends Thread {
 	
-	public static boolean isBeingUsed = false;
+//	public static boolean isBeingUsed = false;
 	
 	private Entity player;
 	private Entity collition;
@@ -49,10 +49,10 @@ public class Knockback extends Thread {
 	
 	@Override
 	public void run() {
-		if(isBeingUsed)
-			return;
-		
-		isBeingUsed = true;
+//		if(isBeingUsed)
+//			return;
+//		
+//		isBeingUsed = true;
 		
 		while(force > 0) {
 			for (int i = 0; i < levelHeight; i++) {
@@ -97,7 +97,7 @@ public class Knockback extends Thread {
 			force -= friction;
 		}
 
-		isBeingUsed = false;
+//		isBeingUsed = false;
 	}
 	
 	protected void move(Vector2D move) throws InterruptedException {
