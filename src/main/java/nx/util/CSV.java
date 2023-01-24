@@ -9,7 +9,6 @@ import java.util.List;
 import com.opencsv.CSVReader;
 import nx.engine.Game;
 import nx.engine.world.Level;
-import nx.engine.tile.TileManager;
 
 public class CSV {
 	
@@ -28,20 +27,18 @@ public class CSV {
 
 			int[][] mapValue = new int[mapCSV.size()][mapCSV.get(0).length];
 
-			TileManager.maxWorldCol = mapCSV.get(0).length;
-			TileManager.maxWorldRow = mapCSV.size();
+			Level.maxWorldCol = mapCSV.get(0).length;
+			Level.maxWorldRow = mapCSV.size();
 			Level.worldWidth = Game.tileSize * Level.maxWorldCol;
 			Level.worldHeigth = Game.tileSize * Level.maxWorldRow;
 
 			for(int i = 0; i < mapValue.length; i++) {
 				for(int j = 0; j < mapValue[0].length; j++) {
-					mapValue[i][j] = Integer.parseInt(mapCSV.get(i)[j]);
+					mapValue[j][i] = Integer.parseInt(mapCSV.get(i)[j]);
 				}
 			}
 			return mapValue;
 		} catch (Exception e) {
 			return null;
 		}
-	}
-
-}
+	}}

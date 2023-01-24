@@ -51,7 +51,16 @@ public class Level {
                     worldY - Game.tileSize  < camera.getY() + Game.screenheigth) {
 
                 //Map base
-                gc.drawImage(TileSet.tiles[layers.get(0).getTiles()[worldRow][worldCol]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
+
+            	for(int i = 0; i < layers.size(); i++) {
+            		gc.drawImage(TileSet.tiles[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
+            	}
+            	
+//            	if(isSolid(worldCol, worldRow)) {
+//                	gc.setFill(Color.BLUE);
+//                	gc.fillRect(Game.SCREEN_CENTER_X - camera.getX() + worldX,Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
+//            	}
+
             }
 
             worldCol++;

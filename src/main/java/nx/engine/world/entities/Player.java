@@ -1,6 +1,8 @@
 package nx.engine.world.entities;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import nx.engine.Animation;
 import nx.engine.Game;
+import nx.engine.tile.Tile;
 import nx.util.Direction;
 
 public class Player extends Entity {
@@ -41,12 +44,15 @@ public class Player extends Entity {
 		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,3, Game.tileSize, Game.tileSize));
 	}};
 	
+	private KeyCode[] wasdKeys = new KeyCode[] {KeyCode.A,KeyCode.D,KeyCode.W,KeyCode.S};
+	private KeyCode[] arrowsKeys = new KeyCode[] {KeyCode.LEFT,KeyCode.RIGHT,KeyCode.UP,KeyCode.DOWN};
+	
+	
 	private final int speed;
 	
 	public int screenX;
 	public int screenY;
-	
-	private KeyCode[] keyBinds;
+
 	private boolean isWalking = false;
 	private Direction direction;
 	private Animation animation;
@@ -56,8 +62,8 @@ public class Player extends Entity {
 	private double timeSinceLastHit;
 	
 	public Player(double posX, double posY, int speed, Camera camera) {
-		this.posX = posX;
-		this.posY = posY;
+		this.setPosX(posX * Game.tileSize);
+		this.setPosY(posY * Game.tileSize);
 		
 		screenX = Game.screenWidth / 2 - (Game.tileSize/2);
 		screenY = Game.screenheigth / 2 - (Game.tileSize/2);
@@ -72,37 +78,33 @@ public class Player extends Entity {
 		this.direction = Direction.SOUTH;
 		this.camera = camera;
 
-		this.image = new Image("/assets/textures/player/kevin_idle_00.png");
-		
-		keyBinds = new KeyCode[] {KeyCode.A,KeyCode.D,KeyCode.W,KeyCode.S};
-//		keyBinds = new KeyCode[] {KeyCode.LEFT,KeyCode.RIGHT,KeyCode.UP,KeyCode.DOWN};
-
 	}
 
 	@Override
 	public void update(double deltaTime) {
+		
 		Set<KeyCode> activeKeys = Game.inputHandler.getActiveKeys();
 
 		isWalking = false;
 		Vector2D movement = new Vector2D(0.0, 0.0);
 
 		// Update animation
-		if (activeKeys.contains(keyBinds[0])) {
+		if (activeKeys.contains(wasdKeys[0]) || activeKeys.contains(arrowsKeys[0])) {
 			isWalking = true;
 			movement = movement.add(new Vector2D(-1, 0));
 			this.direction = Direction.EAST;
 		}
-		if (activeKeys.contains(keyBinds[1])) {
+		if (activeKeys.contains(wasdKeys[1]) || activeKeys.contains(arrowsKeys[1])) {
 			isWalking = true;
 			movement = movement.add(new Vector2D(1, 0));
 			this.direction = Direction.WEST;
 		}
-		if (activeKeys.contains(keyBinds[2])) {
+		if (activeKeys.contains(wasdKeys[2]) || activeKeys.contains(arrowsKeys[2])) {
 			isWalking = true;
 			movement = movement.add(new Vector2D(0, -1));
 			this.direction = Direction.NORTH;
 		}
-		if (activeKeys.contains(keyBinds[3])) {
+		if (activeKeys.contains(wasdKeys[3]) || activeKeys.contains(arrowsKeys[3])) {
 			isWalking = true;
 			movement = movement.add(new Vector2D(0, 1));
 			this.direction = Direction.SOUTH;
@@ -120,10 +122,7 @@ public class Player extends Entity {
 
 		move(movementX, movementY);
 
-//		this.posX += movementX;
-//		this.posY += movementY;
-
-		camera.setPosition(posX, posY);
+		camera.setPosition(getPosX(), getPosY());
 
 		if (isWalking) {
 			animation = wakl.get(direction);
@@ -138,6 +137,8 @@ public class Player extends Entity {
 
 	@Override
 	public void draw(GraphicsContext gc, Camera camera) {
+		//debug collision
+//		gc.setFill(Color.BLACK);
 //		gc.fillRect(screenX, screenY, Game.tileSize, Game.tileSize);
 //		gc.setFill(Color.WHITE);
 //		gc.fillRect(screenX + (Game.tileSize/2)/2, screenY + (Game.tileSize/2), (Game.tileSize/2), (Game.tileSize/2));
@@ -148,11 +149,9 @@ public class Player extends Entity {
 		if (timeSinceLastHit < TIME_SHOWING_ATTACK) {
 			double alpha = (1.0 - timeSinceLastHit / TIME_SHOWING_ATTACK) * 0.9;
 			gc.setFill(Color.rgb(255, 0, 0, alpha));
-			gc.fillOval(screenX - ((Game.tileSize/2) * 0.5), screenY - Game.tileSize/2,Game.tileSize * 1.5,Game.tileSize * 1.5);
+			gc.fillOval(screenX - ((Game.tileSize/2) * 0.5), screenY - Game.tileSize/3,Game.tileSize * 1.5,Game.tileSize * 1.5);
 		}
 	}
-
-
 
 	// TODO
 	public void getAttacked(int damage) {
@@ -166,7 +165,11 @@ public class Player extends Entity {
 
 	@Override
 	public Shape getCollisionShape() {
-		return new Rectangle(posX, posY, Game.tileSize, Game.tileSize);
+		return new Rectangle(getPosX() +  ((Game.tileSize/2) * 0.5), getPosY() + (Game.tileSize/2), Game.tileSize/2, Game.tileSize/2);
+	}
+	
+	public Camera getCamera() {
+		return camera;
 	}
 
 }
