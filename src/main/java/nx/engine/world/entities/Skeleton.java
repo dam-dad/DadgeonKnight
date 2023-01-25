@@ -1,7 +1,12 @@
 package nx.engine.world.entities;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -24,6 +29,8 @@ public class Skeleton extends MobEntity {
 	
 	private double time = 0.0;
 	private final double timeToChange = 4.5;
+	
+	public String TeamTag = "Primeros-esqueletos";
 	
 	public String state = "walk";
 	private double initialSpeed;
@@ -63,7 +70,11 @@ public class Skeleton extends MobEntity {
 	}
 	@Override
 	public void update(double deltaTime) {
-		// TODO Auto-generated method stub
-		super.update(deltaTime);
+		
+		
+		List<Skeleton> esqueletosFaciles = getWorld().getEntities().stream().filter(entity -> entity instanceof Skeleton)
+				.map(entity -> (Skeleton) entity).filter(e -> e.TeamTag.equals("Primeros-esqueletos")).collect(Collectors.toList());
+		
+		esqueletosFaciles.forEach(e -> e.getAttacked(10));
 	}
 }

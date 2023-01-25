@@ -45,7 +45,7 @@ public class WorldScene implements Scene {
 
 		world.addEntity(player);
 //      world.addEntity(wizard);
-//      world.addEntity(orco);
+      world.addEntity(orco);
 //		world.addEntity(wolf);
 //		world.addEntity(skeleton);
 	}
