@@ -48,8 +48,6 @@ public class MobEntity extends Entity {
 				getPosX() - Game.tileSize < camera.getX() + Game.screenWidth &&
 				getPosY() + Game.tileSize > camera.getY() - Game.screenheigth &&
 				getPosY() - Game.tileSize  < camera.getY() + Game.screenheigth){
-//			gc.setFill(Color.BLACK);
-//			gc.fillRect(screenX, screenY, sizeTextureX * scale, sizeTextureY * scale);
 			gc.drawImage(animation.getCurrentFrame(), screenX, screenY,sizeTextureX * scale,sizeTextureY * scale);
 		}
 

@@ -157,10 +157,6 @@ public abstract class Entity {
 
 		return distance;
 	}
-	public static void knockback(Entity player,Entity collition, double force,Camera camera) {
-		Knockback p = new Knockback(player, collition, force, camera);
-		p.start();
-	}
 	public double pushOut(int x, int y, double force) {
 		double distance = getDistanceToTile(x * Game.tileSize, y * Game.tileSize);
 
@@ -221,10 +217,16 @@ public abstract class Entity {
 
 		return distance;
 	}
-	
+	public static void knockback(Entity player,Entity collition, double force,Camera camera) {
+		Knockback p = new Knockback(player, collition, force, camera);
+		p.start();
+	}
 	public static float randomFromInterval(float min, float max) { // min and max included 
   	  return (float) (Math.random() * (max - min + 1) + min);
 	}
+	
+	
+	//Getters / Setters
 
 	public void setWorld(World world) {
 		this.world = world;

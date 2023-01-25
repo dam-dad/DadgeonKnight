@@ -55,8 +55,8 @@ public class Orc extends MobEntity {
 		this.runSpeed = runSpeed;
 		this.scale = 2;
 
-		this.sizeTextureX = 32;
-		this.sizeTextureY = 64;
+		this.sizeTextureX = tileSizeX;
+		this.sizeTextureY = tileSizeY;
 
 		this.width = this.sizeTextureX * this.scale;
 		this.height = this.sizeTextureY * this.scale;

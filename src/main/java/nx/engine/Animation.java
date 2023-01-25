@@ -19,6 +19,9 @@ public class Animation {
 		this.duration = duration;
 		frames = Arrays.asList(TileSet.loadLineOfTiles(new Image(animationSet),line,tileSizeX,tileSizeY));
 	}
+	public Animation(double duration,String animationSet,int line,int tileSizeX,int tileSizeY,boolean mirror) {
+		//TODO mirrored animation.
+	}
 	
 	public Animation(String images,int line,int tileSizeX,int tileSizeY) {
 		this(-1, images,line,tileSizeX,tileSizeY);

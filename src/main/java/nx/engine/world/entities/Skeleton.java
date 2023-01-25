@@ -17,6 +17,9 @@ public class Skeleton extends MobEntity {
 	String walkSet = "/assets/textures/skeleton/skeleton-walk.png";
 	String idleSet = "/assets/textures/skeleton/skeleton-idle.png";
 	
+	public static final int tileSizeX = 48;
+	public static final int tileSizeY = 64;
+	
 	public double ANIMATION_SPEED = 0.6;
 	
 	private double time = 0.0;
@@ -27,29 +30,29 @@ public class Skeleton extends MobEntity {
 	private Player player;
 	
 	private final Map<Direction, Animation> idle = new HashMap<>() {{
-		put(Direction.SOUTH, new Animation(idleSet,0,sizeTextureX,sizeTextureY));
-		put(Direction.EAST, new Animation(idleSet,0,sizeTextureX,sizeTextureY));
-		put(Direction.WEST, new Animation(idleSet,0,sizeTextureX,sizeTextureY));
-		put(Direction.NORTH, new Animation(idleSet,0,sizeTextureX,sizeTextureY));
+		put(Direction.SOUTH, new Animation(idleSet,0,tileSizeX,tileSizeY));
+		put(Direction.EAST, new Animation(idleSet,0,tileSizeX,tileSizeY));
+		put(Direction.WEST, new Animation(idleSet,0,tileSizeX,tileSizeY));
+		put(Direction.NORTH, new Animation(idleSet,0,tileSizeX,tileSizeY));
 	}};
 	
 	private final Map<Direction, Animation> walk = new HashMap<>() {{
-		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkSet,0,sizeTextureX,sizeTextureY));
-		put(Direction.EAST, new Animation(ANIMATION_SPEED,walkSet,0,sizeTextureX,sizeTextureY));
-		put(Direction.WEST, new Animation(ANIMATION_SPEED,walkSet,0,sizeTextureX,sizeTextureY));
-		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkSet,0,sizeTextureX,sizeTextureY));
+		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkSet,0,tileSizeX,tileSizeY));
+		put(Direction.EAST, new Animation(ANIMATION_SPEED,walkSet,0,tileSizeX,tileSizeY));
+		put(Direction.WEST, new Animation(ANIMATION_SPEED,walkSet,0,tileSizeX,tileSizeY));
+		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkSet,0,tileSizeX,tileSizeY));
 	}};
 	
 	public Skeleton(double posX, double posY, double speed, Player player) {
-		super(posX, posY);
+		super(posX * Game.tileSize, posY * Game.tileSize);
 		
 		this.speed = speed;
 		initialSpeed = speed;
 		this.scale = 1;
 		this.player = player;
 		
-		this.sizeTextureX = 30;
-		this.sizeTextureY = 32;
+		this.sizeTextureX = tileSizeX;
+		this.sizeTextureY = tileSizeY;
 		
 		this.width = this.sizeTextureX * this.scale;
 		this.height = this.sizeTextureY * this.scale;
@@ -58,16 +61,9 @@ public class Skeleton extends MobEntity {
 		this.animation = walk.get(direction);
 		
 	}
-//	@Override
-//	public void draw(GraphicsContext gc, Camera camera) {
-//		double screenX = Game.SCREEN_CENTER_X - camera.getX() + posX;
-//		double screenY = Game.SCREEN_CENTER_Y - camera.getY() + posY;
-//
-//		gc.fillRect(screenX, screenY, sizeTextureX * scale, sizeTextureY * scale);
-//		gc.setFill(Color.WHEAT);
-//		gc.fillOval(screenX + ((sizeTextureX * scale)/2) - (sizePlayerDetection * 2)/2, screenY + ((sizeTextureY * scale)/2) - (sizePlayerDetection * 2)/2 , sizePlayerDetection * 2, sizePlayerDetection * 2);
-//		gc.drawImage(animation.getCurrentFrame(), screenX, screenY,sizeTextureX * scale,sizeTextureY * scale);
-//		gc.drawImage(animation.getCurrentFrame(), Game.SCREEN_CENTER_X - camera.getX() + posX, Game.SCREEN_CENTER_Y - camera.getY() + posY, sizeTextureX * scale,sizeTextureY * scale);
-//	}
-
+	@Override
+	public void update(double deltaTime) {
+		// TODO Auto-generated method stub
+		super.update(deltaTime);
+	}
 }
