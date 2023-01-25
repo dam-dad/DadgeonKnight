@@ -9,6 +9,7 @@ import nx.engine.particles.ParticleManager;
 import nx.engine.world.World;
 import nx.engine.world.entities.Orco;
 import nx.engine.world.entities.Player;
+import nx.engine.world.entities.Skeleton;
 import nx.engine.world.entities.Wizard;
 
 public class WorldScene implements Scene {
@@ -17,6 +18,7 @@ public class WorldScene implements Scene {
 
     private final Player player;
     private final Wizard wizard;
+    private final Skeleton e;
     private final ParticleManager particleManager;
     private final Orco orco;
 
@@ -31,11 +33,12 @@ public class WorldScene implements Scene {
 
         this.player = new Player(10 * Game.tileSize, 10 * Game.tileSize,4, camera);
         this.wizard = new Wizard();
+        this.e = new Skeleton(1 * Game.tileSize, 1 * Game.tileSize, 0, player);
         this.orco = new Orco(14 * Game.tileSize, 10 * Game.tileSize, 1, player);
 
         world.addEntity(player);
-        world.addEntity(wizard);
-        world.addEntity(orco);
+//        world.addEntity(e);
+        
     }
 
     @Override

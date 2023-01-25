@@ -59,11 +59,11 @@ public class Fireball extends Entity {
     private void createParticleEffect(double posX, double posY) {
         Random random = new Random();
 
-        for (int i = 0; i < 20; i++) {
-            float directionX = (random.nextFloat(2) - 1);
-            float directionY = (random.nextFloat(2) - 1);
-            getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(directionX, directionY).normalize(), image, random.nextFloat(200) + 300));
-        }
+//        for (int i = 0; i < 20; i++) {
+//            float directionX = (random.nextFloat(2) - 1);
+//            float directionY = (random.nextFloat(2) - 1);
+//            getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(directionX, directionY).normalize(), image, random.nextFloat(200) + 300));
+//        }
     }
 
 }

@@ -108,10 +108,10 @@ public class Game extends AnimationTimer {
 			for (int j = 0; j < levelHeight; j++) {
 				//Collision entity with player
 				System.out.println("xxx");
-				if (level.isSolid(i, j) && Tile.checkCollision(player, i, j)) {
-					inputHandler.ClearActiveKeys();
-					player.pushOut(i, j, Player.PLAYER_FORCE);
-				}
+//				if (level.isSolid(i, j) && Tile.checkCollision(player, i, j)) {
+//					inputHandler.ClearActiveKeys();
+//					player.pushOut(i, j, Player.PLAYER_FORCE);
+//				}
 				// TODO
 				//Collision entity with map
 //				if (level.isSolid(i, j) && Tile.checkCollision(worldScene.getWorld().getEntities().get(0), i, j)) {
