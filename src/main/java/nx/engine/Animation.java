@@ -2,9 +2,11 @@ package nx.engine;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javafx.scene.image.Image;
 import nx.engine.tile.TileSet;
+import nx.util.Direction;
 
 public class Animation {
 	
@@ -46,6 +48,18 @@ public class Animation {
 			timeAcc += timeDifference;
 		}
 
+	}
+	
+	public void setDuration(double duration) {
+		this.duration = duration;
+	}
+	
+	public static Map<Direction, Animation> updatadeMapDuration(Map<Direction, Animation> animations,double duration) {
+		Map<Direction, Animation> toReturn = animations;
+		toReturn.values().forEach(e -> {
+			e.duration = duration;
+		});
+		return toReturn;
 	}
 
 }

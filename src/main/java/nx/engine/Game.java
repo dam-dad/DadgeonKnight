@@ -9,7 +9,7 @@ import nx.engine.scenes.WorldScene;
 import nx.engine.tile.Tile;
 import nx.engine.tile.TileSet;
 import nx.engine.world.Level;
-import nx.engine.world.entities.Orco;
+import nx.engine.world.entities.Orc;
 import nx.engine.world.entities.Player;
 
 public class Game extends AnimationTimer {
@@ -50,8 +50,10 @@ public class Game extends AnimationTimer {
 		canvas.setWidth(screenWidth);
 		canvas.setHeight(screenheigth);
 		
-		canvas.setOnKeyPressed(inputHandler);
-		canvas.setOnKeyReleased(inputHandler);
+		canvas.setOnKeyPressed(inputHandler.keyInputHandler);
+		canvas.setOnKeyReleased(inputHandler.keyInputHandler);
+		canvas.setOnMousePressed(inputHandler.mouseInputHandler);
+		canvas.setOnMouseReleased(inputHandler.mouseInputHandler);
 		canvas.setFocusTraversable(true);
 		canvas.requestFocus();
 
@@ -86,7 +88,7 @@ public class Game extends AnimationTimer {
 		}
 
 		if (timer >= 1000000000) {
-			System.out.println("FPS: " + drawCount);
+//			System.out.println("FPS: " + drawCount);
 			LastFrameRate = drawCount;
 			drawCount = 0;
 			timer = 0;
@@ -94,6 +96,7 @@ public class Game extends AnimationTimer {
 		
 		lastTime = currentNanoTime;
 	}
+	
 
 	private void checkCollisions() {
 		if (!(scene instanceof WorldScene worldScene))
@@ -103,49 +106,20 @@ public class Game extends AnimationTimer {
 		Level level = worldScene.getWorld().getLevel();
 		int levelWidth = level.getLayers().get(0).getLayerWidth();
 		int levelHeight = level.getLayers().get(0).getLayerHeight();
-
-		for (int i = 0; i < levelWidth; i++) {
-			for (int j = 0; j < levelHeight; j++) {
-				//Collision entity with player
-				System.out.println("xxx");
-				if (level.isSolid(i, j) && Tile.checkCollision(player, i, j)) {
+		
+		
+		//collisions player with tiles
+		for (int i = 0; i < levelHeight; i++) {
+			for (int j = 0; j < levelWidth; j++) {
+				if (level.isSolid(i,j) && Tile.checkCollision(player, i, j)) {
 					inputHandler.ClearActiveKeys();
-					player.pushOut(i, j, Player.PLAYER_FORCE);
+					player.pushOut(i,j, Player.PLAYER_FORCE,player.getCamera());
 				}
-				// TODO
-				//Collision entity with map
-//				if (level.isSolid(i, j) && Tile.checkCollision(worldScene.getWorld().getEntities().get(0), i, j)) {
-//					Orco orc = (Orco) worldScene.getWorld().getEntities().get(0);
-//					orc.pushOut(i, j, Player.PLAYER_FORCE);
-//					orc.changeDirection();
-//				}
 			}
 		}
-
-		// TODO
-//		//Collision entities with player
-//		if (entities.get(0).checkCollision(player)) {
-//			Orco orc = (Orco) entities.get(0);
-//			orc.stop();
-//
-//
-//			input.ClearActiveKeys();
-//			player.pushOut(entities.get(0), Player.PLAYER_FORCE);
-//
-////			orc.reset();
-//		}
 	}
 
 	public void update() {
-		// TODO: Adaptar esto (Rama de Alejandro)
-//		player.update(input.getActiveKeys(),deltaTime);
-//
-//
-//		entities.forEach(e -> {
-//			Orco a = (Orco) e;
-//			a.update(null,deltaTime);
-//		});
-
 		scene.update(deltaTime);
 	}
 	
