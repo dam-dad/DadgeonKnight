@@ -98,75 +98,79 @@ public class Orc extends MobEntity {
 
 	@Override
 	public void update(double deltaTime) {
-		if (this.mobHealth < 0) {
-			getWorld().removeEntity(this);
-			return;
-		}
-
 		playerOptional = getWorld().getEntities().stream().filter(entity -> entity instanceof Player)
 				.map(entity -> (Player) entity).findAny();
-
+		
 		if (playerOptional.isPresent()) {
-			double lastAnimationSpeed = ANIMATION_SPEED;
-
-			double distance = getDistanceToEntity(playerOptional.get());
-			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
-
-			if (distance < this.sizePlayerDetection) {
-				if (!state.equals("follow")) {
-					follow();
+			if(getPosX() + Game.tileSize > playerOptional.get().getCamera().getX() - Game.screenWidth &&
+					getPosX() - Game.tileSize < playerOptional.get().getCamera().getX() + Game.screenWidth &&
+					getPosY() + Game.tileSize > playerOptional.get().getCamera().getY() - Game.screenheigth &&
+					getPosY() - Game.tileSize  < playerOptional.get().getCamera().getY() + Game.screenheigth){
+				if (this.mobHealth < 0) {
+					getWorld().removeEntity(this);
+					return;
 				}
-			} else {
-				if (!state.equals("walk")) {
-					walk();
+				double lastAnimationSpeed = ANIMATION_SPEED;
+
+				double distance = getDistanceToEntity(playerOptional.get());
+				double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
+
+				if (distance < this.sizePlayerDetection) {
+					if (!state.equals("follow")) {
+						follow();
+					}
+				} else {
+					if (!state.equals("walk")) {
+						walk();
+					}
 				}
+
+				if (this.checkCollision(playerOptional.get())) {
+					float randomValue = 0.1f + (float) (Math.random() * (0.12f - 0.1f));
+					Entity.knockback(playerOptional.get(), this, randomValue, playerOptional.get().getCamera());
+					playerOptional.get().getAttacked(5);
+				}
+
+				switch (state) {
+				case "stop":
+					break;
+				case "walk":
+					time += deltaTime;
+
+					if (time > timeToChange) {
+						changeDirection();
+						time = 0;
+					}
+
+					if (direction == Direction.EAST) {
+						this.setPosX(this.getPosX() + realSpeed);
+					} else if (direction == Direction.WEST) {
+						this.setPosX(this.getPosX() - realSpeed);
+					} else if (direction == Direction.NORTH) {
+						this.setPosY(this.getPosY() - realSpeed);
+					} else if (direction == Direction.SOUTH) {
+						this.setPosY(this.getPosY() + realSpeed);
+					}
+					break;
+				case "follow":
+					Vector2D direction = getVector2DToEntity(playerOptional.get());
+					this.direction = getDirectionFromVector2D(direction);
+					animation = walk.get(this.direction);
+					direction = direction.scalarMultiply(realSpeed);
+
+					this.setPosX(this.getPosX() + direction.getX());
+					this.setPosY(this.getPosY() + direction.getY());
+					break;
+				default:
+					break;
+
+				}
+
+				if (lastAnimationSpeed != ANIMATION_SPEED)
+					Animation.updatadeMapDuration(walk, ANIMATION_SPEED);
+
+				animation.update(deltaTime);
 			}
-
-			if (this.checkCollision(playerOptional.get())) {
-				float randomValue = 0.1f + (float) (Math.random() * (0.12f - 0.1f));
-				Entity.knockback(playerOptional.get(), this, randomValue, playerOptional.get().getCamera());
-				playerOptional.get().getAttacked(5);
-			}
-
-			switch (state) {
-			case "stop":
-				break;
-			case "walk":
-				time += deltaTime;
-
-				if (time > timeToChange) {
-					changeDirection();
-					time = 0;
-				}
-
-				if (direction == Direction.EAST) {
-					this.setPosX(this.getPosX() + realSpeed);
-				} else if (direction == Direction.WEST) {
-					this.setPosX(this.getPosX() - realSpeed);
-				} else if (direction == Direction.NORTH) {
-					this.setPosY(this.getPosY() - realSpeed);
-				} else if (direction == Direction.SOUTH) {
-					this.setPosY(this.getPosY() + realSpeed);
-				}
-				break;
-			case "follow":
-				Vector2D direction = getVector2DToEntity(playerOptional.get());
-				this.direction = getDirectionFromVector2D(direction);
-				animation = walk.get(this.direction);
-				direction = direction.scalarMultiply(realSpeed);
-
-				this.setPosX(this.getPosX() + direction.getX());
-				this.setPosY(this.getPosY() + direction.getY());
-				break;
-			default:
-				break;
-
-			}
-
-			if (lastAnimationSpeed != ANIMATION_SPEED)
-				Animation.updatadeMapDuration(walk, ANIMATION_SPEED);
-
-			animation.update(deltaTime);
 		}
 	}
 }
