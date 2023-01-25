@@ -12,8 +12,8 @@ public class Wizard extends Entity {
 
     private double timeSinceLastAttack = 0.0;
 
-    public Wizard() {
-        super(10 * Game.tileSize, 12 * Game.tileSize, sprite);
+    public Wizard(int x,int y) {
+        super(x * Game.tileSize, y * Game.tileSize, sprite);
         height = Game.tileSize;
     }
 
@@ -26,13 +26,13 @@ public class Wizard extends Entity {
 
             getWorld().getEntities().stream()
                     .filter(entity -> {
-                        return Math.abs(entity.getPosX() - posX) < RADIUS * Game.tileSize && Math.abs(entity.getPosY() - posY) < RADIUS * Game.tileSize && entity instanceof Player;
+                        return Math.abs(entity.getPosX() - getPosX()) < RADIUS * Game.tileSize && Math.abs(entity.getPosY() - getPosY()) < RADIUS * Game.tileSize && entity instanceof Player;
                     })
                     .map(Player.class::cast)
                     .forEach(player -> {
-                        Vector2f direction = new Vector2f((float) (player.getPosX() - posX), (float) (player.getPosY() - posY));
+                        Vector2f direction = new Vector2f((float) (player.getPosX() - getPosX()), (float) (player.getPosY() - getPosY()));
 
-                        getWorld().addEntity(new Fireball(posX, posY, direction));
+                        getWorld().addEntity(new Fireball(getPosX(), getPosY(), direction));
                     });
         }
     }

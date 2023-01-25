@@ -23,8 +23,8 @@ public class Particle extends Entity {
 
     @Override
     public void update(double delta) {
-        posX += direction.x * delta * speed;
-        posY += direction.y * delta * speed;
+        setPosX(getPosX() + direction.x * delta * speed);
+        setPosY(getPosY() + direction.y * delta * speed);
 
         timeAlive += delta;
     }

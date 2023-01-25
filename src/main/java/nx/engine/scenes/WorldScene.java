@@ -7,9 +7,8 @@ import nx.engine.Camera;
 import nx.engine.Game;
 import nx.engine.particles.ParticleManager;
 import nx.engine.world.World;
-import nx.engine.world.entities.Orco;
+import nx.engine.world.entities.Orc;
 import nx.engine.world.entities.Player;
-import nx.engine.world.entities.Skeleton;
 import nx.engine.world.entities.Wizard;
 
 public class WorldScene implements Scene {
@@ -18,9 +17,9 @@ public class WorldScene implements Scene {
 
     private final Player player;
     private final Wizard wizard;
-    private final Skeleton e;
+    private final Orc orco;
+    
     private final ParticleManager particleManager;
-    private final Orco orco;
 
     private final Camera camera;
 
@@ -31,14 +30,13 @@ public class WorldScene implements Scene {
         // TODO: Custom particle image
         this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
 
-        this.player = new Player(10 * Game.tileSize, 10 * Game.tileSize,4, camera);
-        this.wizard = new Wizard();
-        this.e = new Skeleton(1 * Game.tileSize, 1 * Game.tileSize, 0, player);
-        this.orco = new Orco(14 * Game.tileSize, 10 * Game.tileSize, 1, player);
+        this.player = new Player(10, 10,4, camera);
+        this.wizard = new Wizard(10,12);
+        this.orco = new Orc(14, 10, 0.2,1.5);
 
         world.addEntity(player);
-//        world.addEntity(e);
-        
+        world.addEntity(wizard);
+        world.addEntity(orco);
     }
 
     @Override
@@ -55,7 +53,7 @@ public class WorldScene implements Scene {
 
         gc.setFont(font);
         gc.setFill(Color.WHITESMOKE);
-        gc.fillText(String.format("Vida: %d", player.getHealth()), 0 + 10, Game.screenheigth - 10);
+        gc.fillText(String.format("Vida: %d", player.getHealth()),10, Game.screenheigth - 10);
     }
 
     public World getWorld() {
