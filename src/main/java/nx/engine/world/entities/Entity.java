@@ -10,7 +10,7 @@ import nx.util.Direction;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 public abstract class Entity {
-	
+
 	protected double posX, posY;
 	protected double width, height;
 	protected Image image;
@@ -44,26 +44,31 @@ public abstract class Entity {
 
 	protected void drawInternal(GraphicsContext gc, Camera camera, double scale) {
 		if (image != null)
-			gc.drawImage(image, Game.SCREEN_CENTER_X - camera.getX() + posX, Game.SCREEN_CENTER_Y - camera.getY() + posY, Game.tileSize * scale, Game.tileSize * scale);
+			gc.drawImage(image, Game.SCREEN_CENTER_X - camera.getX() + posX,
+					Game.SCREEN_CENTER_Y - camera.getY() + posY, Game.tileSize * scale, Game.tileSize * scale);
 	}
 
 	public double getDistanceToEntity(Entity e) {
-		return Math.sqrt(Math.pow((e.posX + (e.width/2)) - (this.posX + (this.width/2)), 2) + Math.pow((e.posY + (e.height/2)) - (this.posY + (this.height/1.5)), 2));
+		return Math.sqrt(Math.pow((e.posX + (e.width / 2)) - (this.posX + (this.width / 2)), 2)
+				+ Math.pow((e.posY + (e.height / 2)) - (this.posY + (this.height / 1.5)), 2));
 	}
 
 	public double getDistanceToTile(int x, int y) {
-		return Math.sqrt(Math.pow((x + (Game.tileSize/2)) - (this.posX + (this.width/2)), 2) + Math.pow((y + (Game.tileSize/2)) - (this.posY + (this.height/1.5)), 2));
+		return Math.sqrt(Math.pow((x + (Game.tileSize / 2)) - (this.posX + (this.width / 2)), 2)
+				+ Math.pow((y + (Game.tileSize / 2)) - (this.posY + (this.height / 1.5)), 2));
 	}
 
 	public Vector2D getVector2DToEntity(Entity e) {
-		Vector2D direction = new Vector2D((e.posX + (e.width/2)) - (this.posX + (this.width/2)), (e.posY + (e.height/2)) - (this.posY + (this.height/1.5)));
+		Vector2D direction = new Vector2D((e.posX + (e.width / 2)) - (this.posX + (this.width / 2)),
+				(e.posY + (e.height / 2)) - (this.posY + (this.height / 1.5)));
 		direction = direction.normalize();
 
 		return direction;
 	}
 
 	public Vector2D getVector2DToTile(int x, int y) {
-		Vector2D direction = new Vector2D((x + (Game.tileSize/2)) - (this.posX + (this.width/2)), (y + (Game.tileSize/2)) - (this.posY + (this.height/1.5)));
+		Vector2D direction = new Vector2D((x + (Game.tileSize / 2)) - (this.posX + (this.width / 2)),
+				(y + (Game.tileSize / 2)) - (this.posY + (this.height / 1.5)));
 		direction = direction.normalize();
 
 		return direction;
@@ -71,11 +76,11 @@ public abstract class Entity {
 
 	public Direction getDirectionFromVector2D(Vector2D direction) {
 		double angle = Math.atan2(direction.getY(), direction.getX());
-		if (angle >= -Math.PI/4 && angle < Math.PI/4) {
+		if (angle >= -Math.PI / 4 && angle < Math.PI / 4) {
 			return Direction.EAST;
-		} else if (angle >= Math.PI/4 && angle < 3*Math.PI/4) {
+		} else if (angle >= Math.PI / 4 && angle < 3 * Math.PI / 4) {
 			return Direction.SOUTH;
-		} else if (angle >= 3*Math.PI/4 || angle < -3*Math.PI/4) {
+		} else if (angle >= 3 * Math.PI / 4 || angle < -3 * Math.PI / 4) {
 			return Direction.WEST;
 		} else {
 			return Direction.NORTH;
@@ -86,22 +91,22 @@ public abstract class Entity {
 		double distance = getDistanceToEntity(collition);
 
 		Vector2D collisionNormal = getVector2DToEntity(collition);
-		Vector2D movement = new Vector2D(0,0);
+		Vector2D movement = new Vector2D(0, 0);
 		switch (getDirectionFromVector2D(collisionNormal.scalarMultiply(-1))) {
-			case WEST:
-				movement = new Vector2D(-1,0);
-				break;
-			case EAST:
-				movement = new Vector2D(1,0);
-				break;
-			case NORTH:
-				movement = new Vector2D(0,-1);
-				break;
-			case SOUTH:
-				movement = new Vector2D(0,1);
-				break;
-			default:
-				break;
+		case WEST:
+			movement = new Vector2D(-1, 0);
+			break;
+		case EAST:
+			movement = new Vector2D(1, 0);
+			break;
+		case NORTH:
+			movement = new Vector2D(0, -1);
+			break;
+		case SOUTH:
+			movement = new Vector2D(0, 1);
+			break;
+		default:
+			break;
 		}
 		movement = movement.scalarMultiply(distance).scalarMultiply(force);
 
@@ -115,22 +120,22 @@ public abstract class Entity {
 		double distance = getDistanceToTile(x * Game.tileSize, y * Game.tileSize);
 
 		Vector2D collisionNormal = getVector2DToTile(x * Game.tileSize, y * Game.tileSize);
-		Vector2D movement = new Vector2D(0,0);
+		Vector2D movement = new Vector2D(0, 0);
 		switch (getDirectionFromVector2D(collisionNormal.scalarMultiply(-1))) {
-			case WEST:
-				movement = new Vector2D(-1,0);
-				break;
-			case EAST:
-				movement = new Vector2D(1,0);
-				break;
-			case NORTH:
-				movement = new Vector2D(0,-1);
-				break;
-			case SOUTH:
-				movement = new Vector2D(0,1);
-				break;
-			default:
-				break;
+		case WEST:
+			movement = new Vector2D(-1, 0);
+			break;
+		case EAST:
+			movement = new Vector2D(1, 0);
+			break;
+		case NORTH:
+			movement = new Vector2D(0, -1);
+			break;
+		case SOUTH:
+			movement = new Vector2D(0, 1);
+			break;
+		default:
+			break;
 		}
 		movement = movement.scalarMultiply(distance).scalarMultiply(force);
 
