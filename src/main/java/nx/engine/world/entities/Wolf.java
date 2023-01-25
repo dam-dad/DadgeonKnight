@@ -6,9 +6,7 @@ import java.util.Random;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import javafx.scene.canvas.GraphicsContext;
 import nx.engine.Animation;
-import nx.engine.Camera;
 import nx.engine.Game;
 import nx.engine.world.MobEntity;
 import nx.util.Direction;
@@ -17,7 +15,10 @@ public class Wolf extends MobEntity {
 
 	String walkTileSet = "/assets/textures/wolf/wolf.png";
 
-	public double ANIMATION_SPEED = 1.5;
+	public static final int tileSizeX = 48;
+	public static final int tileSizeY = 64;
+
+	public double ANIMATION_SPEED = 1;
 
 	private double time = 0.0;
 	private final double timeToChange = 5.0;
@@ -29,15 +30,15 @@ public class Wolf extends MobEntity {
 	@SuppressWarnings("serial")
 	private final Map<Direction, Animation> walk = new HashMap<>() {
 		{
-			put(Direction.SOUTH, new Animation(ANIMATION_SPEED, walkTileSet, 2, 48, 64));
-			put(Direction.EAST, new Animation(ANIMATION_SPEED, walkTileSet, 1, 48, 64));
-			put(Direction.WEST, new Animation(ANIMATION_SPEED, walkTileSet, 3, 48, 64));
-			put(Direction.NORTH, new Animation(ANIMATION_SPEED, walkTileSet, 0, 48, 64));
+			put(Direction.SOUTH, new Animation(ANIMATION_SPEED, walkTileSet, 2, tileSizeX, tileSizeY));
+			put(Direction.EAST, new Animation(ANIMATION_SPEED, walkTileSet, 1, tileSizeX, tileSizeY));
+			put(Direction.WEST, new Animation(ANIMATION_SPEED, walkTileSet, 3, tileSizeX, tileSizeY));
+			put(Direction.NORTH, new Animation(ANIMATION_SPEED, walkTileSet, 0, tileSizeX, tileSizeY));
 		}
 	};
 
 	public Wolf(double posX, double posY, double speed, Player player) {
-		super(posX, posY);
+		super(posX * Game.tileSize, posY * Game.tileSize);
 
 		this.speed = speed;
 		initialSpeed = speed;
@@ -50,6 +51,7 @@ public class Wolf extends MobEntity {
 		direction = Direction.values()[2];
 
 		this.animation = walk.get(direction);
+		this.sizePlayerDetection = 150;
 
 	}
 
@@ -74,17 +76,15 @@ public class Wolf extends MobEntity {
 
 		double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
 
-		if (!state.equals("stop")) {
-			if (distance > this.sizePlayerDetection) {
-				if (!state.equals("walk")) {
-					state = "walk";
-					this.speed = initialSpeed;
-				}
-			} else {
-				if (!state.equals("follow")) {
-					state = "follow";
-					this.speed = initialSpeed * 2;
-				}
+		if (distance > this.sizePlayerDetection) {
+			if (!state.equals("walk")) {
+				state = "walk";
+				this.speed = initialSpeed;
+			}
+		} else {
+			if (!state.equals("follow")) {
+				state = "follow";
+				this.speed = initialSpeed * 2;
 			}
 		}
 
@@ -100,13 +100,13 @@ public class Wolf extends MobEntity {
 			}
 
 			if (direction == Direction.EAST) {
-				this.posX += realSpeed;
+				this.setPosX(this.getPosX() + realSpeed);
 			} else if (direction == Direction.WEST) {
-				this.posX -= realSpeed;
+				this.setPosX(this.getPosX() - realSpeed);
 			} else if (direction == Direction.NORTH) {
-				this.posY -= realSpeed;
+				this.setPosY(this.getPosY() - realSpeed);
 			} else if (direction == Direction.SOUTH) {
-				this.posY += realSpeed;
+				this.setPosY(this.getPosY() + realSpeed);
 			}
 			break;
 		case "follow":
@@ -115,8 +115,8 @@ public class Wolf extends MobEntity {
 			animation = walk.get(this.direction);
 			direction = direction.scalarMultiply(realSpeed);
 
-			this.posX += direction.getX();
-			this.posY += direction.getY();
+			this.setPosX(this.getPosX() + direction.getX());
+			this.setPosY(this.getPosY() + direction.getY());
 			break;
 		default:
 			break;
@@ -126,10 +126,10 @@ public class Wolf extends MobEntity {
 		animation.update(deltaTime);
 	}
 
-	@Override
-	public void draw(GraphicsContext gc, Camera camera) {
-		gc.drawImage(animation.getCurrentFrame(), Game.SCREEN_CENTER_X - camera.getX() + posX,
-				Game.SCREEN_CENTER_Y - camera.getY() + posY, sizeTextureX * scale, sizeTextureY * scale);
-	}
+//	@Override
+//	public void draw(GraphicsContext gc, Camera camera) {
+//		gc.drawImage(animation.getCurrentFrame(), Game.SCREEN_CENTER_X - camera.getX() + getPosX(),
+//				Game.SCREEN_CENTER_Y - camera.getY() + getPosY(), sizeTextureX * scale, sizeTextureY * scale);
+//	}
 
 }

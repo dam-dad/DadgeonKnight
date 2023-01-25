@@ -10,58 +10,63 @@ import nx.engine.world.World;
 import nx.engine.world.entities.Orc;
 import nx.engine.world.entities.Player;
 import nx.engine.world.entities.Wizard;
+import nx.engine.world.entities.Wolf;
 
 public class WorldScene implements Scene {
 
-    private final World world;
+	private final World world;
 
-    private final Player player;
-    private final Wizard wizard;
-    private final Orc orco;
-    
-    private final ParticleManager particleManager;
+	private final Player player;
+	private final Wizard wizard;
+	private final Orc orco;
+	private final Wolf wolf;
 
-    private final Camera camera;
+	private final ParticleManager particleManager;
 
-    public WorldScene() {
-        this.world = new World("/assets/levels/dungeon/DungeonLevel_Mapa.csv", "/assets/levels/dungeon/DungeonLevel_Collitions.csv");
-        this.camera = new Camera();
+	private final Camera camera;
 
-        // TODO: Custom particle image
-        this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
+	public WorldScene() {
+		this.world = new World("/assets/levels/dungeon/DungeonLevel_Mapa.csv",
+				"/assets/levels/dungeon/DungeonLevel_Collitions.csv");
+		this.camera = new Camera();
 
-        this.player = new Player(10, 10,4, camera);
-        this.wizard = new Wizard(10,12);
-        this.orco = new Orc(14, 10, 0.2,1.5);
+		// TODO: Custom particle image
+		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
 
-        world.addEntity(player);
-        world.addEntity(wizard);
-        world.addEntity(orco);
-    }
+		this.player = new Player(10, 10, 4, camera);
+		this.wizard = new Wizard(10, 12);
+		this.orco = new Orc(14, 10, 0.2, 1.5);
+		this.wolf = new Wolf(12, 12, 2, player);
 
-    @Override
-    public void update(double delta) {
-        world.update(delta);
-        particleManager.update(delta);
-    }
+		world.addEntity(player);
+//        world.addEntity(wizard);
+//        world.addEntity(orco);
+		world.addEntity(wolf);
+	}
 
-    Font font = new Font(50);
+	@Override
+	public void update(double delta) {
+		world.update(delta);
+		particleManager.update(delta);
+	}
 
-    @Override
-    public void draw(GraphicsContext gc) {
-        world.draw(gc, camera);
+	Font font = new Font(50);
 
-        gc.setFont(font);
-        gc.setFill(Color.WHITESMOKE);
-        gc.fillText(String.format("Vida: %d", player.getHealth()),10, Game.screenheigth - 10);
-    }
+	@Override
+	public void draw(GraphicsContext gc) {
+		world.draw(gc, camera);
 
-    public World getWorld() {
-        return world;
-    }
+		gc.setFont(font);
+		gc.setFill(Color.WHITESMOKE);
+		gc.fillText(String.format("Vida: %d", player.getHealth()), 10, Game.screenheigth - 10);
+	}
 
-    public Player getPlayer() {
-        return player;
-    }
+	public World getWorld() {
+		return world;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
 
 }
