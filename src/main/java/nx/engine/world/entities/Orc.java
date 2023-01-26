@@ -127,6 +127,7 @@ public class Orc extends MobEntity {
 
 				if (this.checkCollision(playerOptional.get())) {
 					float randomValue = 0.1f + (float) (Math.random() * (0.12f - 0.1f));
+					Game.inputHandler.ClearActiveKeys();
 					Entity.knockback(playerOptional.get(), this, randomValue, playerOptional.get().getCamera());
 					playerOptional.get().getAttacked(5);
 				}

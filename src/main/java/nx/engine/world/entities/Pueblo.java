@@ -17,8 +17,7 @@ public class Pueblo extends Entity {
 				new Image("/assets/textures/levels/WorldTiles.png"),
 				101,
 				Game.tileSize,
-				Game.tileSize,
-				0);
+				Game.tileSize);
 	}
 
 	@Override

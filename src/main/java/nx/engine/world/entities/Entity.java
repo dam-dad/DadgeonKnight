@@ -32,6 +32,13 @@ public abstract class Entity {
 		this.setPosY(posY);
 		this.image = image;
 	}
+	public Entity(Image image,double posX, double posY,double width,double height) {
+		this.setPosX(posX);
+		this.setPosY(posY);
+		this.image = image;
+		this.width = width;
+		this.height = height;
+	}
 
 	public abstract void update(double deltaTime);
 
@@ -57,6 +64,10 @@ public abstract class Entity {
 		return collide;
 	}
 
+	protected void drawInternal(GraphicsContext gc, Camera camera, double scaleX,double scaleY) {
+		if (image != null)
+			gc.drawImage(image, Game.SCREEN_CENTER_X - camera.getX() + getPosX(), Game.SCREEN_CENTER_Y - camera.getY() + getPosY(),scaleX,scaleY);
+	}
 	protected void drawInternal(GraphicsContext gc, Camera camera, double scale) {
 		if (image != null)
 			gc.drawImage(image, Game.SCREEN_CENTER_X - camera.getX() + getPosX(), Game.SCREEN_CENTER_Y - camera.getY() + getPosY(), Game.tileSize * scale, Game.tileSize * scale);

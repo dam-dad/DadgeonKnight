@@ -61,7 +61,7 @@ public class Game extends AnimationTimer {
 	}
 	
 	public void init() {
-		TileSet.loadTiles("/assets/textures/levels/DungeonTiles.png");
+		TileSet.loadTiles(TileSet.DANGEON_TILES);
 
 		scene = new WorldScene();
 	}

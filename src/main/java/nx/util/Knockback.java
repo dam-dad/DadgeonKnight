@@ -93,7 +93,8 @@ public class Knockback extends Thread {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			camera.setPosition(player.getPosX(), player.getPosY());
+			if(camera != null)
+				camera.setPosition(player.getPosX(), player.getPosY());
 			force -= friction;
 		}
 

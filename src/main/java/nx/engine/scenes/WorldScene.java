@@ -1,14 +1,18 @@
 package nx.engine.scenes;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import nx.engine.Camera;
 import nx.engine.Game;
 import nx.engine.particles.ParticleManager;
+import nx.engine.tile.TileSet;
 import nx.engine.world.World;
 import nx.engine.world.entities.Orc;
+import nx.engine.world.entities.Pillar;
 import nx.engine.world.entities.Player;
+import nx.engine.world.entities.Rock;
 import nx.engine.world.entities.Wizard;
 import nx.engine.world.entities.Wolf;
 
@@ -22,6 +26,8 @@ public class WorldScene implements Scene {
 	private final Orc orco;
 	private final Wolf wolf;
 //	private final Skeleton skeleton;
+	private final Pillar pillar;
+	private final Rock rock;
 
 	
 	private final ParticleManager particleManager;
@@ -42,10 +48,14 @@ public class WorldScene implements Scene {
 		this.wolf = new Wolf(12, 12, 2, player);
 		//TODO skeleton throw exception.
 //		this.skeleton= new Skeleton(5, 5, 1, player);
+		pillar = new Pillar(new Image(TileSet.DANGEON_TILES), 8, 8);
+		rock = new Rock(new Image(TileSet.DANGEON_TILES),10,8,Game.tileSize,Game.tileSize);
 
 		world.addEntity(player);
+		world.addEntity(pillar);
+		world.addEntity(rock);
 //      world.addEntity(wizard);
-      world.addEntity(orco);
+//		world.addEntity(orco);
 //		world.addEntity(wolf);
 //		world.addEntity(skeleton);
 	}

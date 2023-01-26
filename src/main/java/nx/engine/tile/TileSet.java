@@ -9,6 +9,8 @@ import nx.engine.Game;
 
 public class TileSet {
 	
+	public static final String  DANGEON_TILES= "/assets/textures/levels/DungeonTiles.png";
+	
 	private Image set;
 	public static Image[] tiles;
 	
@@ -21,11 +23,10 @@ public class TileSet {
 		TileSet.tiles = loadTiles(new Image(image),0);
 	}
 	
-	public static Image loadImageFromTileSet(Image tileSet,int id,int width,int height,int spacing) {
-		
+	public static Image loadImageFromTileSet(Image tileSet,int id,int width,int height) {
 		int n = 0;
-		for(int i = 0; i < tileSet.getWidth() ; i+= Game.tileSize + spacing) {
-			for(int j = 0; j < tileSet.getHeight() ; j+= Game.tileSize + spacing) {
+		for(int i = 0; i < tileSet.getWidth() ; i+= Game.tileSize) {
+			for(int j = 0; j < tileSet.getHeight() ; j+= Game.tileSize) {
 				if(n == id) {
 					return new WritableImage(tileSet.getPixelReader(), j, i, width, height);
 				}
