@@ -14,6 +14,9 @@ public class PickableEntity extends Entity {
 	public PickableEntity(Image image, double x, double y,double width,double height) {
 		super(image,x * Game.tileSize,y * Game.tileSize,width,height);
 	}
+	public PickableEntity() {
+		super(null,0,0,0,0);
+	}
 
 	@Override
 	public void update(double deltaTime) {
@@ -36,6 +39,10 @@ public class PickableEntity extends Entity {
 				getPosY() - Game.tileSize  < camera.getY() + Game.screenheigth) {
 			drawInternal(gc, camera,width,height);
 		}
+	}
+	
+	public void drawUI(GraphicsContext gc) {
+		gc.drawImage(image,0,0,width,height);
 	}
 
 	public boolean canBeSelected() {

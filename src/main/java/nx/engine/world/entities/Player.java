@@ -110,6 +110,12 @@ public class Player extends Entity {
 			movement = movement.add(new Vector2D(0, 1));
 			this.direction = Direction.SOUTH;
 		}
+		if(activeKeys.contains(KeyCode.E)) {
+			nextItem();
+		}
+		if(activeKeys.contains(KeyCode.Q)) {
+			previousItem();
+		}
 
 		if (movement.getNorm() != 0) {
 			movement = movement.normalize();
@@ -133,7 +139,7 @@ public class Player extends Entity {
 
 		animation.update(deltaTime);
 		
-		System.out.println(getInventory());
+		System.out.println(selectionInventory);
 
 		timeSinceLastHit += deltaTime;
 	}
@@ -184,6 +190,16 @@ public class Player extends Entity {
 		return direction;
 	}
 	public Entity getItemSelected() {
-		return this.getInventory().get(selectionInventory);
+		return getInventory().size() > 0 ? this.getInventory().get(selectionInventory) : new PickableEntity();
+	}
+	public void nextItem() {
+		if((selectionInventory + 1) >= getInventory().size())
+			return;
+		selectionInventory++;
+	}
+	public void previousItem() {
+		if(selectionInventory <=  0)
+			return;
+		selectionInventory--;
 	}
 }

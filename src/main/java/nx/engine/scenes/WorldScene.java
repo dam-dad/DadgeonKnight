@@ -10,7 +10,9 @@ import nx.engine.particles.ParticleManager;
 import nx.engine.tile.TileSet;
 import nx.engine.tile.TileSetManager;
 import nx.engine.world.World;
+import nx.engine.world.entities.Armor;
 import nx.engine.world.entities.Orc;
+import nx.engine.world.entities.PickableEntity;
 import nx.engine.world.entities.Pillar;
 import nx.engine.world.entities.Player;
 import nx.engine.world.entities.Rock;
@@ -25,7 +27,7 @@ public class WorldScene implements Scene {
 	//Entities
 	private final Player player;
 	private final Sword sword;
-	private final Orc orc;
+	private final Armor armor;
 
 	
 	private final ParticleManager particleManager;
@@ -41,11 +43,11 @@ public class WorldScene implements Scene {
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
 
 		this.player = new Player(10, 10, 4, camera);
-		this.orc = new Orc(12, 10, 0.1, 1);
 		this.sword = new Sword(TileSet.ITEMS_TILES.getSet(),10, 12, Game.tileSize, Game.tileSize);
+		this.armor = new Armor(TileSet.ITEMS_TILES.getSet(), 10, 14, Game.tileSize, Game.tileSize);
 		world.addEntity(player);
 		world.addEntity(sword);
-//		world.addEntity(orc);
+		world.addEntity(armor);
 	}
 
 	@Override
@@ -63,6 +65,10 @@ public class WorldScene implements Scene {
 		gc.setFont(font);
 		gc.setFill(Color.WHITESMOKE);
 		gc.fillText(String.format("Vida: %d", player.getHealth()), 10, Game.screenheigth - 10);
+		
+		PickableEntity e = (PickableEntity) player.getItemSelected();
+		
+		e.drawUI(gc);
 	}
 
 	public World getWorld() {
