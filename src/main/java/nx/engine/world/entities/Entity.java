@@ -55,6 +55,10 @@ public abstract class Entity {
 		this.setPosX(this.getPosX() + x);
 		this.setPosY(this.getPosY() + y);
 	}
+	protected void setPosition(double x, double y) {
+		this.setPosX(x);
+		this.setPosY(y);
+	}
 	public boolean checkCollision(Entity entity) {
 		if (entity.getCollisionShape() == null)
 			return false;

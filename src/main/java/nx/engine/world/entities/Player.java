@@ -1,6 +1,6 @@
 package nx.engine.world.entities;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +13,9 @@ import nx.engine.Camera;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import nx.engine.Animation;
 import nx.engine.Game;
-import nx.engine.tile.Tile;
 import nx.util.Direction;
 
 public class Player extends Entity {
@@ -47,8 +45,8 @@ public class Player extends Entity {
 	private KeyCode[] wasdKeys = new KeyCode[] {KeyCode.A,KeyCode.D,KeyCode.W,KeyCode.S};
 	private KeyCode[] arrowsKeys = new KeyCode[] {KeyCode.LEFT,KeyCode.RIGHT,KeyCode.UP,KeyCode.DOWN};
 	
-	private List<Entity> inventory;
-	
+	private List<Entity> inventory = new ArrayList<>();
+
 	private final int speed;
 	
 	public int screenX;
@@ -132,6 +130,8 @@ public class Player extends Entity {
 		}
 
 		animation.update(deltaTime);
+		
+//		System.out.println(inventory);
 
 		timeSinceLastHit += deltaTime;
 	}
@@ -170,5 +170,11 @@ public class Player extends Entity {
 	
 	public Camera getCamera() {
 		return camera;
+	}
+	public List<Entity> getInventory() {
+		return inventory;
+	}
+	public Direction getDirection() {
+		return direction;
 	}
 }

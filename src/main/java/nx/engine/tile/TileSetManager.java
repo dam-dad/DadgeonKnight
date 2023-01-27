@@ -15,8 +15,8 @@ public class TileSetManager {
 	
 	public static Image loadImageFromTileSet(Image tileSet,int id,int width,int height) {
 		int n = 0;
-		for(int i = 0; i < tileSet.getWidth() ; i+= width) {
-			for(int j = 0; j < tileSet.getHeight() ; j+= height) {
+		for(int i = 0; i < tileSet.getHeight() ; i+= height) {
+			for(int j = 0; j < tileSet.getWidth() ; j+= width) {
 				if(n == id) {
 					return new WritableImage(tileSet.getPixelReader(), j, i, width, height);
 				}
@@ -31,8 +31,8 @@ public class TileSetManager {
 		
 		ArrayList<Image> tiles = new ArrayList<>();
 		
-		for(int i = 0; i < tileSet.getWidth() ; i+= Game.tileSize + spacing) {
-			for(int j = 0; j < tileSet.getHeight() ; j+= Game.tileSize + spacing) {
+		for(int i = 0; i < tileSet.getHeight() ; i+= Game.tileSize + spacing) {
+			for(int j = 0; j < tileSet.getWidth() ; j+= Game.tileSize + spacing) {
 				WritableImage croppedImage = new WritableImage(tileSet.getPixelReader(), j, i, Game.tileSize, Game.tileSize);
 				tiles.add(croppedImage);
 			}

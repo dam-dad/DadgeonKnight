@@ -158,9 +158,8 @@ public class Orc extends MobEntity {
 					this.direction = getDirectionFromVector2D(direction);
 					animation = walk.get(this.direction);
 					direction = direction.scalarMultiply(realSpeed);
-
-					this.setPosX(this.getPosX() + direction.getX());
-					this.setPosY(this.getPosY() + direction.getY());
+					
+					move(direction);
 					break;
 				default:
 					break;

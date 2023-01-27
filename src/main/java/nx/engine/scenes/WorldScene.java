@@ -25,6 +25,7 @@ public class WorldScene implements Scene {
 	//Entities
 	private final Player player;
 	private final Sword sword;
+	private final Orc orc;
 
 	
 	private final ParticleManager particleManager;
@@ -40,9 +41,11 @@ public class WorldScene implements Scene {
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
 
 		this.player = new Player(10, 10, 4, camera);
+		this.orc = new Orc(12, 10, 0.1, 1);
 		this.sword = new Sword(TileSet.ITEMS_TILES.getSet(),10, 12, Game.tileSize, Game.tileSize);
 		world.addEntity(player);
 		world.addEntity(sword);
+//		world.addEntity(orc);
 	}
 
 	@Override
