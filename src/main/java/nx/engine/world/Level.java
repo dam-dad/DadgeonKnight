@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import nx.engine.Camera;
 import nx.engine.Game;
 import nx.engine.tile.TileSet;
+import nx.engine.tile.TileSetManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class Level {
                 //Map base
 
             	for(int i = 0; i < layers.size(); i++) {
-            		gc.drawImage(TileSet.tiles[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
+            		gc.drawImage(TileSet.DANGEON_TILES.getTiles()[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
             	}
             	
 //            	displayCollisions(gc,camera,worldCol,worldRow,worldX,worldY);

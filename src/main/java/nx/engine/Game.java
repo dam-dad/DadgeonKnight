@@ -8,6 +8,7 @@ import nx.engine.scenes.Scene;
 import nx.engine.scenes.WorldScene;
 import nx.engine.tile.Tile;
 import nx.engine.tile.TileSet;
+import nx.engine.tile.TileSetManager;
 import nx.engine.world.Level;
 import nx.engine.world.entities.Orc;
 import nx.engine.world.entities.Player;
@@ -61,8 +62,7 @@ public class Game extends AnimationTimer {
 	}
 	
 	public void init() {
-		TileSet.loadTiles(TileSet.DANGEON_TILES);
-
+		
 		scene = new WorldScene();
 	}
 	

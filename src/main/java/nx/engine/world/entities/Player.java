@@ -47,6 +47,7 @@ public class Player extends Entity {
 	private KeyCode[] wasdKeys = new KeyCode[] {KeyCode.A,KeyCode.D,KeyCode.W,KeyCode.S};
 	private KeyCode[] arrowsKeys = new KeyCode[] {KeyCode.LEFT,KeyCode.RIGHT,KeyCode.UP,KeyCode.DOWN};
 	
+	private List<Entity> inventory;
 	
 	private final int speed;
 	

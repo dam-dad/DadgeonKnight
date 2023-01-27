@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javafx.scene.image.Image;
-import nx.engine.tile.TileSet;
+import nx.engine.tile.TileSetManager;
 import nx.util.Direction;
 
 public class Animation {
@@ -17,7 +17,7 @@ public class Animation {
 	
 	public Animation(double duration,String animationSet,int line,int tileSizeX,int tileSizeY) {
 		this.duration = duration;
-		frames = Arrays.asList(TileSet.loadLineOfTiles(new Image(animationSet),line,tileSizeX,tileSizeY));
+		frames = Arrays.asList(TileSetManager.loadLineOfTiles(new Image(animationSet),line,tileSizeX,tileSizeY));
 	}
 	public Animation(double duration,String animationSet,int line,int tileSizeX,int tileSizeY,boolean mirror) {
 		//TODO mirrored animation.

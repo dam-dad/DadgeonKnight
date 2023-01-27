@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import nx.engine.Camera;
 import nx.engine.Game;
-import nx.engine.tile.TileSet;
+import nx.engine.tile.TileSetManager;
 
 @Deprecated
 public class Pueblo extends Entity {
@@ -13,7 +13,7 @@ public class Pueblo extends Entity {
 		this.setPosX(posX);
 		this.setPosY(posY);
 		this.image =
-		TileSet.loadImageFromTileSet(
+		TileSetManager.loadImageFromTileSet(
 				new Image("/assets/textures/levels/WorldTiles.png"),
 				101,
 				Game.tileSize,
