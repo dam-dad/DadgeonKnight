@@ -43,8 +43,6 @@ public class TileSetManager {
 	
 	public static Image[] loadTiles(Image tileSet,int witdh,int heigh) {
 		
-		System.out.println(tileSet.getWidth() + " " + tileSet.getHeight());
-		
 		ArrayList<Image> tiles = new ArrayList<>();
 		
 		for(int i = 0; i < tileSet.getHeight() ; i+= heigh) {

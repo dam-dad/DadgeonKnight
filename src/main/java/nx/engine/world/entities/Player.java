@@ -1,6 +1,7 @@
 package nx.engine.world.entities;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class Player extends Entity {
 	private KeyCode[] wasdKeys = new KeyCode[] {KeyCode.A,KeyCode.D,KeyCode.W,KeyCode.S};
 	private KeyCode[] arrowsKeys = new KeyCode[] {KeyCode.LEFT,KeyCode.RIGHT,KeyCode.UP,KeyCode.DOWN};
 	
+	private int selectionInventory = 0;
 	private List<Entity> inventory = new ArrayList<>();
 
 	private final int speed;
@@ -131,7 +133,7 @@ public class Player extends Entity {
 
 		animation.update(deltaTime);
 		
-//		System.out.println(inventory);
+		System.out.println(getInventory());
 
 		timeSinceLastHit += deltaTime;
 	}
@@ -174,7 +176,14 @@ public class Player extends Entity {
 	public List<Entity> getInventory() {
 		return inventory;
 	}
+	public void AddEntityToInventory(PickableEntity e) {
+		getInventory().add(e);
+//		getInventory().stream().sorted(Comparator.comparingInt(e::compareTo));
+	}
 	public Direction getDirection() {
 		return direction;
+	}
+	public Entity getItemSelected() {
+		return this.getInventory().get(selectionInventory);
 	}
 }

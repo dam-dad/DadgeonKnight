@@ -77,4 +77,5 @@ public class Skeleton extends MobEntity {
 		
 		esqueletosFaciles.forEach(e -> e.getAttacked(10));
 	}
+	
 }
