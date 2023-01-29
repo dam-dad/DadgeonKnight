@@ -27,7 +27,7 @@ public class WorldScene implements Scene {
 	//Entities
 	private final Player player;
 	private final Sword sword;
-	private final Armor armor;
+	private final Orc orc;
 
 	
 	private final ParticleManager particleManager;
@@ -44,10 +44,12 @@ public class WorldScene implements Scene {
 
 		this.player = new Player(10, 10, 4, camera);
 		this.sword = new Sword(TileSet.ITEMS_TILES.getSet(),10, 12, Game.tileSize, Game.tileSize);
-		this.armor = new Armor(TileSet.ITEMS_TILES.getSet(), 10, 14, Game.tileSize, Game.tileSize);
+		
+		this.orc = new Orc(8, 8, 0.1, 1);
+		
 		world.addEntity(player);
 		world.addEntity(sword);
-		world.addEntity(armor);
+		world.addEntity(orc);
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import nx.engine.Animation;
 import nx.engine.Game;
 import nx.util.Direction;
@@ -25,22 +26,30 @@ public class Player extends Entity {
 	private static final double TIME_SHOWING_ATTACK = 0.5;
 	public static final double PLAYER_FORCE = 0.1;
 
-	private static final String walkTileSet = "/assets/textures/player/Character_007.png";
+	public static final String walkTileSet = "/assets/textures/player/CharacterMovementSet.png";
+	public static final String swordSet = "/assets/textures/player/player_Sword.png";
 
 	private static final double ANIMATION_SPEED = 0.15;
 
 	private final Map<Direction, Animation> idle = new HashMap<>() {{
-		put(Direction.SOUTH, new Animation(walkTileSet,0, Game.tileSize, Game.tileSize));
-		put(Direction.EAST, new Animation(walkTileSet,1, Game.tileSize, Game.tileSize));
-		put(Direction.WEST, new Animation(walkTileSet,2, Game.tileSize, Game.tileSize));
-		put(Direction.NORTH, new Animation(walkTileSet,3, Game.tileSize, Game.tileSize));
+		put(Direction.SOUTH, new Animation(walkTileSet,0, 22, 25));
+		put(Direction.EAST, new Animation(walkTileSet,3, 22, 25));
+		put(Direction.WEST, new Animation(walkTileSet,1, 22, 25));
+		put(Direction.NORTH, new Animation(walkTileSet,2, 22, 25));
 	}};
 
 	private final Map<Direction, Animation> wakl = new HashMap<>() {{
-		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkTileSet,0, Game.tileSize, Game.tileSize));
-		put(Direction.EAST, new Animation(ANIMATION_SPEED,walkTileSet,1, Game.tileSize, Game.tileSize));
-		put(Direction.WEST, new Animation(ANIMATION_SPEED,walkTileSet,2, Game.tileSize, Game.tileSize));
-		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,3, Game.tileSize, Game.tileSize));
+		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkTileSet,0, 22, 25));
+		put(Direction.EAST, new Animation(ANIMATION_SPEED,walkTileSet,3, 22, 25));
+		put(Direction.WEST, new Animation(ANIMATION_SPEED,walkTileSet,1, 22, 25));
+		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,2, 22, 25));
+	}};
+	
+	private final Map<Direction, Animation> sword = new HashMap<>() {{
+		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,swordSet,0, 22, 25,false).stop());
+		put(Direction.EAST, new Animation(ANIMATION_SPEED,swordSet,3, 22, 25,false).stop());
+		put(Direction.WEST, new Animation(ANIMATION_SPEED,swordSet,2, 22, 25,false).stop());
+		put(Direction.NORTH, new Animation(ANIMATION_SPEED,swordSet,1, 22, 25,false).stop());
 	}};
 	
 	private KeyCode[] wasdKeys = new KeyCode[] {KeyCode.A,KeyCode.D,KeyCode.W,KeyCode.S};
@@ -55,6 +64,7 @@ public class Player extends Entity {
 	public int screenY;
 
 	private boolean isWalking = false;
+	private boolean isAttacking = false;
 	private Direction direction;
 	private Animation animation;
 	private final Camera camera;
@@ -85,36 +95,48 @@ public class Player extends Entity {
 	public void update(double deltaTime) {
 		
 		Set<KeyCode> activeKeys = Game.inputHandler.getActiveKeys();
+		Set<MouseButton> activeButtons = Game.inputHandler.getActiveButtons();
 
 		isWalking = false;
 		Vector2D movement = new Vector2D(0.0, 0.0);
-
-		// Update animation
+		
 		if (activeKeys.contains(wasdKeys[0]) || activeKeys.contains(arrowsKeys[0])) {
 			isWalking = true;
 			movement = movement.add(new Vector2D(-1, 0));
 			this.direction = Direction.EAST;
+			setAttacking(false);
 		}
-		if (activeKeys.contains(wasdKeys[1]) || activeKeys.contains(arrowsKeys[1])) {
+		else if (activeKeys.contains(wasdKeys[1]) || activeKeys.contains(arrowsKeys[1])) {
 			isWalking = true;
 			movement = movement.add(new Vector2D(1, 0));
 			this.direction = Direction.WEST;
+			setAttacking(false);
 		}
 		if (activeKeys.contains(wasdKeys[2]) || activeKeys.contains(arrowsKeys[2])) {
 			isWalking = true;
 			movement = movement.add(new Vector2D(0, -1));
 			this.direction = Direction.NORTH;
+			setAttacking(false);
 		}
-		if (activeKeys.contains(wasdKeys[3]) || activeKeys.contains(arrowsKeys[3])) {
+		else if (activeKeys.contains(wasdKeys[3]) || activeKeys.contains(arrowsKeys[3])) {
 			isWalking = true;
 			movement = movement.add(new Vector2D(0, 1));
 			this.direction = Direction.SOUTH;
+			setAttacking(false);
 		}
-		if(activeKeys.contains(KeyCode.E)) {
+		
+		if (activeKeys.contains(KeyCode.E)){
 			nextItem();
 		}
-		if(activeKeys.contains(KeyCode.Q)) {
+		else if (activeKeys.contains(KeyCode.Q)){
 			previousItem();
+		}
+		
+		if(activeButtons.contains(MouseButton.PRIMARY)) {
+			Game.inputHandler.ClearActiveButtons();
+			
+			PickableEntity p = (PickableEntity) getItemSelected();
+			p.useItem();
 		}
 
 		if (movement.getNorm() != 0) {
@@ -130,18 +152,26 @@ public class Player extends Entity {
 		move(movementX, movementY);
 
 		camera.setPosition(getPosX(), getPosY());
-
+		
+		animation = idle.get(direction);
+		
 		if (isWalking) {
 			animation = wakl.get(direction);
-		} else {
-			animation = idle.get(direction);
 		}
-
+		if(isAttacking) {
+			animation = sword.get(direction);
+			if(animation.isPause() && !animation.isFinish()) {
+				sword.get(direction).play();
+			}
+			else if(animation.isFinish()) {
+				sword.get(direction).stop().reset();
+				setAttacking(false);
+				
+			}
+		}
 		animation.update(deltaTime);
-		
-		System.out.println(selectionInventory);
-
-		timeSinceLastHit += deltaTime;
+		if(timeSinceLastHit < Player.TIME_SHOWING_ATTACK)
+			timeSinceLastHit += deltaTime;
 	}
 
 	@Override
@@ -152,7 +182,7 @@ public class Player extends Entity {
 //		gc.setFill(Color.WHITE);
 //		gc.fillRect(screenX + (Game.tileSize/2)/2, screenY + (Game.tileSize/2), (Game.tileSize/2), (Game.tileSize/2));
 
-		gc.drawImage(animation.getCurrentFrame(), screenX - ((Game.tileSize/2) * 0.5), screenY - Game.tileSize/2,Game.tileSize * 1.5,Game.tileSize * 1.5);
+		gc.drawImage(animation.getCurrentFrame(), screenX - 4, screenY - 10,22 * 2.5,25 * 2.5);
 
 		if (timeSinceLastHit < TIME_SHOWING_ATTACK) {
 			double alpha = (1.0 - timeSinceLastHit / TIME_SHOWING_ATTACK) * 0.9;
@@ -182,12 +212,18 @@ public class Player extends Entity {
 	public List<Entity> getInventory() {
 		return inventory;
 	}
+	public void setAttacking(boolean a) {
+		this.isAttacking = a;
+	}
 	public void AddEntityToInventory(PickableEntity e) {
 		getInventory().add(e);
 //		getInventory().stream().sorted(Comparator.comparingInt(e::compareTo));
 	}
 	public Direction getDirection() {
 		return direction;
+	}
+	public void setAnimation(Animation a) {
+		this.animation = a;
 	}
 	public Entity getItemSelected() {
 		return getInventory().size() > 0 ? this.getInventory().get(selectionInventory) : new PickableEntity();

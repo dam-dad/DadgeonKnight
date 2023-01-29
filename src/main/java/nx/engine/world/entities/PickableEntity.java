@@ -30,6 +30,10 @@ public class PickableEntity extends Entity {
 		}
 	}
 	
+	public void useItem() {
+		//TODO use of the item.
+	}
+	
 	
 	@Override
 	public void draw(GraphicsContext gc, Camera camera) {

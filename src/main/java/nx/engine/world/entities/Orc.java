@@ -66,6 +66,8 @@ public class Orc extends MobEntity {
 		this.runAnimationSpeed = 0.2;
 
 		this.sizePlayerDetection = 250;
+		
+		this.timeSinceLastHit = MobEntity.TIME_SHOWING_ATTACK;
 
 		direction = Direction.values()[2];
 
@@ -170,7 +172,10 @@ public class Orc extends MobEntity {
 					Animation.updatadeMapDuration(walk, ANIMATION_SPEED);
 
 				animation.update(deltaTime);
+				if(timeSinceLastHit < MobEntity.TIME_SHOWING_ATTACK)
+					timeSinceLastHit += deltaTime;
 			}
 		}
 	}
+
 }
