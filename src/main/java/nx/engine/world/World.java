@@ -3,6 +3,7 @@ package nx.engine.world;
 import javafx.scene.canvas.GraphicsContext;
 import nx.engine.Camera;
 import nx.engine.world.entities.Entity;
+import nx.util.CSV;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -22,6 +23,14 @@ public class World {
 
         this.entitiesToAdd = new ArrayList<>();
         this.entitiesToRemove = new ArrayList<>();
+        
+    }
+    public World(List<Entity> entities,String... fileNames) {
+    	this(fileNames);
+    	entities.forEach(e -> addEntity(e));
+    }
+    public World(String entitties,String... fileNames) {
+    	this(Entity.loadEntititiesFromCSV(entitties),fileNames);
     }
 
     public void update(double delta) {

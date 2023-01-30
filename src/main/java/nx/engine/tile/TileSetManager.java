@@ -11,14 +11,12 @@ import nx.engine.Game;
 
 public class TileSetManager {
 	
-
-	
-	public static Image loadImageFromTileSet(Image tileSet,int id,int width,int height) {
+	public static Image loadImageFromTileSet(TileSet tileSet,int id,int width,int height) {
 		int n = 0;
-		for(int i = 0; i < tileSet.getHeight() ; i+= height) {
-			for(int j = 0; j < tileSet.getWidth() ; j+= width) {
+		for(int i = 0; i < tileSet.getSet().getHeight() ; i+= tileSet.getHeigh()) {
+			for(int j = 0; j < tileSet.getSet().getWidth() ; j+= tileSet.getWith()) {
 				if(n == id) {
-					return new WritableImage(tileSet.getPixelReader(), j, i, width, height);
+					return new WritableImage(tileSet.getSet().getPixelReader(), j, i, width, height);
 				}
 				n++;
 				

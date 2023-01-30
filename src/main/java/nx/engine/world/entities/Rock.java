@@ -6,12 +6,13 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import nx.engine.Game;
+import nx.engine.tile.TileSet;
 import nx.engine.tile.TileSetManager;
 
 public class Rock extends StaticEntity {
 
-	public Rock(Image image, double x, double y, double width, double height) {
-		super(TileSetManager.loadImageFromTileSet(image, 14, Game.tileSize, Game.tileSize), x, y, width, height);
+	public Rock(TileSet tileset, double x, double y, double width, double height) {
+		super(TileSetManager.loadImageFromTileSet(tileset, 14, Game.tileSize, Game.tileSize), x, y, width, height);
 	}
 	@Override
 	public Shape getCollisionShape() {

@@ -6,9 +6,11 @@ import nx.util.Vector2f;
 
 public class Wizard extends Entity {
 
-    private static final Image sprite = new Image("/assets/textures/player/kevin_idle_00.png");
+    protected static final Image sprite = new Image("/assets/textures/player/kevin_idle_00.png");
     private static final double attackDelay = 1.0;
     private static final double RADIUS = 5;
+	protected boolean canDie = true;
+	protected double mobHealth = 20;
 
     private double timeSinceLastAttack = 0.0;
 
@@ -17,9 +19,22 @@ public class Wizard extends Entity {
         height = Game.tileSize;
     }
 
-    @Override
+    public Wizard(double parseDouble, double parseDouble2) {
+    	this((int) parseDouble,(int) parseDouble2);
+	}
+    
+	public void getAttacked(int damage) {
+		mobHealth -= canDie? damage : 0;
+	}
+
+	@Override
     public void update(double deltaTime) {
         timeSinceLastAttack += deltaTime;
+        
+        if(mobHealth < 0) {
+			getWorld().removeEntity(this);
+			return;
+        }
 
         if (timeSinceLastAttack > attackDelay) {
             timeSinceLastAttack -= attackDelay;

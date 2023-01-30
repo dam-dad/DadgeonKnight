@@ -5,9 +5,16 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Shape;
 import nx.engine.Camera;
 import nx.engine.Game;
+import nx.engine.tile.TileSet;
 import nx.engine.world.World;
+import nx.util.CSV;
 import nx.util.Direction;
 import nx.util.Knockback;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
@@ -59,6 +66,26 @@ public abstract class Entity {
 		this.setPosX(x);
 		this.setPosY(y);
 	}
+	public static List<Entity> loadEntititiesFromCSV(String str) {
+		try {
+			List<String[]> a = CSV.readAllLines(Paths.get(CSV.class.getResource(str).toURI()));
+			List<Entity> toReturn  = new ArrayList<Entity>();
+			a.forEach(e -> {
+				switch (e[0].toLowerCase()) {
+				case "orc": toReturn.add(new Orc(Double.parseDouble(e[1]),Double.parseDouble(e[2]),Double.parseDouble(e[3]),Double.parseDouble(e[4]))); break;
+				case "wizard": toReturn.add(new Wizard(Double.parseDouble(e[1]),Double.parseDouble(e[2]))); break;
+				case "armor": toReturn.add(new Armor(TileSet.ITEMS_TILES,Double.parseDouble(e[1]),Double.parseDouble(e[2]))); break;
+				case "pillar": toReturn.add(new Pillar(TileSet.DANGEON_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2]))); break;
+				default:break;
+				}
+			});
+			return toReturn;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public boolean checkCollision(Entity entity) {
 		if (entity.getCollisionShape() == null)
 			return false;

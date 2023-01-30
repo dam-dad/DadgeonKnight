@@ -1,28 +1,24 @@
 package nx.engine.world.entities;
 
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import nx.engine.Animation;
 import nx.engine.Game;
+import nx.engine.tile.TileSet;
 import nx.engine.tile.TileSetManager;
 import nx.engine.world.MobEntity;
-import nx.util.Direction;
 
 public class Sword extends PickableEntity {
 	
 	private static final double ANIMATION_SPEED = 0.15;
 	
-
+	private static int SwordDamage = 4;
 	
-	public Sword(Image image, double x, double y, double width, double height) {
-		super(TileSetManager.loadImageFromTileSet(image, 91, 16, 16), x, y, width, height);
+	public Sword(TileSet tileset, double x, double y, double width, double height) {
+		super(TileSetManager.loadImageFromTileSet(tileset, 91, 16, 16), x, y, width, height);
 	}
 	
 	@Override
@@ -47,7 +43,7 @@ public class Sword extends PickableEntity {
 			setPosition(player.getPosX() + Game.tileSize, player.getPosY());
 			nearMobs.forEach(e -> {
 				if(e.isPresent() && this.checkCollision(e.get())) {
-					e.get().getAttacked(4);
+					e.get().getAttacked(SwordDamage);
 				}
 			});
 			break;
@@ -55,7 +51,7 @@ public class Sword extends PickableEntity {
 			setPosition(player.getPosX() - Game.tileSize, player.getPosY());
 			nearMobs.forEach(e -> {
 				if(e.isPresent() && this.checkCollision(e.get())) {
-					e.get().getAttacked(4);
+					e.get().getAttacked(SwordDamage);
 				}
 			});
 			break;
@@ -63,7 +59,7 @@ public class Sword extends PickableEntity {
 			setPosition(player.getPosX(), player.getPosY() - Game.tileSize);
 			nearMobs.forEach(e -> {
 				if(e.isPresent() && this.checkCollision(e.get())) {
-					e.get().getAttacked(4);
+					e.get().getAttacked(SwordDamage);
 				}
 			});
 			break;
@@ -71,7 +67,7 @@ public class Sword extends PickableEntity {
 			setPosition(player.getPosX(), player.getPosY() + Game.tileSize);
 			nearMobs.forEach(e -> {
 				if(e.isPresent() && this.checkCollision(e.get())) {
-					e.get().getAttacked(4);
+					e.get().getAttacked(SwordDamage);
 				}
 			});
 			break;

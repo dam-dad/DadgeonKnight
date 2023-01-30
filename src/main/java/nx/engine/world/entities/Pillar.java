@@ -6,16 +6,17 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import nx.engine.Game;
+import nx.engine.tile.TileSet;
 import nx.engine.tile.TileSetManager;
 
 public class Pillar extends StaticEntity {
 
-	public Pillar(Image image, double x, double y) {
-		super(TileSetManager.loadImageFromTileSet(image, 25, Game.tileSize, Game.tileSize * 2), x, y,Game.tileSize,Game.tileSize * 2);
+	public Pillar(TileSet tileset, double x, double y) {
+		super(TileSetManager.loadImageFromTileSet(tileset, 25, Game.tileSize, Game.tileSize * 2), x, y,Game.tileSize,Game.tileSize * 2);
 	}
 	@Override
 	public Shape getCollisionShape() {
-		return new Rectangle(getPosX(),getPosY() + this.height/1.5,this.width,this.height/3);
+		return new Rectangle(getPosX(),getPosY() + (this.height/2),this.width,this.height/2);
 	}
 	
 	@Override

@@ -13,13 +13,22 @@ public class TileSet {
 	
 	private Image[] tiles;
 	
+	private int with,heigh;
+	
 	public TileSet(String s,int with,int heigh) {
 		this.uri = s;
 		set = new Image(s);
 		
 		tiles = TileSetManager.loadTiles(set,with,heigh);
+		this.with = with;
+		this.heigh = heigh;
 	}
-
+	public int getWith() {
+		return with;
+	}
+	public int getHeigh() {
+		return heigh;
+	}
 	public Image getSet() {
 		return set;
 	}
