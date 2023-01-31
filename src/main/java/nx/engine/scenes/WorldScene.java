@@ -26,9 +26,9 @@ public class WorldScene implements Scene {
 	private Font font = new Font(50);
 
 	public WorldScene() {
-		String entities = "/assets/levels/entitties.csv";
-		String[] mapfiles = {"/assets/levels/dungeon/DungeonLevel_Mapa.csv",
-							"/assets/levels/dungeon/DungeonLevel_Collitions.csv"};
+		String entities = "/assets/levels/level1/DungeonLevel_Entities.csv";
+		String[] mapfiles = {"/assets/levels/level1/DungeonLevel_Mapa.csv",
+							"/assets/levels/level1/DungeonLevel_Collitions.csv"};
 		this.world = new World(entities,mapfiles);
 		this.camera = new Camera();
 
