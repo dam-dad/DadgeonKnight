@@ -32,14 +32,19 @@ public class SoundMixer {
 	
 	public Music addGameSound(String uri) {
 		Music music = new Music(uri);
-		this.gameSounds.add(music);
-		music.getPlayer().setOnEndOfMedia(() -> removeMusic(music));
+		this.gameSounds.add(music.play());
+		music.getPlayer().setOnReady(() -> {
+			music.getPlayer().setOnEndOfMedia(() -> removeMusic(music));
+		});
+
 		return music;
 		
 	}
 	
 	public void removeMusic(Music m) {
+		System.out.println("Before: " + gameSounds);
 		this.gameSounds.remove(m);
+		System.out.println("After: " + gameSounds);
 	}
 	
 	
