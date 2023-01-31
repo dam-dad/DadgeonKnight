@@ -25,7 +25,7 @@ public class GameController implements Initializable {
 	private Canvas canvas;
 
 	public GameController() {
-		try { 
+		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GameView.fxml"));
 			loader.setController(this);
 			loader.load();

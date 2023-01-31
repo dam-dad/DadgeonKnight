@@ -1,0 +1,30 @@
+@font-face {
+	font-family: 'Press Start 2P';
+	src: url('../assets/menu/PressStart2P-Regular.ttf');
+}
+
+.root {
+	-fx-background-image: url('../assets/menu/darksoulfondo.gif');
+	-fx-background-size: null;
+}
+
+.name {
+	-fx-font-family: 'Press Start 2P';
+	-fx-effect: dropshadow(gaussian, black, 10.0, 0.1, 2.0,2.0);
+	-fx-text-fill: linear-gradient(from 0.0% 0.0% to 100.0% 100.0%, #DC7633 0.0%,#C0392B 50.0%, #DC7633 100.0%);
+}
+
+.button{
+	-fx-font-family: 'Press Start 2P';
+	-fx-background-color: #DC7633a0;
+	-fx-text-fill:black;
+}
+ 
+.button:hover{
+	-fx-background-color:#C0392Bff;
+	-fx-effect: dropshadow(gaussian, black, 10.0, 0.1, 2.0,2.0);
+}
+
+#settingsButton{
+	-fx-background-color: #DC763300;
+}

@@ -5,27 +5,24 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
-	
+
 	public static Stage mainStage;
-	
+
 	private GameController controller;
+	private MenuController menuController;
 
 	@Override
 	public void start(Stage stage) throws Exception {
 
 		App.mainStage = stage;
-		
+
 		controller = new GameController();
-		
+		menuController = new MenuController();
+
 		stage.setResizable(false);
-		stage.setTitle("NX-Test");
-		stage.setScene(new Scene(controller.getView()));
+		stage.setTitle("Dadgeon Knight");
+		stage.setScene(new Scene(menuController.getView()));
 		stage.show();
-		
-		
-
-		
-
 
 	}
 
