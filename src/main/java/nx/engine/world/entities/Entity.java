@@ -5,9 +5,16 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Shape;
 import nx.engine.Camera;
 import nx.engine.Game;
+import nx.engine.tile.TileSet;
 import nx.engine.world.World;
+import nx.util.CSV;
 import nx.util.Direction;
 import nx.util.Knockback;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
@@ -32,6 +39,13 @@ public abstract class Entity {
 		this.setPosY(posY);
 		this.image = image;
 	}
+	public Entity(Image image,double posX, double posY,double width,double height) {
+		this.setPosX(posX);
+		this.setPosY(posY);
+		this.image = image;
+		this.width = width;
+		this.height = height;
+	}
 
 	public abstract void update(double deltaTime);
 
@@ -48,6 +62,30 @@ public abstract class Entity {
 		this.setPosX(this.getPosX() + x);
 		this.setPosY(this.getPosY() + y);
 	}
+	protected void setPosition(double x, double y) {
+		this.setPosX(x);
+		this.setPosY(y);
+	}
+	public static List<Entity> loadEntititiesFromCSV(String str) {
+		try {
+			List<String[]> a = CSV.readAllLines(Paths.get(CSV.class.getResource(str).toURI()));
+			List<Entity> toReturn  = new ArrayList<Entity>();
+			a.forEach(e -> {
+				switch (e[0].toLowerCase()) {
+				case "orc": toReturn.add(new Orc(Double.parseDouble(e[1]),Double.parseDouble(e[2]),Double.parseDouble(e[3]),Double.parseDouble(e[4]))); break;
+				case "wizard": toReturn.add(new Wizard(Double.parseDouble(e[1]),Double.parseDouble(e[2]))); break;
+				case "armor": toReturn.add(new Armor(TileSet.ITEMS_TILES,Double.parseDouble(e[1]),Double.parseDouble(e[2]))); break;
+				case "pillar": toReturn.add(new Pillar(TileSet.DANGEON_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2]))); break;
+				default:break;
+				}
+			});
+			return toReturn;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public boolean checkCollision(Entity entity) {
 		if (entity.getCollisionShape() == null)
 			return false;
@@ -57,6 +95,10 @@ public abstract class Entity {
 		return collide;
 	}
 
+	protected void drawInternal(GraphicsContext gc, Camera camera, double scaleX,double scaleY) {
+		if (image != null)
+			gc.drawImage(image, Game.SCREEN_CENTER_X - camera.getX() + getPosX(), Game.SCREEN_CENTER_Y - camera.getY() + getPosY(),scaleX,scaleY);
+	}
 	protected void drawInternal(GraphicsContext gc, Camera camera, double scale) {
 		if (image != null)
 			gc.drawImage(image, Game.SCREEN_CENTER_X - camera.getX() + getPosX(), Game.SCREEN_CENTER_Y - camera.getY() + getPosY(), Game.tileSize * scale, Game.tileSize * scale);
@@ -157,10 +199,6 @@ public abstract class Entity {
 
 		return distance;
 	}
-	public static void knockback(Entity player,Entity collition, double force,Camera camera) {
-		Knockback p = new Knockback(player, collition, force, camera);
-		p.start();
-	}
 	public double pushOut(int x, int y, double force) {
 		double distance = getDistanceToTile(x * Game.tileSize, y * Game.tileSize);
 
@@ -221,10 +259,16 @@ public abstract class Entity {
 
 		return distance;
 	}
-	
+	public static void knockback(Entity player,Entity collition, double force,Camera camera) {
+		Knockback p = new Knockback(player, collition, force, camera);
+		p.start();
+	}
 	public static float randomFromInterval(float min, float max) { // min and max included 
   	  return (float) (Math.random() * (max - min + 1) + min);
 	}
+	
+	
+	//Getters / Setters
 
 	public void setWorld(World world) {
 		this.world = world;

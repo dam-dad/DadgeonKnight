@@ -2,7 +2,6 @@ package nx.engine.world;
 
 import nx.engine.world.entities.Entity;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import nx.engine.Animation;
@@ -11,10 +10,16 @@ import nx.engine.Game;
 import nx.util.Direction;
 
 public class MobEntity extends Entity {
+	
+	public static final double TIME_SHOWING_ATTACK = 0.5;
 
 	protected double speed;
 	protected boolean hasDamage;
 	protected double damageValue;
+	
+	protected boolean canDie = true;
+	protected double mobHealth = 10;
+	protected double timeSinceLastHit;
 
 	protected Direction direction;
 	protected Animation animation;
@@ -30,8 +35,11 @@ public class MobEntity extends Entity {
 	}
 
 	@Override
-	public void update(double deltaTime) {
-
+	public void update(double deltaTime) {}
+	
+	public void getAttacked(int damage) {
+		mobHealth -= canDie? damage : 0;
+		timeSinceLastHit = 0;
 	}
 
 	@Override
@@ -43,9 +51,12 @@ public class MobEntity extends Entity {
 				getPosX() - Game.tileSize < camera.getX() + Game.screenWidth &&
 				getPosY() + Game.tileSize > camera.getY() - Game.screenheigth &&
 				getPosY() - Game.tileSize  < camera.getY() + Game.screenheigth){
-//			gc.setFill(Color.BLACK);
-//			gc.fillRect(screenX, screenY, sizeTextureX * scale, sizeTextureY * scale);
+			if (timeSinceLastHit < TIME_SHOWING_ATTACK) {
+				double alpha = ((1.0 - timeSinceLastHit / TIME_SHOWING_ATTACK) * 0.2) + 0.2;
+				gc.setGlobalAlpha(alpha);
+			}
 			gc.drawImage(animation.getCurrentFrame(), screenX, screenY,sizeTextureX * scale,sizeTextureY * scale);
+			gc.setGlobalAlpha(10);
 		}
 
 	}
@@ -53,6 +64,10 @@ public class MobEntity extends Entity {
 	@Override
 	public Shape getCollisionShape() {
 		return new Rectangle(getPosX(), getPosY(), sizeTextureX * scale, sizeTextureY * scale);
+	}
+
+	public double getHealth() {
+		return mobHealth;
 	}
 	
 

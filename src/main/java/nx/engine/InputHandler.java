@@ -1,7 +1,11 @@
 package nx.engine;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import javafx.event.EventHandler;
@@ -9,10 +13,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 
 public class InputHandler {
     final private Set<KeyCode> activeKeys = new HashSet<>();
     final private Set<MouseButton> activeButtons = new HashSet<>();
+    final private Queue<Double> scrollValues = new LinkedList<Double>();
+    
+    long lastScrollTime = 0;
+    final long SCROLL_TIME_THRESHOLD = 200; // 200 milliseconds
 
     
     public EventHandler<KeyEvent> keyInputHandler = new EventHandler<KeyEvent>() {
@@ -34,6 +43,18 @@ public class InputHandler {
             } else if (MouseEvent.MOUSE_RELEASED.equals(event.getEventType())) {
                 activeButtons.remove(event.getButton());
             }
+        }
+    };
+    
+    public EventHandler<ScrollEvent> scrollInputHandler = new EventHandler<ScrollEvent>() {
+        @Override
+        public void handle(ScrollEvent event) {
+            long currentTime = System.currentTimeMillis();
+            if ((currentTime - lastScrollTime) > SCROLL_TIME_THRESHOLD) {
+                scrollValues.clear();
+            }
+            lastScrollTime = currentTime;
+            scrollValues.add(event.getDeltaY());
         }
     };
 

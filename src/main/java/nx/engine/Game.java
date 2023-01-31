@@ -8,6 +8,7 @@ import nx.engine.scenes.Scene;
 import nx.engine.scenes.WorldScene;
 import nx.engine.tile.Tile;
 import nx.engine.tile.TileSet;
+import nx.engine.tile.TileSetManager;
 import nx.engine.world.Level;
 import nx.engine.world.entities.Orc;
 import nx.engine.world.entities.Player;
@@ -54,6 +55,7 @@ public class Game extends AnimationTimer {
 		canvas.setOnKeyReleased(inputHandler.keyInputHandler);
 		canvas.setOnMousePressed(inputHandler.mouseInputHandler);
 		canvas.setOnMouseReleased(inputHandler.mouseInputHandler);
+		canvas.setOnScroll(inputHandler.scrollInputHandler);
 		canvas.setFocusTraversable(true);
 		canvas.requestFocus();
 
@@ -61,8 +63,7 @@ public class Game extends AnimationTimer {
 	}
 	
 	public void init() {
-		TileSet.loadTiles("/assets/textures/levels/DungeonTiles.png");
-
+		
 		scene = new WorldScene();
 	}
 	
@@ -82,8 +83,6 @@ public class Game extends AnimationTimer {
 			checkCollisions();
 			update();
 			draw(graphicsContext);
-			
-			System.out.println(inputHandler.getActiveButtons());
 			
 			delta--;
 			drawCount++;
@@ -110,34 +109,15 @@ public class Game extends AnimationTimer {
 		int levelHeight = level.getLayers().get(0).getLayerHeight();
 		
 		
+		//collisions player with tiles
 		for (int i = 0; i < levelHeight; i++) {
 			for (int j = 0; j < levelWidth; j++) {
 				if (level.isSolid(i,j) && Tile.checkCollision(player, i, j)) {
 					inputHandler.ClearActiveKeys();
 					player.pushOut(i,j, Player.PLAYER_FORCE,player.getCamera());
 				}
-				// TODO
-				//Collision entity with map
-//				if (level.isSolid(i, j) && Tile.checkCollision(worldScene.getWorld().getEntities().get(0), i, j)) {
-//					Orco orc = (Orco) worldScene.getWorld().getEntities().get(0);
-//					orc.pushOut(i, j, Player.PLAYER_FORCE);
-//					orc.changeDirection();
-//				}
 			}
 		}
-
-		// TODO
-//		//Collision entities with player
-//		if (entities.get(0).checkCollision(player)) {
-//			Orco orc = (Orco) entities.get(0);
-//			orc.stop();
-//
-//
-//			input.ClearActiveKeys();
-//			player.pushOut(entities.get(0), Player.PLAYER_FORCE);
-//
-////			orc.reset();
-//		}
 	}
 
 	public void update() {
