@@ -11,6 +11,7 @@ import nx.engine.world.World;
 import nx.engine.world.entities.PickableEntity;
 import nx.engine.world.entities.Player;
 import nx.engine.world.entities.Sword;
+import nx.engine.world.entities.Wizard;
 
 public class WorldScene implements Scene {
 
@@ -26,20 +27,20 @@ public class WorldScene implements Scene {
 
 	public WorldScene() {
 		String entities = "/assets/levels/entitties.csv";
-		String[] mapfiles = {"/assets/levels/dungeon/DungeonLevel_Mapa.csv",
-							"/assets/levels/dungeon/DungeonLevel_Collitions.csv"};
-		this.world = new World(entities,mapfiles);
+		String[] mapfiles = {"/assets/levels/secret/Secret_Floor.csv",
+							"/assets/levels/secret/Secret_Collisions.csv"};
+		this.world = new World(TileSet.SECRET_TILES, mapfiles);
 		this.camera = new Camera();
 
 		// TODO: Custom particle image
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
 
-		this.player = new Player(10, 10, 4, camera);
-		this.sword = new Sword(TileSet.ITEMS_TILES,10, 12, Game.tileSize, Game.tileSize);
-
+		this.player = new Player(58, 110, 4, camera);
+		this.sword = new Sword(TileSet.ITEMS_TILES,13, 14, Game.tileSize, Game.tileSize);
 		
 		world.addEntity(player);
 		world.addEntity(sword);
+		world.addEntity(new Wizard(14, 16));
 	}
 
 	@Override

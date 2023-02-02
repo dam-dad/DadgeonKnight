@@ -24,7 +24,10 @@ public class Level {
     private final int levelWidth;
     private final int levelHeight;
 
-    public Level(String... fileNames) {
+    private final TileSet tileSet;
+
+    public Level(TileSet tileSet, String... fileNames) {
+        this.tileSet = tileSet;
         this.layers = new ArrayList<>();
 
         for (int i = 0; i < fileNames.length - 1; i++) {
@@ -55,7 +58,7 @@ public class Level {
                 //Map base
 
             	for(int i = 0; i < layers.size(); i++) {
-            		gc.drawImage(TileSet.DANGEON_TILES.getTiles()[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
+            		gc.drawImage(tileSet.getTiles()[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
             	}
             	
 //            	displayCollisions(gc,camera,worldCol,worldRow,worldX,worldY);
