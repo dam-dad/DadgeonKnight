@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import nx.engine.Camera;
 import nx.engine.Game;
 
@@ -46,7 +47,11 @@ public class PickableEntity extends Entity {
 	}
 	
 	public void drawUI(GraphicsContext gc) {
-		gc.drawImage(image,0,0,width,height);
+		gc.setFill(Color.GOLDENROD);
+		gc.fillRoundRect(8 - 4, 8 - 4, width + 8, height + 8, 8, 8);
+		gc.setFill(Color.GRAY);
+		gc.fillRoundRect(8 - 2, 8 - 2, width + 4, height + 4, 4, 4);
+		gc.drawImage(image, 8, 8, width, height);
 	}
 
 	public boolean canBeSelected() {
