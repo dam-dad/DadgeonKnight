@@ -1,6 +1,7 @@
 package nx.engine.scenes;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
@@ -23,7 +24,11 @@ public class WorldScene implements Scene {
 	private final Camera camera;
 	private Font font = new Font(50);
 
+	private final Image uiImage;
+
 	public WorldScene() {
+		this.uiImage = new Image("/assets/textures/items/itemSlot.png");
+
 		String entities = "/assets/levels/entitties.csv";
 		String[] mapfiles = {"/assets/levels/secret/Secret_Floor.csv",
 							"/assets/levels/secret/Secret_Collisions.csv"};
@@ -35,7 +40,7 @@ public class WorldScene implements Scene {
 
 		this.player = new Player(58, 110, 4, camera);
 		this.sword = new Sword(TileSet.ITEMS_TILES,13, 14, Game.tileSize, Game.tileSize);
-		this.bow = new Bow(TileSet.ITEMS_TILES, 13, 6, Game.tileSize, Game.tileSize);
+		this.bow = new Bow(TileSet.ITEMS_TILES, 5, 6, Game.tileSize, Game.tileSize);
 		
 		world.addEntity(player);
 		world.addEntity(sword);
@@ -59,6 +64,7 @@ public class WorldScene implements Scene {
 		
 		PickableEntity e = (PickableEntity) player.getItemSelected();
 
+		gc.drawImage(uiImage, 0, 0, 90, 90);
 		e.drawUI(gc);
 	}
 
