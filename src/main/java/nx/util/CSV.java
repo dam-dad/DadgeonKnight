@@ -4,6 +4,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.opencsv.CSVReader;
@@ -19,6 +20,18 @@ public class CSV {
 	            return csvReader.readAll();
 	        }
 	    }
+	}
+	public static List<String> readAllLinesTogether(Path filePath) throws Exception {
+	    List<String> lines = new ArrayList<>();	
+	    try (Reader reader = Files.newBufferedReader(filePath)) {
+	        try (CSVReader csvReader = new CSVReader(reader)) {
+	            List<String[]> csvLines = csvReader.readAll();
+	            for (String[] line : csvLines) {
+	                lines.add(String.join(",", line));
+	            }
+	        }
+	    }
+	    return lines;
 	}
 
 	public static int[][] loadMapValues(String url) {

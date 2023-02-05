@@ -1,10 +1,21 @@
 package nx.engine;
 
+import java.nio.file.Paths;
+import java.util.Arrays;
+
+import javax.swing.text.html.CSS;
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.text.Font;
 import nx.engine.scenes.Scene;
+import nx.engine.scenes.TextScene;
 import nx.engine.scenes.WorldScene;
 import nx.engine.tile.Tile;
 import nx.engine.tile.TileSet;
@@ -12,6 +23,8 @@ import nx.engine.tile.TileSetManager;
 import nx.engine.world.Level;
 import nx.engine.world.entities.Orc;
 import nx.engine.world.entities.Player;
+import nx.game.App;
+import nx.util.CSV;
 
 public class Game extends AnimationTimer {
 	
@@ -29,7 +42,7 @@ public class Game extends AnimationTimer {
 	public static int fps = 60;
 	public static int LastFrameRate = 60;
 	
-	double drawInterval = 1000000000d / fps;
+	double drawInterval = 1000000000.0 / fps;
 	private long lastTime;
 	double delta = 0;
 	private double deltaTime = 0;
@@ -44,6 +57,9 @@ public class Game extends AnimationTimer {
 	public static int SCREEN_CENTER_Y = Game.screenheigth / 2 - (Game.tileSize/2);
 
 	private Scene scene;
+	
+	public static Font font = Font.loadFont(TextScene.class.getResourceAsStream("/assets/fonts/PressStart2P-Regular.ttf"), 10);
+
 	
 	public Game(Canvas canvas) {
 		this.graphicsContext = canvas.getGraphicsContext2D();
@@ -63,8 +79,12 @@ public class Game extends AnimationTimer {
 	}
 	
 	public void init() {
-		
-		scene = new WorldScene();
+		try {
+			
+			scene = new TextScene("/assets/levels/intro/introEN.csv");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -80,7 +100,6 @@ public class Game extends AnimationTimer {
 		timer += (currentNanoTime - lastTime);
 		
 		if (delta >= 1) {
-			checkCollisions();
 			update();
 			draw(graphicsContext);
 			
@@ -97,38 +116,25 @@ public class Game extends AnimationTimer {
 		
 		lastTime = currentNanoTime;
 	}
-	
-
-	private void checkCollisions() {
-		if (!(scene instanceof WorldScene worldScene))
-			return;
-
-		Player player = worldScene.getPlayer();
-		Level level = worldScene.getWorld().getLevel();
-		int levelWidth = level.getLayers().get(0).getLayerWidth();
-		int levelHeight = level.getLayers().get(0).getLayerHeight();
-		
-		
-		//collisions player with tiles
-		for (int i = 0; i < levelHeight; i++) {
-			for (int j = 0; j < levelWidth; j++) {
-				if (level.isSolid(i,j) && Tile.checkCollision(player, i, j)) {
-					inputHandler.ClearActiveKeys();
-					player.pushOut(i,j, Player.PLAYER_FORCE,player.getCamera());
-				}
-			}
-		}
-	}
 
 	public void update() {
+		if(scene instanceof TextScene) {
+			if(((TextScene) scene).hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
+				App.mixer.getMusic().fadeOut(20);
+				this.scene = new WorldScene();
+			}
+		}
+		
 		scene.update(deltaTime);
 	}
 	
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, screenWidth, screenheigth);
-
+		
 		scene.draw(gc);
+
+
 	}
 
 

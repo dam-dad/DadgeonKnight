@@ -6,6 +6,7 @@ import nx.engine.Game;
 public class TileSet {
 	
 	public static final TileSet DANGEON_TILES = new TileSet("/assets/textures/levels/DungeonTiles.png",Game.tileSize,Game.tileSize);
+	public static final TileSet WORLD_DARK_TILES = new TileSet("/assets/textures/levels/WorldTiles_Dark.png",Game.tileSize,Game.tileSize);
 	public static final TileSet ITEMS_TILES = new TileSet("/assets/textures/items/roguelikeitems.png",16,16);
 	
 	private final String  uri;

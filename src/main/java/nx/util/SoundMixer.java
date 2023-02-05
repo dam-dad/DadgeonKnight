@@ -6,8 +6,8 @@ import java.util.List;
 public class SoundMixer {
 	
 	public static double GENERAL_VOLUME = 1;
-	public static double GAME_VOLUME = 1;
-	public static double MUSIC_VOLUME = 1;
+	public static double GAME_VOLUME = 0.1;
+	public static double MUSIC_VOLUME = 0.05;
 	
 	
 	private Music music;
@@ -22,7 +22,12 @@ public class SoundMixer {
 	}
 
 	public Music setMusic(String uri) {
+		if(this.music != null) {
+			this.music.pause();
+			this.music = null;
+		}
 		this.music = new Music(uri);
+		this.music.setVolume(MUSIC_VOLUME);
 		return music;
 	}
 
@@ -32,7 +37,7 @@ public class SoundMixer {
 	
 	public Music addGameSound(String uri) {
 		Music music = new Music(uri);
-		this.gameSounds.add(music.play());
+		this.gameSounds.add(music.setVolume(GAME_VOLUME));
 		music.getPlayer().setOnReady(() -> {
 			music.getPlayer().setOnEndOfMedia(() -> removeMusic(music));
 		});
@@ -42,9 +47,7 @@ public class SoundMixer {
 	}
 	
 	public void removeMusic(Music m) {
-		System.out.println("Before: " + gameSounds);
 		this.gameSounds.remove(m);
-		System.out.println("After: " + gameSounds);
 	}
 	
 	

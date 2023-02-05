@@ -18,6 +18,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import nx.engine.Animation;
 import nx.engine.Game;
+import nx.engine.scenes.WorldScene;
+import nx.engine.tile.Tile;
+import nx.engine.world.Level;
 import nx.util.Direction;
 
 public class Player extends Entity {
@@ -148,10 +151,12 @@ public class Player extends Entity {
 
 		double movementX = Math.round(movement.getX());
 		double movementY = Math.round(movement.getY());
-
-		move(movementX, movementY);
-
-		camera.setPosition(getPosX(), getPosY());
+		
+		if(!checkCollisionsMap(new Vector2D(movementX,movementY))) {
+			move(movementX, movementY);
+			camera.setPosition(getPosX(), getPosY());	
+		}
+		
 		
 		animation = idle.get(direction);
 		
@@ -190,7 +195,32 @@ public class Player extends Entity {
 			gc.fillOval(screenX - ((Game.tileSize/2) * 0.5), screenY - Game.tileSize/3,Game.tileSize * 1.5,Game.tileSize * 1.5);
 		}
 	}
+	
+	private boolean checkCollisionsMap(Vector2D v) {
 
+		Level level = getWorld().getLevel();
+		int levelWidth = level.getLayers().get(0).getLayerWidth();
+		int levelHeight = level.getLayers().get(0).getLayerHeight();
+		
+		//collisions player with tiles
+		for (int i = 0; i < levelHeight; i++) {
+			for (int j = 0; j < levelWidth; j++) {
+				if (level.isSolid(i,j) && Tile.checkCollision(getNextCollisionShape(v), i, j)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public Shape getCollisionShape() {
+		return new Rectangle(getPosX() +  ((Game.tileSize/2) * 0.5), getPosY() + (Game.tileSize/2), Game.tileSize/2, Game.tileSize/2);
+	}
+	public Shape getNextCollisionShape(Vector2D v) {
+		return new Rectangle((getPosX() + v.getX()) +  ((Game.tileSize/2) * 0.5), (getPosY() + v.getY()) + (Game.tileSize/2), Game.tileSize/2, Game.tileSize/2);
+	}
+	
 	// TODO
 	public void getAttacked(int damage) {
 		health -= damage;
@@ -199,11 +229,6 @@ public class Player extends Entity {
 
 	public int getHealth() {
 		return health;
-	}
-
-	@Override
-	public Shape getCollisionShape() {
-		return new Rectangle(getPosX() +  ((Game.tileSize/2) * 0.5), getPosY() + (Game.tileSize/2), Game.tileSize/2, Game.tileSize/2);
 	}
 	
 	public Camera getCamera() {

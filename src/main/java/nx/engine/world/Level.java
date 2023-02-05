@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import nx.engine.Camera;
 import nx.engine.Game;
+import nx.engine.tile.Tile;
 import nx.engine.tile.TileSet;
 import nx.engine.tile.TileSetManager;
 
@@ -11,24 +12,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Level {
+	
+	private TileSet tileSet;
 
     // Map settings
-    public static int maxWorldCol = 20;
-    public static int maxWorldRow = 20;
+    public static int maxWorldCol = 50;
+    public static int maxWorldRow = 50;
     public static int worldWidth = Game.tileSize * maxWorldCol;
     public static int worldHeigth = Game.tileSize * maxWorldRow;
 
     private final List<Layer> layers;
     private final Layer collisionLayer;
 
-    public Level(String... fileNames) {
+    public Level(TileSet tileSet,String... fileNames) {
         this.layers = new ArrayList<>();
-
+        
         for (int i = 0; i < fileNames.length - 1; i++) {
             layers.add(new Layer(fileNames[i]));
         }
 
         this.collisionLayer = new Layer(fileNames[fileNames.length - 1]);
+        
+        this.tileSet = tileSet;
     }
 
     public void draw(GraphicsContext gc, Camera camera) {
@@ -47,9 +52,10 @@ public class Level {
                     worldY - Game.tileSize  < camera.getY() + Game.screenheigth) {
 
                 //Map base
-
             	for(int i = 0; i < layers.size(); i++) {
-            		gc.drawImage(TileSet.DANGEON_TILES.getTiles()[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
+            		if(layers.get(i).getTiles()[worldCol][worldRow] != -1)
+            			gc.drawImage(tileSet.getTiles()[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
+
             	}
             	
 //            	displayCollisions(gc,camera,worldCol,worldRow,worldX,worldY);
@@ -69,6 +75,13 @@ public class Level {
         	gc.setFill(Color.BLUE);
         	gc.fillRect(Game.SCREEN_CENTER_X - camera.getX() + worldX,Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
     	}
+    }
+    
+    public static void setMapSize(int col,int row) {
+    	Level.maxWorldCol = col;
+    	Level.maxWorldRow = row;
+    	Level.worldWidth = Game.tileSize * maxWorldCol;
+        Level.worldHeigth = Game.tileSize * maxWorldRow;
     }
 
     public List<Layer> getLayers() {

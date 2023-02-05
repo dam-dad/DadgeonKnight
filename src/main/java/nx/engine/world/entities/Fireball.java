@@ -50,7 +50,7 @@ public class Fireball extends Entity {
             player.getAttacked(3);
             getWorld().removeEntity(this);
 
-            App.mixer.addGameSound("explosion.wav");
+            App.mixer.addGameSound("explosion.wav").setVolume(0.04).play();
 
             createParticleEffect(getPosX(), getPosY());
         }

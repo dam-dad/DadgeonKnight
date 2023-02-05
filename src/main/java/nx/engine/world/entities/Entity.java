@@ -94,6 +94,10 @@ public abstract class Entity {
 		boolean collide = getCollisionShape().intersects(entity.getCollisionShape().getLayoutBounds());
 		return collide;
 	}
+	public boolean checkCollision(Shape shape) {
+		boolean collide = getCollisionShape().intersects(shape.getLayoutBounds());
+		return collide;
+	}
 
 	protected void drawInternal(GraphicsContext gc, Camera camera, double scaleX,double scaleY) {
 		if (image != null)

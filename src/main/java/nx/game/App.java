@@ -20,20 +20,14 @@ public class App extends Application {
 
 		App.mainStage = stage;
 		
-		mixer.setMusic("The_Journey_Begins.wav").setLoop(true).play();
+		mixer.setMusic("xDeviruchi - Title Theme .wav").setLoop(true).fadeIn(0,0.05,2);
 		
 		controller = new GameController();
 		
 		stage.setResizable(false);
-		stage.setTitle("NX-Test");
+		stage.setTitle("DADgeon_Knight");
 		stage.setScene(new Scene(controller.getView()));
 		stage.show();
-		
-		
-
-		
-
-
 	}
 
 }
