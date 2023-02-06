@@ -63,6 +63,7 @@ public class Game extends AnimationTimer {
 	
 	public Game(Canvas canvas) {
 		this.graphicsContext = canvas.getGraphicsContext2D();
+		graphicsContext.setImageSmoothing(false);
 		
 		canvas.setWidth(screenWidth);
 		canvas.setHeight(screenheigth);

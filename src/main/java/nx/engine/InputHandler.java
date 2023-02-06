@@ -23,6 +23,9 @@ public class InputHandler {
     long lastScrollTime = 0;
     final long SCROLL_TIME_THRESHOLD = 200; // 200 milliseconds
 
+    // Hacer esto bien
+    public static double posX;
+    public static double posY;
     
     public EventHandler<KeyEvent> keyInputHandler = new EventHandler<KeyEvent>() {
         @Override
@@ -43,6 +46,9 @@ public class InputHandler {
             } else if (MouseEvent.MOUSE_RELEASED.equals(event.getEventType())) {
                 activeButtons.remove(event.getButton());
             }
+
+            posX = event.getX();
+            posY = event.getY();
         }
     };
     

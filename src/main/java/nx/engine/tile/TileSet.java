@@ -8,6 +8,7 @@ public class TileSet {
 	public static final TileSet DANGEON_TILES = new TileSet("/assets/textures/levels/DungeonTiles.png",Game.tileSize,Game.tileSize);
 	public static final TileSet WORLD_DARK_TILES = new TileSet("/assets/textures/levels/WorldTiles_Dark.png",Game.tileSize,Game.tileSize);
 	public static final TileSet ITEMS_TILES = new TileSet("/assets/textures/items/roguelikeitems.png",16,16);
+	public static final TileSet SECRET_TILES = new TileSet("/assets/textures/levels/Dungeon_Tileset_at.png", 8, 8);
 	
 	private final String  uri;
 	private Image set;

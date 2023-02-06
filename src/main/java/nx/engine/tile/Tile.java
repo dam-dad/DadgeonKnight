@@ -19,7 +19,6 @@ public class Tile {
 	public static boolean checkCollision(Entity entity, int posX, int posY) {
 		if (entity.getCollisionShape() == null)
 			return false;
-
 		
 		boolean collide = new Rectangle(posX * Game.tileSize, posY * Game.tileSize, Game.tileSize, Game.tileSize).intersects(entity.getCollisionShape().getLayoutBounds());
 		return collide;

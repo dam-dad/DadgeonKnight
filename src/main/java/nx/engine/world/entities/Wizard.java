@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import nx.engine.Game;
 import nx.util.Vector2f;
 
-public class Wizard extends Entity {
+public class Wizard extends Entity implements Enemy {
 
     protected static final Image sprite = new Image("/assets/textures/player/kevin_idle_00.png");
     private static final double attackDelay = 1.0;
@@ -52,4 +52,8 @@ public class Wizard extends Entity {
         }
     }
 
+    @Override
+    public void getAttacked(double damage) {
+        this.mobHealth -= damage;
+    }
 }

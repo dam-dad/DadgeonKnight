@@ -20,8 +20,8 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 public abstract class Entity {
 	
-	private double posX;
-	private double posY;
+	protected double posX;
+	protected double posY;
 	protected double width, height;
 	protected Image image;
 	private World world;

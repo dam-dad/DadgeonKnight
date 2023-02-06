@@ -18,20 +18,20 @@ public class World {
     private final List<Entity> entitiesToAdd;
     private final List<Entity> entitiesToRemove;
 
-    public World(TileSet tileSet,String... fileNames) {
-        this.level = new Level(tileSet,fileNames);
+    public World(TileSet tileSet, String... fileNames) {
+        this.level = new Level(tileSet, fileNames);
         this.entities = new ArrayList<>();
 
         this.entitiesToAdd = new ArrayList<>();
         this.entitiesToRemove = new ArrayList<>();
         
     }
-    public World(TileSet tileSet,List<Entity> entities,String... fileNames) {
-    	this(tileSet,fileNames);
+    public World(TileSet tileSet, List<Entity> entities,String... fileNames) {
+    	this(tileSet, fileNames);
     	entities.forEach(e -> addEntity(e));
     }
-    public World(TileSet tileSet,String entitties,String... fileNames) {
-    	this(tileSet,Entity.loadEntititiesFromCSV(entitties),fileNames);
+    public World(TileSet tileSet, String entitties,String... fileNames) {
+    	this(tileSet, Entity.loadEntititiesFromCSV(entitties),fileNames);
     }
 
     public void update(double delta) {
