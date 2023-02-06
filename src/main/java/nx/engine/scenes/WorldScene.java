@@ -32,15 +32,23 @@ public class WorldScene implements Scene {
 	        new Stop(1, Color.rgb(10, 10, 10,0.6))
 	        );
 	
+	private String startedMap_entities = "/assets/levels/startedMap/StartedLevel_Entities.csv";
 	private String[] startedMap = {"/assets/levels/startedMap/StartMap_map.csv",
 			"/assets/levels/startedMap/StartMap_detail.csv",
 			"/assets/levels/startedMap/StartMap_collitions.csv"};
+	
+	private String secretMap_entities = "";
+	private String[] secretMap = {"/assets/levels/secret/Secret_Floor.csv",
+								"/assets/levels/secret/Secret_Collisions.csv"};
+	
+	private String dungeonMap_entities = "/assets/levels/level1/DungeonLevel_Entities.csv";
+	private String[] dungeonMap = {"/assets/levels/level1/DungeonLevel_Mapa.csv",
+								"/assets/levels/level1/DungeonLevel_Collitions.csv"};
 
 	public WorldScene() {
 		String entities = "/assets/levels/entitties.csv";
-		String[] mapfiles = {"/assets/levels/secret/Secret_Floor.csv",
-							"/assets/levels/secret/Secret_Collisions.csv"};
-		this.world = new World(TileSet.WORLD_DARK_TILES, startedMap);
+
+		this.world = new World(TileSet.WORLD_DARK_TILES,startedMap_entities, startedMap);
 		this.camera = new Camera();
 
 		// TODO: Custom particle image

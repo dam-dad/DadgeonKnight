@@ -75,6 +75,8 @@ public abstract class Entity {
 				case "orc": toReturn.add(new Orc(Double.parseDouble(e[1]),Double.parseDouble(e[2]),Double.parseDouble(e[3]),Double.parseDouble(e[4]))); break;
 				case "wizard": toReturn.add(new Wizard(Double.parseDouble(e[1]),Double.parseDouble(e[2]))); break;
 				case "armor": toReturn.add(new Armor(TileSet.ITEMS_TILES,Double.parseDouble(e[1]),Double.parseDouble(e[2]))); break;
+				case "sword": toReturn.add(new Sword(TileSet.ITEMS_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2]), Game.tileSize, Game.tileSize)); break;
+				case "bow": toReturn.add(new Bow(TileSet.ITEMS_TILES,Double.parseDouble(e[1]), Double.parseDouble(e[2]), Game.tileSize, Game.tileSize)); break;
 				case "pillar": toReturn.add(new Pillar(TileSet.DANGEON_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2]))); break;
 				default:break;
 				}
