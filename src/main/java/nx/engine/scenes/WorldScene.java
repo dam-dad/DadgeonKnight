@@ -26,21 +26,21 @@ public class WorldScene implements Scene {
 
 	private final Image uiImage;
 
-	public WorldScene() {
+	public WorldScene(TileSet tileSet, String... mapFiles) {
 		this.uiImage = new Image("/assets/textures/items/itemSlot.png");
 
-		String entities = "/assets/levels/entitties.csv";
-		String[] mapfiles = {"/assets/levels/secret/Secret_Floor.csv",
-							"/assets/levels/secret/Secret_Collisions.csv"};
-		this.world = new World(TileSet.SECRET_TILES, mapfiles);
+//		String entities = "/assets/levels/entitties.csv";
+//		String[] mapfiles = {"/assets/levels/secret/Secret_Floor.csv",
+//							"/assets/levels/secret/Secret_Collisions.csv"};
+		this.world = new World(tileSet, mapFiles);
 		this.camera = new Camera();
 
 		// TODO: Custom particle image
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
 
-		this.player = new Player(58, 110, 4, camera);
+		this.player = new Player(4.5 * Game.tileSize, 5 * Game.tileSize, 4, camera);
 		this.sword = new Sword(TileSet.ITEMS_TILES,13, 14, Game.tileSize, Game.tileSize);
-		this.bow = new Bow(TileSet.ITEMS_TILES, 5, 6, Game.tileSize, Game.tileSize);
+		this.bow = new Bow(TileSet.ITEMS_TILES, 8, 6, Game.tileSize, Game.tileSize);
 		
 		world.addEntity(player);
 		world.addEntity(sword);

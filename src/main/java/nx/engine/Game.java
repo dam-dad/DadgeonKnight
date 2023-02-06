@@ -3,6 +3,7 @@ package nx.engine;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import nx.engine.scenes.Scene;
 import nx.engine.scenes.WorldScene;
@@ -64,8 +65,9 @@ public class Game extends AnimationTimer {
 	}
 	
 	public void init() {
-		
-		scene = new WorldScene();
+		String[] mapfiles = {"/assets/levels/secret/Secret_Floor.csv",
+							"/assets/levels/secret/Secret_Collisions.csv"};
+		scene = new WorldScene(TileSet.SECRET_TILES, mapfiles);
 	}
 	
 	@Override
