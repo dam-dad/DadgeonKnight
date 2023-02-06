@@ -58,7 +58,8 @@ public class Level {
                 //Map base
 
             	for(int i = 0; i < layers.size(); i++) {
-            		gc.drawImage(tileSet.getTiles()[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
+            		if(layers.get(i).getTiles()[worldCol][worldRow] != -1)
+            			gc.drawImage(tileSet.getTiles()[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
             	}
             	
 //            	displayCollisions(gc,camera,worldCol,worldRow,worldX,worldY);
@@ -88,6 +89,12 @@ public class Level {
         if (x < 0 || x >= levelWidth) return true;
         if (y < 0 || y >= levelHeight) return true;
         return collisionLayer.getTiles()[x][y] != -1;
+    }
+    public static void setMapSize(int col,int row) {
+    	Level.maxWorldCol = col;
+    	Level.maxWorldRow = row;
+    	Level.worldWidth = Game.tileSize * maxWorldCol;
+        Level.worldHeigth = Game.tileSize * maxWorldRow;
     }
 
 }

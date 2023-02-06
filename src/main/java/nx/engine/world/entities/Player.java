@@ -76,8 +76,8 @@ public class Player extends Entity {
 	private double timeSinceLastHit;
 	
 	public Player(double posX, double posY, int speed, Camera camera) {
-		this.setPosX(posX);
-		this.setPosY(posY);
+		this.setPosX(posX * Game.tileSize);
+		this.setPosY(posY * Game.tileSize);
 		
 		screenX = Game.screenWidth / 2 - (Game.tileSize/2);
 		screenY = Game.screenheigth / 2 - (Game.tileSize/2);
@@ -151,7 +151,7 @@ public class Player extends Entity {
 
 		double movementX = Math.round(movement.getX());
 		double movementY = Math.round(movement.getY());
-		
+
 		if(!checkCollisionsMap(new Vector2D(movementX,movementY))) {
 			move(movementX, movementY);
 			camera.setPosition(getPosX(), getPosY());	
