@@ -19,7 +19,7 @@ import java.util.Optional;
 public class Bow extends PickableEntity {
 
 	private static final double ANIMATION_SPEED = 0.15;
-	private static final double SHOT_DELAY = 1;
+	private static final double SHOT_DELAY = 0.5;
 
 	private static int SwordDamage = 4;
 

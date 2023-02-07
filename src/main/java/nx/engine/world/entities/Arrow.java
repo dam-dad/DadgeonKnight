@@ -21,7 +21,6 @@ public class Arrow extends Entity {
 
     private static final float SPEED = 8.5f * Game.tileSize;
     private static final double MAX_TIME_ALIVE = 0.5f;
-    private static final double RADIUS = 48;
     private static final int DAMAGE = 2;
 
     private final Vector2f direction;
@@ -48,7 +47,7 @@ public class Arrow extends Entity {
 
         List<Enemy> entities = getWorld().getEntities().stream()
                 .filter(entity -> entity instanceof Enemy)
-                .filter(entity -> getDistanceToEntity(entity) < 0.5 * Game.tileSize)
+                .filter(entity -> getDistanceToEntity(entity) < 1.0 * Game.tileSize)
                 .map(Enemy.class::cast)
                 .collect(Collectors.toList());
 

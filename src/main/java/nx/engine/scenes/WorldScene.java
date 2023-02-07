@@ -1,6 +1,7 @@
 package nx.engine.scenes;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
@@ -77,7 +78,6 @@ public class WorldScene implements Scene {
 		gc.fillText(String.format("Vida: %d", player.getHealth()), 10, Game.screenheigth - 10);
 		
 		PickableEntity e = (PickableEntity) player.getItemSelected();
-		
 		if(!player.getInventory().isEmpty())
 			e.drawUI(gc);
 	}

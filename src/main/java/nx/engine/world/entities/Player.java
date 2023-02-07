@@ -74,10 +74,15 @@ public class Player extends Entity {
 
 	private int health;
 	private double timeSinceLastHit;
+
+	private final double initialX, initialY;
 	
 	public Player(double posX, double posY, int speed, Camera camera) {
 		this.setPosX(posX * Game.tileSize);
 		this.setPosY(posY * Game.tileSize);
+
+		this.initialX = getPosX();
+		this.initialY = getPosY();
 		
 		screenX = Game.screenWidth / 2 - (Game.tileSize/2);
 		screenY = Game.screenheigth / 2 - (Game.tileSize/2);
@@ -96,6 +101,12 @@ public class Player extends Entity {
 
 	@Override
 	public void update(double deltaTime) {
+
+		if (health <= 0) {
+			posX = initialX;
+			posY = initialY;
+			health = 10;
+		}
 		
 		Set<KeyCode> activeKeys = Game.inputHandler.getActiveKeys();
 		Set<MouseButton> activeButtons = Game.inputHandler.getActiveButtons();
