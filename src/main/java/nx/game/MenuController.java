@@ -8,14 +8,23 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 public class MenuController implements Initializable {
 
+	GameController gameCotroller = new GameController();
+
 	// view
+	private SettingsComponent settingsComponent;
+
 	@FXML
 	private Button exitButton, fameButton, playButton, settingsButton;
+
+	@FXML
+	private Label pruebaGroup;
 
 	@FXML
 	private GridPane view;
@@ -32,13 +41,13 @@ public class MenuController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		settingsComponent = new SettingsComponent();
 
 	}
 
 	@FXML
 	void onExitAction(ActionEvent event) {
-
+		App.mainStage.close();
 	}
 
 	@FXML
@@ -48,11 +57,12 @@ public class MenuController implements Initializable {
 
 	@FXML
 	void onPlayAction(ActionEvent event) {
-
+		App.mainStage.setScene(new Scene(gameCotroller.getView()));
 	}
 
 	@FXML
 	void onSettingsAction(ActionEvent event) {
+		App.mainStage.setScene(new Scene(settingsComponent.getView()));
 
 	}
 
