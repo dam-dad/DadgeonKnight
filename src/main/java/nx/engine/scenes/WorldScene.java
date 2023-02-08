@@ -8,6 +8,8 @@ import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import nx.engine.Camera;
 import nx.engine.Game;
+import nx.engine.UI.Dialog;
+import nx.engine.UI.UserInterfaceImage;
 import nx.engine.particles.ParticleManager;
 import nx.engine.tile.TileSet;
 import nx.engine.world.World;
@@ -44,6 +46,8 @@ public class WorldScene implements Scene {
 	private String dungeonMap_entities = "/assets/levels/level1/DungeonLevel_Entities.csv";
 	private String[] dungeonMap = {"/assets/levels/level1/DungeonLevel_Mapa.csv",
 								"/assets/levels/level1/DungeonLevel_Collitions.csv"};
+	
+	Dialog dialog = new Dialog("Prueba", null,UserInterfaceImage.Dialog);
 
 	public WorldScene() {
 		String entities = "/assets/levels/entitties.csv";
@@ -75,6 +79,8 @@ public class WorldScene implements Scene {
 		gc.setFont(font);
 		gc.setFill(Color.WHITESMOKE);
 		gc.fillText(String.format("Vida: %d", player.getHealth()), 10, Game.screenheigth - 10);
+		
+		dialog.draw(gc);
 		
 		PickableEntity e = (PickableEntity) player.getItemSelected();
 		
