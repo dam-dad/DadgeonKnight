@@ -24,6 +24,9 @@ public class World {
 
         this.entitiesToAdd = new ArrayList<>();
         this.entitiesToRemove = new ArrayList<>();
+
+        System.out.println(fileNames[0]);
+        System.out.println(level.getLayers().get(0).getLayerWidth());
         
     }
     public World(TileSet tileSet, List<Entity> entities,String... fileNames) {

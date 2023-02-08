@@ -3,8 +3,10 @@ package nx.engine.world.entities;
 import javafx.scene.image.Image;
 import nx.engine.Game;
 import nx.engine.scenes.Scene;
+import nx.engine.scenes.WorldScene;
 import nx.engine.tile.TileSet;
 import nx.engine.tile.TileSetManager;
+import nx.engine.world.WorldData;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,9 +17,9 @@ public class Portal extends Entity {
 
     private static final Image image = TileSetManager.loadImageFromTileSet(TileSet.ITEMS_TILES, 5, 16, 16);
 
-    private final Scene scene;
+    private final String scene;
 
-    public Portal(double x, double y, Scene scene) {
+    public Portal(double x, double y, String scene) {
         super((x + 0.5) * Game.tileSize, (y + 0.5) * Game.tileSize, image);
 
         this.scene = scene;
@@ -32,7 +34,7 @@ public class Portal extends Entity {
                 .collect(Collectors.toList());
 
         if (playerList.size() > 0) {
-            Game.changeScene(scene);
+            Game.changeScene(new WorldScene(WorldData.getByName(scene)));
         }
     }
 
