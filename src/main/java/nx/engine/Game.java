@@ -58,6 +58,7 @@ public class Game extends AnimationTimer {
 	public static int SCREEN_CENTER_Y = Game.screenheigth / 2 - (Game.tileSize/2);
 
 	private Scene scene;
+	private static Scene sceneToChangeTo;
 	
 	public static Font font = Font.loadFont(TextScene.class.getResourceAsStream("/assets/fonts/PressStart2P-Regular.ttf"), 10);
 
@@ -120,10 +121,15 @@ public class Game extends AnimationTimer {
 	}
 
 	public void update() {
+		if (sceneToChangeTo != null) {
+			this.scene = sceneToChangeTo;
+			sceneToChangeTo = null;
+		}
+
 		if(scene instanceof TextScene) {
 			if(((TextScene) scene).hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
 				App.mixer.getMusic().fadeOut(20);
-				this.scene = new WorldScene(WorldData.DUNGEON);
+				this.scene = new WorldScene(WorldData.START_LEVEL);
 			}
 		}
 		
@@ -135,10 +141,10 @@ public class Game extends AnimationTimer {
 		gc.fillRect(0, 0, screenWidth, screenheigth);
 		
 		scene.draw(gc);
-
-
 	}
 
-
+	public static void changeScene(Scene scene) {
+		sceneToChangeTo = scene;
+	}
 
 }

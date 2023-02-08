@@ -28,6 +28,7 @@ public class Player extends Entity {
 	private static final int MAX_PLAYER_HEALTH = 10;
 	private static final double TIME_SHOWING_ATTACK = 0.5;
 	public static final double PLAYER_FORCE = 0.1;
+	public static final double SPEED = 12;
 
 	public static final String walkTileSet = "/assets/textures/player/CharacterMovementSet.png";
 	public static final String swordSet = "/assets/textures/player/player_Sword.png";
@@ -60,8 +61,6 @@ public class Player extends Entity {
 	
 	private int selectionInventory = 0;
 	private List<Entity> inventory = new ArrayList<>();
-
-	private final int speed;
 	
 	public int screenX;
 	public int screenY;
@@ -77,7 +76,7 @@ public class Player extends Entity {
 
 	private final double initialX, initialY;
 	
-	public Player(double posX, double posY, int speed, Camera camera) {
+	public Player(double posX, double posY, Camera camera) {
 		this.setPosX(posX * Game.tileSize);
 		this.setPosY(posY * Game.tileSize);
 
@@ -89,8 +88,7 @@ public class Player extends Entity {
 		
 		this.width = Game.tileSize;
 		this.height = Game.tileSize;
-		
-		this.speed = speed;
+
 		this.health = MAX_PLAYER_HEALTH;
 		this.timeSinceLastHit = TIME_SHOWING_ATTACK;
 		
@@ -107,7 +105,7 @@ public class Player extends Entity {
 			posY = initialY;
 			health = 10;
 		}
-		
+
 		Set<KeyCode> activeKeys = Game.inputHandler.getActiveKeys();
 		Set<MouseButton> activeButtons = Game.inputHandler.getActiveButtons();
 
@@ -157,7 +155,7 @@ public class Player extends Entity {
 			movement = movement.normalize();
 		}
 
-		double realSpeed = Math.ceil(this.speed * Game.LastFrameRate * deltaTime);
+		double realSpeed = Math.ceil(SPEED * Game.LastFrameRate * deltaTime);
 		movement = movement.scalarMultiply(realSpeed);
 
 		double movementX = Math.round(movement.getX());
