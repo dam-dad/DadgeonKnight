@@ -66,7 +66,8 @@ public abstract class Entity {
 		this.setPosX(x);
 		this.setPosY(y);
 	}
-	public static List<Entity> loadEntititiesFromCSV(String str) {
+
+	public static List<Entity> loadEntititiesFromCSV(String str, Camera camera) {
 		try {
 			List<String[]> a = CSV.readAllLines(Paths.get(CSV.class.getResource(str).toURI()));
 			List<Entity> toReturn  = new ArrayList<Entity>();
@@ -78,6 +79,7 @@ public abstract class Entity {
 				case "sword": toReturn.add(new Sword(TileSet.ITEMS_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2]), Game.tileSize, Game.tileSize)); break;
 				case "bow": toReturn.add(new Bow(TileSet.ITEMS_TILES,Double.parseDouble(e[1]), Double.parseDouble(e[2]), Game.tileSize, Game.tileSize)); break;
 				case "pillar": toReturn.add(new Pillar(TileSet.DANGEON_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2]))); break;
+				case "player": toReturn.add(new Player(Double.parseDouble(e[1]), Double.parseDouble(e[2]), 4, camera)); break;
 				default:break;
 				}
 			});

@@ -21,6 +21,7 @@ import nx.engine.tile.Tile;
 import nx.engine.tile.TileSet;
 import nx.engine.tile.TileSetManager;
 import nx.engine.world.Level;
+import nx.engine.world.WorldData;
 import nx.engine.world.entities.Orc;
 import nx.engine.world.entities.Player;
 import nx.game.App;
@@ -122,7 +123,7 @@ public class Game extends AnimationTimer {
 		if(scene instanceof TextScene) {
 			if(((TextScene) scene).hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
 				App.mixer.getMusic().fadeOut(20);
-				this.scene = new WorldScene();
+				this.scene = new WorldScene(WorldData.DUNGEON);
 			}
 		}
 		
