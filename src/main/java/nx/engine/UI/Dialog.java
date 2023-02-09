@@ -16,7 +16,8 @@ public class Dialog {
 	public Dialog(String title,String texts,UserInterfaceImage bg) {
 		try {
 			this.title = title;
-//			text = new TextAnimation(texts);
+			text = new TextAnimation(texts);
+			text.play();
 			this.bg = bg;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -24,6 +25,7 @@ public class Dialog {
 	}
 	
 	public void update(double timeDifference) {
+		text.update(timeDifference);
 		
 	}
 	public void draw(GraphicsContext gc) {
@@ -32,6 +34,8 @@ public class Dialog {
 		gc.setFont(Game.font);
 		gc.setFill(Color.FLORALWHITE);
 		gc.fillText(title, bg.getPosX() + 50, bg.getPosY() + 25);
+		
+		gc.fillText(text.getCurrentFrame(), 50, bg.getPosY() + bg.getHeight()/2);
 	}
 
 }

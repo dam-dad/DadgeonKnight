@@ -47,7 +47,7 @@ public class WorldScene implements Scene {
 	private String[] dungeonMap = {"/assets/levels/level1/DungeonLevel_Mapa.csv",
 								"/assets/levels/level1/DungeonLevel_Collitions.csv"};
 	
-	Dialog dialog = new Dialog("Prueba", null,UserInterfaceImage.Dialog);
+	Dialog dialog = new Dialog("Prueba","/assets/levels/startedMap/oldManText.csv",UserInterfaceImage.Dialog);
 
 	public WorldScene() {
 		String entities = "/assets/levels/entitties.csv";
@@ -67,6 +67,7 @@ public class WorldScene implements Scene {
 	public void update(double delta) {
 		world.update(delta);
 		particleManager.update(delta);
+		dialog.update(delta);
 	}
 
 	@Override
