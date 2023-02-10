@@ -31,8 +31,9 @@ public class World {
     	this(tileSet, fileNames);
     	entities.forEach(e -> addEntity(e));
     }
-    public World(TileSet tileSet, String entitties,String... fileNames) {
-    	this(tileSet, Entity.loadEntititiesFromCSV(entitties),fileNames);
+
+    public World(TileSet tileSet, String entitties, Camera camera, String... fileNames) {
+    	this(tileSet, Entity.loadEntititiesFromCSV(entitties, camera),fileNames);
     }
 
     public void update(double delta) {
