@@ -14,6 +14,7 @@ import nx.engine.particles.ParticleManager;
 import nx.engine.tile.TileSet;
 import nx.engine.world.World;
 import nx.engine.world.entities.Bow;
+import nx.engine.world.entities.OldMan;
 import nx.engine.world.entities.PickableEntity;
 import nx.engine.world.entities.Player;
 import nx.engine.world.entities.Sword;
@@ -47,8 +48,8 @@ public class WorldScene implements Scene {
 	private String[] dungeonMap = {"/assets/levels/level1/DungeonLevel_Mapa.csv",
 								"/assets/levels/level1/DungeonLevel_Collitions.csv"};
 	
-	Dialog dialog = new Dialog("Prueba","/assets/levels/startedMap/oldManText.csv",UserInterfaceImage.Dialog);
-
+	public static Dialog dialog;
+	
 	public WorldScene() {
 		String entities = "/assets/levels/entitties.csv";
 
@@ -61,13 +62,17 @@ public class WorldScene implements Scene {
 		this.player = new Player(26, 23, 4, camera);
 		
 		world.addEntity(player);
+		
+		world.addEntity(new OldMan(26, 27));
 	}
 
 	@Override
 	public void update(double delta) {
 		world.update(delta);
 		particleManager.update(delta);
-		dialog.update(delta);
+		
+		if(dialog != null)
+			dialog.update(delta);
 	}
 
 	@Override
@@ -81,12 +86,13 @@ public class WorldScene implements Scene {
 		gc.setFill(Color.WHITESMOKE);
 		gc.fillText(String.format("Vida: %d", player.getHealth()), 10, Game.screenheigth - 10);
 		
-		dialog.draw(gc);
-		
 		PickableEntity e = (PickableEntity) player.getItemSelected();
 		
 		if(!player.getInventory().isEmpty())
 			e.drawUI(gc);
+		
+		if(dialog != null)
+			dialog.draw(gc);
 	}
 
 	public World getWorld() {

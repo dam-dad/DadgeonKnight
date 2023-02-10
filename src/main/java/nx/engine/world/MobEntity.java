@@ -51,6 +51,13 @@ public class MobEntity extends Entity {
 				getPosX() - Game.tileSize < camera.getX() + Game.screenWidth &&
 				getPosY() + Game.tileSize > camera.getY() - Game.screenheigth &&
 				getPosY() - Game.tileSize  < camera.getY() + Game.screenheigth){
+			//draw image
+			if(animation == null) {
+				this.drawInternal(gc, camera, scale);
+				return;
+			}
+			
+			//draw animation
 			if (timeSinceLastHit < TIME_SHOWING_ATTACK) {
 				double alpha = ((1.0 - timeSinceLastHit / TIME_SHOWING_ATTACK) * 0.2) + 0.2;
 				gc.setGlobalAlpha(alpha);

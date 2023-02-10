@@ -1,7 +1,6 @@
 package nx.engine.UI;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import nx.engine.Game;
 import nx.engine.TextAnimation;
@@ -15,12 +14,16 @@ public class Dialog {
 	
 	private boolean isOn = false;
 	
+	public Dialog() {
+		this("Untitle",null,UserInterfaceImage.Dialog);
+	}
+	
 	public Dialog(String title,String texts,UserInterfaceImage bg) {
 		try {
 			this.title = title;
 			text = new TextAnimation(texts);
-			text.play();
 			this.bg = bg;
+			text.play();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -48,8 +51,45 @@ public class Dialog {
 
 	}
 	
-	public void openDialog(boolean a) {
-		this.isOn = a;
+	public boolean hasFinish() {
+		return text.hasEnded();
 	}
+	
+	public boolean isOn() {
+		return this.isOn;
+	}
+	
+	public void play() {
+		this.isOn = true;
+	}
+	public void pause() {
+		this.isOn = false;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public UserInterfaceImage getBg() {
+		return bg;
+	}
+
+	public void setBg(UserInterfaceImage bg) {
+		this.bg = bg;
+	}
+
+	public TextAnimation getText() {
+		return text;
+	}
+
+	public void setText(TextAnimation text) {
+		this.text = text;
+	}
+	
+	
 
 }
