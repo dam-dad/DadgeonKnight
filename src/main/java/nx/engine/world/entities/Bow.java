@@ -46,8 +46,9 @@ public class Bow extends PickableEntity {
 
 		Vector2D direction = new Vector2D(InputHandler.posX - Game.screenWidth/2, InputHandler.posY - Game.screenheigth/2);
 		direction = direction.normalize();
-
-		getWorld().addEntity(new Arrow(player.getPosX(), player.getPosY(), new Vector2f((float) direction.getX(), (float) direction.getY())));
+		
+		if(!player.isWalking())
+			getWorld().addEntity(new Arrow(player.getPosX(), player.getPosY(), new Vector2f((float) direction.getX(), (float) direction.getY())));
 	}
 
 }

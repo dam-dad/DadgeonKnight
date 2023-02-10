@@ -1,7 +1,6 @@
 package nx.engine.world.entities;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import nx.engine.Animation;
 import nx.engine.Game;
-import nx.engine.scenes.WorldScene;
 import nx.engine.tile.Tile;
 import nx.engine.world.Level;
 import nx.util.Direction;
@@ -28,7 +26,7 @@ public class Player extends Entity {
 	private static final int MAX_PLAYER_HEALTH = 10;
 	private static final double TIME_SHOWING_ATTACK = 0.5;
 	public static final double PLAYER_FORCE = 0.1;
-	public static final double SPEED = 12;
+	public static final double SPEED = 4;
 
 	public static final String walkTileSet = "/assets/textures/player/CharacterMovementSet.png";
 	public static final String swordSet = "/assets/textures/player/player_Sword.png";
@@ -234,6 +232,13 @@ public class Player extends Entity {
 	public void getAttacked(int damage) {
 		health -= damage;
 		timeSinceLastHit = 0;
+	}
+	
+	public boolean isWalking() {
+		return this.isWalking;
+	}
+	public boolean isAttacking() {
+		return this.isAttacking;
 	}
 
 	public int getHealth() {

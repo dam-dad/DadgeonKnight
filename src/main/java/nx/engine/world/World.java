@@ -3,8 +3,10 @@ package nx.engine.world;
 import javafx.scene.canvas.GraphicsContext;
 import nx.engine.Camera;
 import nx.engine.UI.Dialog;
+import nx.engine.scenes.WorldScene;
 import nx.engine.tile.TileSet;
 import nx.engine.world.entities.Entity;
+import nx.engine.world.entities.Player;
 import nx.util.CSV;
 
 import java.util.ArrayList;
@@ -29,7 +31,11 @@ public class World {
     }
     public World(TileSet tileSet, List<Entity> entities,String... fileNames) {
     	this(tileSet, fileNames);
-    	entities.forEach(e -> addEntity(e));
+    	entities.forEach(e -> {
+    		addEntity(e);
+    		if(e instanceof Player)
+    			WorldScene.player = (Player) e;
+    	});
     }
 
     public World(TileSet tileSet, String entitties, Camera camera, String... fileNames) {

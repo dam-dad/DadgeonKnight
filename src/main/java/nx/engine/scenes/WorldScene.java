@@ -13,6 +13,8 @@ import nx.engine.UI.Dialog;
 import nx.engine.particles.ParticleManager;
 import nx.engine.world.World;
 import nx.engine.world.WorldData;
+import nx.engine.world.entities.PickableEntity;
+import nx.engine.world.entities.Player;
 
 public class WorldScene implements Scene {
 
@@ -21,6 +23,8 @@ public class WorldScene implements Scene {
 	private final ParticleManager particleManager;
 	private final Camera camera;
 	private Font font = new Font(50);
+	
+	public static Player player;
 	
 	public static Dialog dialog;
 	public static Image smoke = new Image("/assets/textures/items/smoke.gif"); 
@@ -37,6 +41,8 @@ public class WorldScene implements Scene {
 
 		// TODO: Custom particle image
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
+		
+		
 	}
 
 	@Override
@@ -55,13 +61,13 @@ public class WorldScene implements Scene {
 		gc.setFill(radialGradient);
 		gc.fillRect(Game.screenWidth/2 - 500, Game.screenheigth/2 - 500, 1000, 1000);
 
-//		gc.setFont(font);
-//		gc.setFill(Color.WHITESMOKE);
-//		gc.fillText(String.format("Vida: %d", player.getHealth()), 10, Game.screenheigth - 10);
-//
-//		PickableEntity e = (PickableEntity) player.getItemSelected();
-//		if(!player.getInventory().isEmpty())
-//			e.drawUI(gc);
+		gc.setFont(font);
+		gc.setFill(Color.WHITESMOKE);
+		gc.fillText(String.format("Vida: %d", player.getHealth()), 10, Game.screenheigth - 10);
+
+		PickableEntity e = (PickableEntity) player.getItemSelected();
+		if(!player.getInventory().isEmpty())
+			e.drawUI(gc);
 		
 		if(dialog != null)
 			dialog.draw(gc);
