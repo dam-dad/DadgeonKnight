@@ -13,7 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 
-public class SettingsComponent implements Initializable {
+public class SettingsComponent extends GridPane implements Initializable {
 
 	/*
 	 * TODO 1. crear componene de los ajustes. 2. añadir componente a un group. 3.
@@ -30,16 +30,13 @@ public class SettingsComponent implements Initializable {
 	@FXML
 	private Label settingsLabel;
 
-	@FXML
-	private GridPane view;
-
 	public SettingsComponent() {
 		super();
 		try {
 
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SettingsView.fxml"));
 			loader.setController(this);
-//			loader.setRoot(this);
+			loader.setRoot(this);
 			loader.load();
 
 		} catch (IOException e) {
@@ -60,10 +57,6 @@ public class SettingsComponent implements Initializable {
 	@FXML
 	void onCancelAction(ActionEvent event) {
 
-	}
-
-	public GridPane getView() {
-		return view;
 	}
 
 }

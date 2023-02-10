@@ -5,7 +5,8 @@
 
 .root {
 	-fx-font-family: 'Press Start 2P';
-	-fx-background-color: #A0522Da0;
+	-fx-background-image: url('../assets/menu/settingsBackground.png');
+	-fx-background-size: null;
 }
 
 .settings {
@@ -15,9 +16,10 @@
 }
 
 .button{
-	-fx-background-color: #DC7633a0;
+	-fx-background-color: #DC763300;
 }
 
 .slider{
+	-fx-color: #DC7633;
 	-fx-effect: dropshadow(gaussian, grey, 10.0, 0.1, 2.0,2.0);
 }
