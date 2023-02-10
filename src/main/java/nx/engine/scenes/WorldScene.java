@@ -1,6 +1,7 @@
 package nx.engine.scenes;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
@@ -9,16 +10,11 @@ import javafx.scene.text.Font;
 import nx.engine.Camera;
 import nx.engine.Game;
 import nx.engine.UI.Dialog;
-import nx.engine.UI.UserInterfaceImage;
 import nx.engine.particles.ParticleManager;
 import nx.engine.tile.TileSet;
 import nx.engine.world.World;
-import nx.engine.world.entities.Bow;
-import nx.engine.world.entities.OldMan;
 import nx.engine.world.entities.PickableEntity;
 import nx.engine.world.entities.Player;
-import nx.engine.world.entities.Sword;
-import nx.engine.world.entities.Wizard;
 
 public class WorldScene implements Scene {
 
@@ -28,6 +24,9 @@ public class WorldScene implements Scene {
 	
 	private final ParticleManager particleManager;
 	private final Camera camera;
+	
+	public static Dialog dialog;
+	
 	private Font font = new Font(50);
 	
 	private RadialGradient radialGradient = new RadialGradient(0,0,.5,.5,0.15, true, CycleMethod.NO_CYCLE,
@@ -48,7 +47,7 @@ public class WorldScene implements Scene {
 	private String[] dungeonMap = {"/assets/levels/level1/DungeonLevel_Mapa.csv",
 								"/assets/levels/level1/DungeonLevel_Collitions.csv"};
 	
-	public static Dialog dialog;
+	public static Image smoke = new Image("/assets/textures/items/smoke.gif"); 
 	
 	public WorldScene() {
 		String entities = "/assets/levels/entitties.csv";
@@ -62,8 +61,6 @@ public class WorldScene implements Scene {
 		this.player = new Player(26, 23, 4, camera);
 		
 		world.addEntity(player);
-		
-		world.addEntity(new OldMan(26, 27));
 	}
 
 	@Override

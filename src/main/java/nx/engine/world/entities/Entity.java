@@ -73,6 +73,7 @@ public abstract class Entity {
 			a.forEach(e -> {
 				switch (e[0].toLowerCase()) {
 				case "orc": toReturn.add(new Orc(Double.parseDouble(e[1]),Double.parseDouble(e[2]),Double.parseDouble(e[3]),Double.parseDouble(e[4]))); break;
+				case "magicalman": toReturn.add(new MagicalMan(Double.parseDouble(e[1]),Double.parseDouble(e[2]))); break;
 				case "wizard": toReturn.add(new Wizard(Double.parseDouble(e[1]),Double.parseDouble(e[2]))); break;
 				case "armor": toReturn.add(new Armor(TileSet.ITEMS_TILES,Double.parseDouble(e[1]),Double.parseDouble(e[2]))); break;
 				case "sword": toReturn.add(new Sword(TileSet.ITEMS_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2]), Game.tileSize, Game.tileSize)); break;

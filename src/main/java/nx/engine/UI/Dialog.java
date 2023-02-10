@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 import nx.engine.Game;
 import nx.engine.TextAnimation;
 
-public class Dialog {
+public class Dialog implements UI {
 	
 	private String title;
 	
@@ -29,6 +29,7 @@ public class Dialog {
 		}
 	}
 	
+	@Override
 	public void update(double timeDifference) {
 		if(!isOn)
 			return;
@@ -37,6 +38,7 @@ public class Dialog {
 		text.update(timeDifference);
 		
 	}
+	@Override
 	public void draw(GraphicsContext gc) {
 		if(!isOn)
 			return;
