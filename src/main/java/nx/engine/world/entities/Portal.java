@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 
 public class Portal extends Entity {
 
-    private static final double DISTANCE = 48;
+    private static final double DISTANCE = 24;
 
     private static final Image image = TileSetManager.loadImageFromTileSet(TileSet.ITEMS_TILES, 5, 16, 16);
 
     private final String scene;
 
     public Portal(double x, double y, String scene) {
-        super((x + 0.5) * Game.tileSize, (y + 0.5) * Game.tileSize, image);
+        super(image, (x + 0.5) * Game.tileSize, (y + 0.5) * Game.tileSize, Game.tileSize, Game.tileSize);
 
         this.scene = scene;
     }

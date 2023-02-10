@@ -5,13 +5,15 @@ import nx.util.CSV;
 public class Layer {
 
     private int layerWidth, layerHeight;
+    private Level level;
 
     private final int[][] tiles;
 
-    public Layer(String fileName) {
+    public Layer(Level level, String fileName) {
+        this.level = level;
         this.tiles = CSV.loadMapValues(fileName);
         
-        Level.setMapSize(tiles.length, tiles[0].length);
+        level.setMapSize(tiles.length, tiles[0].length);
 
         this.layerWidth = tiles.length;
         this.layerHeight = tiles[0].length;
@@ -19,7 +21,7 @@ public class Layer {
     
     public Layer(int width,int height) {
     	this.tiles = new int[height][width];
-    	
+
     	this.layerHeight = height;
     	this.layerWidth = width;
     	

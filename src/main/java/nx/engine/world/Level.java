@@ -13,10 +13,10 @@ import java.util.List;
 public class Level {
 
     // Map settings
-    public static int maxWorldCol = 20;
-    public static int maxWorldRow = 20;
-    public static int worldWidth = Game.tileSize * maxWorldCol;
-    public static int worldHeigth = Game.tileSize * maxWorldRow;
+    public int maxWorldCol = 20;
+    public int maxWorldRow = 20;
+    public int worldWidth = Game.tileSize * maxWorldCol;
+    public int worldHeigth = Game.tileSize * maxWorldRow;
 
     private final List<Layer> layers;
     private final Layer collisionLayer;
@@ -31,10 +31,10 @@ public class Level {
         this.layers = new ArrayList<>();
 
         for (int i = 0; i < fileNames.length - 1; i++) {
-            layers.add(new Layer(fileNames[i]));
+            layers.add(new Layer(this, fileNames[i]));
         }
 
-        this.collisionLayer = new Layer(fileNames[fileNames.length - 1]);
+        this.collisionLayer = new Layer(this, fileNames[fileNames.length - 1]);
 
         this.levelWidth = collisionLayer.getLayerWidth();
         this.levelHeight = collisionLayer.getLayerHeight();
@@ -90,11 +90,12 @@ public class Level {
         if (y < 0 || y >= levelHeight) return true;
         return collisionLayer.getTiles()[x][y] != -1;
     }
-    public static void setMapSize(int col,int row) {
-    	Level.maxWorldCol = col;
-    	Level.maxWorldRow = row;
-    	Level.worldWidth = Game.tileSize * maxWorldCol;
-        Level.worldHeigth = Game.tileSize * maxWorldRow;
+
+    public void setMapSize(int col,int row) {
+    	this.maxWorldCol = col;
+    	this.maxWorldRow = row;
+    	this.worldWidth = Game.tileSize * maxWorldCol;
+        this.worldHeigth = Game.tileSize * maxWorldRow;
     }
 
 }
