@@ -9,11 +9,9 @@ public class Layer {
 
     private final int[][] tiles;
 
-    public Layer(Level level, String fileName) {
-        this.level = level;
-        this.tiles = CSV.loadMapValues(fileName);
-        
-        level.setMapSize(tiles.length, tiles[0].length);
+    public Layer(int[][] tiles) {
+        this.tiles = tiles;
+//        this.tiles = CSV.loadMapValues(fileName);
 
         this.layerWidth = tiles.length;
         this.layerHeight = tiles[0].length;
@@ -32,6 +30,11 @@ public class Layer {
     	}
 	}
 
+    public void setLevel(Level level) {
+        this.level = level;
+        level.setMapSize(layerWidth, layerHeight);
+    }
+
     public int getLayerWidth() {
         return layerWidth;
     }
@@ -42,6 +45,15 @@ public class Layer {
 
     public int[][] getTiles() {
         return tiles;
+    }
+
+    public static Layer[] loadLayersFromFiles(String... fileNames) {
+        Layer[] layers = new Layer[fileNames.length];
+        for (int i = 0; i < layers.length; i++) {
+            layers[i] = new Layer(CSV.loadMapValues(fileNames[i]));
+        }
+
+        return layers;
     }
 
 }

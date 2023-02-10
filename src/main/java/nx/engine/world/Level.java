@@ -26,15 +26,18 @@ public class Level {
 
     private final TileSet tileSet;
 
-    public Level(TileSet tileSet, String... fileNames) {
+    public Level(TileSet tileSet, Layer... layers) {
         this.tileSet = tileSet;
         this.layers = new ArrayList<>();
 
-        for (int i = 0; i < fileNames.length - 1; i++) {
-            layers.add(new Layer(this, fileNames[i]));
+        for (int i = 0; i < layers.length - 1; i++) {
+            Layer layer = layers[i];
+            layer.setLevel(this);
+            this.layers.add(layer);
         }
 
-        this.collisionLayer = new Layer(this, fileNames[fileNames.length - 1]);
+        this.collisionLayer = layers[layers.length - 1];
+        collisionLayer.setLevel(this);
 
         this.levelWidth = collisionLayer.getLayerWidth();
         this.levelHeight = collisionLayer.getLayerHeight();

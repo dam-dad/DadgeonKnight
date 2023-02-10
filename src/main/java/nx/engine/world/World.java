@@ -18,24 +18,21 @@ public class World {
     private final List<Entity> entitiesToAdd;
     private final List<Entity> entitiesToRemove;
 
-    public World(TileSet tileSet, String... fileNames) {
-        this.level = new Level(tileSet, fileNames);
+    public World(TileSet tileSet, Layer... layers) {
+        this.level = new Level(tileSet, layers);
         this.entities = new ArrayList<>();
 
         this.entitiesToAdd = new ArrayList<>();
         this.entitiesToRemove = new ArrayList<>();
-
-        System.out.println(fileNames[0]);
-        System.out.println(level.getLayers().get(0).getLayerWidth());
         
     }
-    public World(TileSet tileSet, List<Entity> entities,String... fileNames) {
-    	this(tileSet, fileNames);
+    public World(TileSet tileSet, List<Entity> entities, Layer... layers) {
+    	this(tileSet, layers);
     	entities.forEach(e -> addEntity(e));
     }
 
-    public World(TileSet tileSet, String entitties, Camera camera, String... fileNames) {
-    	this(tileSet, Entity.loadEntititiesFromCSV(entitties, camera),fileNames);
+    public World(TileSet tileSet, String entitties, Camera camera, Layer... layers) {
+    	this(tileSet, Entity.loadEntititiesFromCSV(entitties, camera), layers);
     }
 
     public void update(double delta) {
