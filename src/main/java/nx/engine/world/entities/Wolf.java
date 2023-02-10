@@ -44,11 +44,14 @@ public class Wolf extends MobEntity {
 		initialSpeed = speed;
 		this.scale = 2;
 		this.player = player;
+		
+		this.sizeTextureX = tileSizeX;
+		this.sizeTextureY = tileSizeY;
 
 		this.width = this.sizeTextureX * this.scale;
 		this.height = this.sizeTextureY * this.scale;
 
-		direction = Direction.values()[2];
+		direction = Direction.SOUTH;
 
 		this.animation = walk.get(direction);
 		this.sizePlayerDetection = 150;
@@ -125,11 +128,4 @@ public class Wolf extends MobEntity {
 
 		animation.update(deltaTime);
 	}
-
-//	@Override
-//	public void draw(GraphicsContext gc, Camera camera) {
-//		gc.drawImage(animation.getCurrentFrame(), Game.SCREEN_CENTER_X - camera.getX() + getPosX(),
-//				Game.SCREEN_CENTER_Y - camera.getY() + getPosY(), sizeTextureX * scale, sizeTextureY * scale);
-//	}
-
 }

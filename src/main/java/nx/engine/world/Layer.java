@@ -10,6 +10,8 @@ public class Layer {
 
     public Layer(String fileName) {
         this.tiles = CSV.loadMapValues(fileName);
+        
+        Level.setMapSize(tiles.length, tiles[0].length);
 
         this.layerWidth = tiles.length;
         this.layerHeight = tiles[0].length;

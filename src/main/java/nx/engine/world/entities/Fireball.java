@@ -3,6 +3,7 @@ package nx.engine.world.entities;
 import javafx.scene.image.Image;
 import nx.engine.Game;
 import nx.engine.particles.Particle;
+import nx.game.App;
 import nx.util.Music;
 import nx.util.Vector2f;
 
@@ -49,8 +50,7 @@ public class Fireball extends Entity {
             player.getAttacked(3);
             getWorld().removeEntity(this);
 
-            Music music = new Music("explosion.wav");
-            music.play();
+            App.mixer.addGameSound("explosion.wav").setVolume(0.04).play();
 
             createParticleEffect(getPosX(), getPosY());
         }

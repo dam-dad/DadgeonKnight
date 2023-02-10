@@ -1,9 +1,11 @@
 package nx.engine.world;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import nx.engine.Camera;
 import nx.engine.Game;
 import nx.engine.tile.TileSet;
+import nx.engine.tile.TileSetManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,13 @@ public class Level {
     private final List<Layer> layers;
     private final Layer collisionLayer;
 
-    public Level(String... fileNames) {
+    private final int levelWidth;
+    private final int levelHeight;
+
+    private final TileSet tileSet;
+
+    public Level(TileSet tileSet, String... fileNames) {
+        this.tileSet = tileSet;
         this.layers = new ArrayList<>();
 
         for (int i = 0; i < fileNames.length - 1; i++) {
@@ -27,6 +35,9 @@ public class Level {
         }
 
         this.collisionLayer = new Layer(fileNames[fileNames.length - 1]);
+
+        this.levelWidth = collisionLayer.getLayerWidth();
+        this.levelHeight = collisionLayer.getLayerHeight();
     }
 
     public void draw(GraphicsContext gc, Camera camera) {
@@ -47,14 +58,11 @@ public class Level {
                 //Map base
 
             	for(int i = 0; i < layers.size(); i++) {
-            		gc.drawImage(TileSet.tiles[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
+            		if(layers.get(i).getTiles()[worldCol][worldRow] != -1)
+            			gc.drawImage(tileSet.getTiles()[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
             	}
             	
-//            	if(isSolid(worldCol, worldRow)) {
-//                	gc.setFill(Color.BLUE);
-//                	gc.fillRect(Game.SCREEN_CENTER_X - camera.getX() + worldX,Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
-//            	}
-
+//            	displayCollisions(gc,camera,worldCol,worldRow,worldX,worldY);
             }
 
             worldCol++;
@@ -65,13 +73,28 @@ public class Level {
             }
         }
     }
+    
+    private void displayCollisions(GraphicsContext gc, Camera camera,int worldCol,int worldRow,int worldX,int worldY) {
+    	if(isSolid(worldCol, worldRow)) {
+        	gc.setFill(Color.BLUE);
+        	gc.fillRect(Game.SCREEN_CENTER_X - camera.getX() + worldX,Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
+    	}
+    }
 
     public List<Layer> getLayers() {
         return layers;
     }
 
     public boolean isSolid(int x, int y) {
+        if (x < 0 || x >= levelWidth) return true;
+        if (y < 0 || y >= levelHeight) return true;
         return collisionLayer.getTiles()[x][y] != -1;
+    }
+    public static void setMapSize(int col,int row) {
+    	Level.maxWorldCol = col;
+    	Level.maxWorldRow = row;
+    	Level.worldWidth = Game.tileSize * maxWorldCol;
+        Level.worldHeigth = Game.tileSize * maxWorldRow;
     }
 
 }

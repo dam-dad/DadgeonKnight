@@ -16,11 +16,14 @@ import nx.engine.Game;
  */
 public class GameController implements Initializable {
 
+	//Model
+	
 	private Game game;
 
+	//View
+	
 	@FXML
 	private BorderPane view;
-
 	@FXML
 	private Canvas canvas;
 
