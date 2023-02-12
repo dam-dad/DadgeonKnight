@@ -23,6 +23,7 @@ public class Dialog implements UI {
 			this.title = title;
 			text = new TextAnimation(texts);
 			this.bg = bg;
+			text.setSpeed(3);
 			text.play();
 		} catch (Exception e) {
 			e.printStackTrace();

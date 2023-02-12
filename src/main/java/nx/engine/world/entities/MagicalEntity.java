@@ -14,10 +14,11 @@ import nx.engine.particles.Particle;
 import nx.engine.scenes.WorldScene;
 import nx.engine.tile.TileSet;
 import nx.engine.world.MobEntity;
+import nx.game.App;
 import nx.util.Direction;
 import nx.util.Vector2f;
 
-public class MagicalMan extends MobEntity {
+public class MagicalEntity extends MobEntity {
 	
 	public boolean isFinish = false;
 	
@@ -25,12 +26,18 @@ public class MagicalMan extends MobEntity {
 	
 	public double ANIMATION_SPEED = 0.4;
 	
+	private double time = 0.0;
+	private final double timeToDie = 2.0;
+	
+	
+	private Entity entity;
+	
 	
 	private final Map<Direction, Animation> walk = new HashMap<>() {{
 		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkTileSet,0,16,32));
 	}};
 
-	public MagicalMan(double posX, double posY) {
+	public MagicalEntity(double posX, double posY) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 		
 		this.hasDamage = false;
@@ -47,6 +54,8 @@ public class MagicalMan extends MobEntity {
 //		this.image = new Image("/assets/textures/player/kevin_idle_00.png");
 		
 		this.sizePlayerDetection = 120;
+		
+		entity = new Sword(TileSet.ITEMS_TILES, getPosX()/Game.tileSize, getPosY()/Game.tileSize, Game.tileSize, Game.tileSize);
 
 	}
 	
@@ -74,14 +83,18 @@ public class MagicalMan extends MobEntity {
 		}
 		
 		if(WorldScene.dialog != null && WorldScene.dialog.hasFinish()) {
+			time += deltaTime;
+		}
+		if(time > timeToDie) {
+			getWorld().addEntity(entity);
+			createParticleEffect(getPosX(),getPosY());
+			App.mixer.addGameSound("SmokeExplosion.wav").setVolume(0.04).play();
+			getWorld().removeEntity(this);
 			WorldScene.dialog = null;
 			isFinish = true;
-			getWorld().addEntity(new Sword(TileSet.ITEMS_TILES, getPosX()/Game.tileSize, getPosY()/Game.tileSize, Game.tileSize, Game.tileSize));
-			createParticleEffect(getPosX(),getPosY());
-			getWorld().removeEntity(this);
-			
-
 		}
+		
+		
 	}
 	
     private void createParticleEffect(double posX, double posY) {

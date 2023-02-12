@@ -142,7 +142,7 @@ public class Player extends Entity {
 			previousItem();
 		}
 		
-		if(activeButtons.contains(MouseButton.PRIMARY)) {
+		if(activeButtons.contains(MouseButton.PRIMARY) || activeKeys.contains(KeyCode.SPACE)) {
 			Game.inputHandler.ClearActiveButtons();
 			
 			PickableEntity p = (PickableEntity) getItemSelected();

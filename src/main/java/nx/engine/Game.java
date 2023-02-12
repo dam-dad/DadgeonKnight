@@ -74,9 +74,12 @@ public class Game extends AnimationTimer {
 		canvas.setOnKeyReleased(inputHandler.keyInputHandler);
 		canvas.setOnMousePressed(inputHandler.mouseInputHandler);
 		canvas.setOnMouseReleased(inputHandler.mouseInputHandler);
+		canvas.setOnMouseMoved(inputHandler.mouseInputHandler);
 		canvas.setOnScroll(inputHandler.scrollInputHandler);
 		canvas.setFocusTraversable(true);
 		canvas.requestFocus();
+		
+
 
 		init();
 	}

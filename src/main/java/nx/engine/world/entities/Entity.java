@@ -97,7 +97,7 @@ public abstract class Entity {
 						toReturn.add(new Player(Double.parseDouble(e[1]), Double.parseDouble(e[2]), camera));
 						break;
 					case "magicalman":
-						toReturn.add(new MagicalMan(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
+						toReturn.add(new MagicalEntity(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;	
 					case "portal":
 						toReturn.add(new Portal(Double.parseDouble(e[1]), Double.parseDouble(e[2]), new WorldScene(WorldData.getByName(e[3]))));
