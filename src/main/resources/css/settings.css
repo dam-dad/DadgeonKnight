@@ -1,0 +1,25 @@
+@font-face {
+	font-family: 'Press Start 2P';
+	src: url('../assets/menu/PressStart2P-Regular.ttf');
+}
+
+.root {
+	-fx-font-family: 'Press Start 2P';
+	-fx-background-image: url('../assets/menu/settingsBackground.png');
+	-fx-background-size: null;
+}
+
+.settings {
+	-fx-font-family: 'Press Start 2P';
+	-fx-effect: dropshadow(gaussian, black, 10.0, 0.1, 2.0,2.0);
+	-fx-text-fill: linear-gradient(from 0.0% 0.0% to 100.0% 100.0%, #DC7633 0.0%,#C0392B 50.0%, #DC7633 100.0%);
+}
+
+.button{
+	-fx-background-color: #DC763300;
+}
+
+.slider{
+	-fx-color: #DC7633;
+	-fx-effect: dropshadow(gaussian, grey, 10.0, 0.1, 2.0,2.0);
+}
