@@ -17,8 +17,6 @@ import javafx.stage.Stage;
 
 public class MenuController implements Initializable {
 
-	GameController gameCotroller = new GameController();
-
 	// view
 	private SettingsComponent settingsComponent;
 
@@ -59,14 +57,14 @@ public class MenuController implements Initializable {
 
 	@FXML
 	void onPlayAction(ActionEvent event) {
-		App.mainStage.setScene(new Scene(gameCotroller.getView()));
+		App.mainStage.setScene(new Scene(GameController.getInstance().getView()));
 	}
 
 	@FXML
 	void onSettingsAction(ActionEvent event) throws IOException {
 
 //		App.secondStage.initOwner(App.mainStage);
-		App.secondStage.getScene().setRoot(settingsComponent);
+//		App.secondStage.getScene().setRoot(settingsComponent);
 //		App.secondStage.setScene(new Scene(settingsComponent));
 	}
 
