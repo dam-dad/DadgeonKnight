@@ -9,7 +9,6 @@ import nx.util.SoundMixer;
 public class App extends Application {
 
 	public static Stage mainStage;
-	public static Stage secondStage;
 
 	public static MenuController menuController;
 
@@ -19,7 +18,6 @@ public class App extends Application {
 	public void start(Stage stage) throws Exception {
 
 		App.mainStage = stage;
-		App.secondStage = stage;
 
 		menuController = new MenuController();
 
@@ -27,9 +25,7 @@ public class App extends Application {
 
 		stage.setResizable(false);
 		stage.setTitle("Dadgeon Knight");
-		stage.getIcons().add(new Image("/assets/icons/helmet-16x16.png"));
-		stage.getIcons().add(new Image("/assets/icons/helmet-32x32.png"));
-		stage.getIcons().add(new Image("/assets/icons/helmet-64x64.png"));
+		stage.getIcons().addAll(new Image("/assets/icons/helmet-16x16.png"),new Image("/assets/icons/helmet-32x32.png"),new Image("/assets/icons/helmet-64x64.png"));
 		stage.setScene(new Scene(menuController.getView()));
 		stage.show();
 

@@ -8,16 +8,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 public class MenuController implements Initializable {
-
-	private GameController controller;
 
 	// view
 	private SettingsComponent settingsComponent;
@@ -59,13 +55,12 @@ public class MenuController implements Initializable {
 
 	@FXML
 	void onPlayAction(ActionEvent event) {
-		controller = new GameController();
-		App.mainStage.setScene(new Scene(controller.getView()));
+		App.mainStage.setScene(new Scene(GameController.getInstance().getView()));
 	}
 
 	@FXML
 	void onSettingsAction(ActionEvent event) throws IOException {
-		App.secondStage.getScene().setRoot(settingsComponent);
+//		App.mainStage.getScene().setRoot(settingsComponent);
 	}
 
 	public GridPane getView() {
