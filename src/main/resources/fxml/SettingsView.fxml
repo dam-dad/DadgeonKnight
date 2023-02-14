@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="350.0" stylesheets="@../css/settings.css" type="GridPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/settings.css" type="GridPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -26,9 +26,6 @@
   </rowConstraints>
    <children>
       <Label fx:id="settingsLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="settings" text="AJUSTES" GridPane.columnSpan="3" GridPane.halignment="CENTER">
-         <font>
-            <Font size="36.0" />
-         </font>
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
@@ -63,23 +60,26 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                <children>
-                  <Label text="Música" />
-                  <Slider fx:id="musicSlider" />
-                  <Label text="0%" />
+                  <Label styleClass="text" text="Música">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+                  <Slider fx:id="musicSlider" value="50.0" />
+                  <Label fx:id="musicLabel" styleClass="text" text="50%" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                <children>
-                  <Label text="Efectos" />
-                  <Slider fx:id="effectsSlider" />
-                  <Label text="0%" />
+                  <Label styleClass="text" text="Juego" />
+                  <Slider fx:id="effectsSlider" value="50.0" />
+                  <Label fx:id="effectsLabel" styleClass="text" text="50%" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                <children>
-                  <Label text="General" />
-                  <Slider fx:id="generalSlider" maxWidth="1.7976931348623157E308" />
-                  <Label text="0%" />
+                  <Label styleClass="text" text="General" />
+                  <Slider fx:id="generalSlider" maxWidth="1.7976931348623157E308" value="50.0" />
+                  <Label fx:id="generalLabel" styleClass="text" text="50%" />
                </children>
             </HBox>
          </children>
