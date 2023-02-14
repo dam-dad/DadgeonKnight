@@ -3,15 +3,14 @@ package nx.game;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import nx.util.Music;
 import nx.util.SoundMixer;
 
 public class App extends Application {
-	
+
 	public static Stage mainStage;
+
 	
-	private GameController controller;
-	
+	private MenuController menuController;
 	
 	public static SoundMixer mixer = new SoundMixer();
 
@@ -19,15 +18,17 @@ public class App extends Application {
 	public void start(Stage stage) throws Exception {
 
 		App.mainStage = stage;
+
+		
+		menuController = new MenuController();
 		
 		mixer.setMusic("xDeviruchi - Title Theme .wav").setLoop(true).fadeIn(0,0.05,2);
-		
-		controller = new GameController();
-		
+
 		stage.setResizable(false);
-		stage.setTitle("DADgeon_Knight");
-		stage.setScene(new Scene(controller.getView()));
+		stage.setTitle("Dadgeon Knight");
+		stage.setScene(new Scene(menuController.getView()));
 		stage.show();
+
 	}
 
 }

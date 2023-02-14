@@ -15,7 +15,7 @@ public class Portal extends Entity {
 
     private static final double DISTANCE = 24;
 
-    private static final Image image = TileSetManager.loadImageFromTileSet(TileSet.ITEMS_TILES, 5, 16, 16);
+    private static final Image image = TileSetManager.loadImageFromTileSet(TileSet.DANGEON_TILES, 114, Game.tileSize*2,Game.tileSize*2);
 
     private final String scene;
 

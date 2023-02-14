@@ -15,6 +15,8 @@ import nx.engine.Game;
  * Controlador que gestiona el mapa del juego
  */
 public class GameController implements Initializable {
+	
+	private static GameController instance;
 
 	//Model
 	
@@ -27,14 +29,18 @@ public class GameController implements Initializable {
 	@FXML
 	private Canvas canvas;
 
-	public GameController() {
-		try { 
+	private GameController() {
+		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/GameView.fxml"));
 			loader.setController(this);
 			loader.load();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public static GameController getInstance() {
+		return instance == null ? instance = new GameController() : instance;
 	}
 
 	@Override

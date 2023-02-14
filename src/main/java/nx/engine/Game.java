@@ -79,6 +79,7 @@ public class Game extends AnimationTimer {
 		canvas.setOnKeyReleased(inputHandler.keyInputHandler);
 		canvas.setOnMousePressed(inputHandler.mouseInputHandler);
 		canvas.setOnMouseReleased(inputHandler.mouseInputHandler);
+		canvas.setOnMouseMoved(inputHandler.mouseInputHandler);
 		canvas.setOnScroll(inputHandler.scrollInputHandler);
 		canvas.setFocusTraversable(true);
 		canvas.requestFocus();
@@ -147,7 +148,7 @@ public class Game extends AnimationTimer {
 		if(scene instanceof TextScene) {
 			if(((TextScene) scene).hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
 				App.mixer.getMusic().fadeOut(20);
-				changeScene(new WorldScene(WorldData.TEST));
+				changeScene(new WorldScene(WorldData.START_LEVEL));
 			}
 		}
 		

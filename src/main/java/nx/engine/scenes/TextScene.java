@@ -60,7 +60,6 @@ public class TextScene implements Scene {
 			gc.setGlobalAlpha(alpha);
 			if(alpha <= 0)
 				this.ended = true;
-			
 		}
 		gc.setFont(Game.font);
 		gc.setFill(Color.WHITESMOKE);
