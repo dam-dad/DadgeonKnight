@@ -16,11 +16,17 @@ public class Portal extends Entity {
     private static final Image image = TileSetManager.loadImageFromTileSet(TileSet.DANGEON_TILES, 114, Game.tileSize*2,Game.tileSize*2);
 
     private final Scene scene;
+    
+    private final double posSpawnX;
+    private final double posSpawnY;
 
-    public Portal(double x, double y, Scene scene) {
+    public Portal(double x, double y, Scene scene, double posSpawnX, double posSpawnY) {
         super(image,x * Game.tileSize, y * Game.tileSize,Game.tileSize * 2,Game.tileSize * 2);
 
         this.scene = scene;
+        
+        this.posSpawnX = posSpawnX;
+        this.posSpawnY = posSpawnY;
     }
 
     @Override
@@ -33,6 +39,8 @@ public class Portal extends Entity {
 
         if (playerList.size() > 0) {
             Game.changeScene(scene);
+            Game.player.setPosition(posSpawnX,posSpawnY);
+            Game.player.getCamera().setPosition(posSpawnX, posSpawnY);
         }
     }
 

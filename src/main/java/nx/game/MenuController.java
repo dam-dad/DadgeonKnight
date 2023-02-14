@@ -40,7 +40,20 @@ public class MenuController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		settingsComponent = new SettingsComponent();
-
+		
+		
+		exitButton.setOnMouseEntered(e -> {
+			App.mixer.addGameSound("text_regular.mp3").play();
+		});
+		fameButton.setOnMouseEntered(e -> {
+			App.mixer.addGameSound("text_regular.mp3").play();
+		});
+		playButton.setOnMouseEntered(e -> {
+			App.mixer.addGameSound("text_regular.mp3").play();
+		});
+		settingsButton.setOnMouseEntered(e -> {
+			App.mixer.addGameSound("text_regular.mp3").play();
+		});
 	}
 
 	@FXML
@@ -56,6 +69,7 @@ public class MenuController implements Initializable {
 	@FXML
 	void onPlayAction(ActionEvent event) {
 		App.mainStage.setScene(new Scene(GameController.getInstance().getView()));
+		App.mixer.setMusic("xDeviruchi - Title Theme .wav").setLoop(true).fadeIn(0, 0.05, 2);
 	}
 
 	@FXML

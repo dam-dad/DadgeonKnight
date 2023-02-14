@@ -21,8 +21,6 @@ public class App extends Application {
 
 		menuController = new MenuController();
 
-		mixer.setMusic("xDeviruchi - Title Theme .wav").setLoop(true).fadeIn(0, 0.05, 2);
-
 		stage.setResizable(false);
 		stage.setTitle("Dadgeon Knight");
 		stage.getIcons().addAll(new Image("/assets/icons/helmet-16x16.png"),new Image("/assets/icons/helmet-32x32.png"),new Image("/assets/icons/helmet-64x64.png"));

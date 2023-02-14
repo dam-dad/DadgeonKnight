@@ -1,20 +1,14 @@
 package nx.engine.world.entities;
 
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import nx.engine.Camera;
 import nx.engine.Game;
 import nx.engine.InputHandler;
 import nx.engine.tile.TileSet;
 import nx.engine.tile.TileSetManager;
-import nx.engine.world.MobEntity;
 import nx.util.Vector2f;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-
-import java.util.List;
-import java.util.Optional;
 
 public class Bow extends PickableEntity {
 

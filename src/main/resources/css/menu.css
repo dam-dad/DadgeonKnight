@@ -4,8 +4,11 @@
 }
 
 .root {
+	-fx-background-size: 768,576;
+	-fx-background-repeat: no-repeat;
+	-fx-background-color: black;
 	-fx-background-image: url('../assets/menu/darksoulfondo.gif');
-	-fx-background-size: null;
+	-fx-background-position: center ;
 }
 
 .name {

@@ -97,7 +97,7 @@ public abstract class Entity {
 						toReturn.add(new MagicalEntity(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;	
 					case "portal":
-						toReturn.add(new Portal(Double.parseDouble(e[1]), Double.parseDouble(e[2]), new WorldScene(WorldData.getByName(e[3]))));
+						toReturn.add(new Portal(Double.parseDouble(e[1]), Double.parseDouble(e[2]), new WorldScene(WorldData.getByName(e[3])),Double.parseDouble(e[4]),Double.parseDouble(e[5])));
 						break;
 					default:
 						break;
