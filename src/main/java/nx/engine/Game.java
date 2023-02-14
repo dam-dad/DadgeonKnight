@@ -88,7 +88,7 @@ public class Game extends AnimationTimer {
 	
 	public void init() {
 		try {
-			
+			System.out.println("game");
 			scene = new TextScene("/assets/levels/intro/introEN.csv");
 		} catch (Exception e) {
 			e.printStackTrace();
