@@ -2,6 +2,7 @@ package nx.engine.world;
 
 import javafx.scene.canvas.GraphicsContext;
 import nx.engine.Camera;
+import nx.engine.Game;
 import nx.engine.UI.Dialog;
 import nx.engine.scenes.WorldScene;
 import nx.engine.tile.TileSet;
@@ -33,9 +34,9 @@ public class World {
     	this(tileSet, fileNames);
     	entities.forEach(e -> {
     		addEntity(e);
-    		if(e instanceof Player)
-    			WorldScene.player = (Player) e;
     	});
+    	
+    	addEntity(Game.player);
     }
 
     public World(TileSet tileSet, String entitties, Camera camera, String... fileNames) {

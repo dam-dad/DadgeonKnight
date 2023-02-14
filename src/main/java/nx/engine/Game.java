@@ -60,6 +60,8 @@ public class Game extends AnimationTimer {
 	private Scene scene;
 	private static Scene sceneToChangeTo;
 	
+	public static Player player = Player.get(26, 25, new Camera());
+	
 	public static Font font = Font.loadFont(TextScene.class.getResourceAsStream("/assets/fonts/PressStart2P-Regular.ttf"), 10);
 
 	

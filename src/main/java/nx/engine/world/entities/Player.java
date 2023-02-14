@@ -22,6 +22,8 @@ import nx.engine.world.Level;
 import nx.util.Direction;
 
 public class Player extends Entity {
+	
+	private static Player instance;
 
 	private static final int MAX_PLAYER_HEALTH = 10;
 	private static final double TIME_SHOWING_ATTACK = 0.5;
@@ -74,7 +76,7 @@ public class Player extends Entity {
 
 	private final double initialX, initialY;
 	
-	public Player(double posX, double posY, Camera camera) {
+	private Player(double posX, double posY, Camera camera) {
 		this.setPosX(posX * Game.tileSize);
 		this.setPosY(posY * Game.tileSize);
 
@@ -93,6 +95,10 @@ public class Player extends Entity {
 		this.direction = Direction.SOUTH;
 		this.camera = camera;
 
+	}
+	
+	public static Player get(double posX,double posY,Camera camera) {
+		return instance == null ? instance = new Player(posX,posY,camera) : instance;
 	}
 
 	@Override
@@ -254,9 +260,8 @@ public class Player extends Entity {
 	public void setAttacking(boolean a) {
 		this.isAttacking = a;
 	}
-	public void AddEntityToInventory(PickableEntity e) {
+	public void addEntityToInventory(PickableEntity e) {
 		getInventory().add(e);
-//		getInventory().stream().sorted(Comparator.comparingInt(e::compareTo));
 	}
 	public Direction getDirection() {
 		return direction;

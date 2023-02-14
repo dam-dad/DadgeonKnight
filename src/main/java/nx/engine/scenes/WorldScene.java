@@ -21,10 +21,9 @@ public class WorldScene implements Scene {
 	private final World world;
 	
 	private final ParticleManager particleManager;
-	private final Camera camera;
 	private Font font = new Font(50);
 	
-	public static Player player;
+	private final Camera camera;
 	
 	public static Dialog dialog;
 	public static Image smoke = new Image("/assets/textures/items/smoke.gif"); 
@@ -35,12 +34,12 @@ public class WorldScene implements Scene {
 	        );
 
 	public WorldScene(WorldData worldData) {
-		this.camera = new Camera();
-
+		this.camera = Game.player.getCamera();
 		this.world = new World(worldData.getTileSet(), worldData.getEntities(), camera, worldData.getMapLayers());
 
 		// TODO: Custom particle image
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
+		
 		
 		
 	}
@@ -63,10 +62,10 @@ public class WorldScene implements Scene {
 
 		gc.setFont(font);
 		gc.setFill(Color.WHITESMOKE);
-		gc.fillText(String.format("Vida: %d", player.getHealth()), 10, Game.screenheigth - 10);
+		gc.fillText(String.format("Vida: %d", Game.player.getHealth()), 10, Game.screenheigth - 10);
 
-		PickableEntity e = (PickableEntity) player.getItemSelected();
-		if(!player.getInventory().isEmpty())
+		PickableEntity e = (PickableEntity) Game.player.getItemSelected();
+		if(!Game.player.getInventory().isEmpty())
 			e.drawUI(gc);
 		
 		if(dialog != null)

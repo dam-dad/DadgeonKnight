@@ -93,9 +93,6 @@ public abstract class Entity {
 					case "pillar":
 						toReturn.add(new Pillar(TileSet.DANGEON_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;
-					case "player":
-						toReturn.add(new Player(Double.parseDouble(e[1]), Double.parseDouble(e[2]), camera));
-						break;
 					case "magicalman":
 						toReturn.add(new MagicalEntity(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;	
