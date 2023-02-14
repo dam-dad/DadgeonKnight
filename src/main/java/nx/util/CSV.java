@@ -40,10 +40,10 @@ public class CSV {
 
 			int[][] mapValue = new int[mapCSV.size()][mapCSV.get(0).length];
 
-			Level.maxWorldCol = mapCSV.get(0).length;
-			Level.maxWorldRow = mapCSV.size();
-			Level.worldWidth = Game.tileSize * Level.maxWorldCol;
-			Level.worldHeigth = Game.tileSize * Level.maxWorldRow;
+//			Level.maxWorldCol = mapCSV.get(0).length;
+//			Level.maxWorldRow = mapCSV.size();
+//			Level.worldWidth = Game.tileSize * Level.maxWorldCol;
+//			Level.worldHeigth = Game.tileSize * Level.maxWorldRow;
 
 			for(int i = 0; i < mapValue.length; i++) {
 				for(int j = 0; j < mapValue[0].length; j++) {

@@ -39,10 +39,13 @@ public class WorldScene implements Scene {
 
 		this.world = new World(worldData.getTileSet(), worldData.getEntities(), camera, worldData.getMapLayers());
 
+		player = world.getEntities().stream()
+				.filter(entity -> entity instanceof Player)
+				.map(Player.class::cast)
+				.findFirst().get();
+
 		// TODO: Custom particle image
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
-		
-		
 	}
 
 	@Override
