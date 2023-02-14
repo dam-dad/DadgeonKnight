@@ -34,6 +34,12 @@ public enum WorldData {
                     "/assets/levels/secret/Secret_Floor.csv",
                     "/assets/levels/secret/Secret_Collisions.csv"
             )
+    ),
+    TEST(
+            "test",
+            TileSet.DANGEON_TILES,
+            "/assets/levels/secret/entities.csv",
+            WorldGenerator.generateDungeon(32)
     );
 
     private final String name;
