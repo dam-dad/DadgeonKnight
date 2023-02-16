@@ -18,10 +18,9 @@ import nx.engine.world.entities.Player;
 
 public class WorldScene implements Scene {
 
-	private final World world;
+	private World world;
 	
 	private final ParticleManager particleManager;
-	private Font font = new Font(50);
 	
 	private final Camera camera;
 	
@@ -35,7 +34,8 @@ public class WorldScene implements Scene {
 
 	public WorldScene(WorldData worldData) {
 		this.camera = Game.player.getCamera();
-		this.world = new World(worldData.getTileSet(), worldData.getEntities(), camera, worldData.getMapLayers());
+		this.world = new World(worldData.getTileSet(), worldData.getEntities(), worldData.getMapLayers());
+		Player.get().setPosition(worldData.getSpawn());
 
 		// TODO: Custom particle image
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
@@ -60,7 +60,7 @@ public class WorldScene implements Scene {
 		gc.setFill(radialGradient);
 		gc.fillRect(Game.screenWidth/2 - 500, Game.screenheigth/2 - 500, 1000, 1000);
 
-		gc.setFont(font);
+		gc.setFont(Game.font);
 		gc.setFill(Color.WHITESMOKE);
 		gc.fillText(String.format("Vida: %d", Game.player.getHealth()), 10, Game.screenheigth - 10);
 
@@ -74,6 +74,9 @@ public class WorldScene implements Scene {
 
 	public World getWorld() {
 		return world;
+	}
+	public void setWordl(WorldData worldData) {
+		this.world = new World(worldData.getTileSet(), worldData.getEntities(), worldData.getMapLayers());
 	}
 
 }

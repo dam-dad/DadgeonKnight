@@ -39,8 +39,8 @@ public class World {
     	addEntity(Game.player);
     }
 
-    public World(TileSet tileSet, String entitties, Camera camera, String... fileNames) {
-    	this(tileSet, Entity.loadEntititiesFromCSV(entitties, camera),fileNames);
+    public World(TileSet tileSet, String entitties, String... fileNames) {
+    	this(tileSet, Entity.loadEntititiesFromCSV(entitties),fileNames);
     }
 
     public void update(double delta) {

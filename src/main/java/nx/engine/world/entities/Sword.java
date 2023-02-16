@@ -28,20 +28,19 @@ public class Sword extends PickableEntity {
 	
 	@Override
 	public void useItem() {
-		Player player = getWorld().getEntities().stream().filter(entity -> entity instanceof Player)
-		.map(entity -> (Player) entity).findAny().get();
 		
 		List<Optional<MobEntity>> nearMobs = getWorld().getEntities().stream()
 				.filter(entity -> entity instanceof MobEntity)
-				.filter(e -> e.getDistanceToEntity(player) < 200)
+				.filter(e -> e.getDistanceToEntity(Player.get()) < 200)
 				.map(e -> Optional.of((MobEntity) e))
 				.toList();
+		
+		System.out.println(nearMobs);
 
-		player.setAttacking(true);
-		Game.inputHandler.ClearActiveKeys();
-		switch (player.getDirection()) {
+		Player.get().setAttacking(true);
+		switch (Player.get().getDirection()) {
 		case WEST:
-			setPosition(player.getPosX() + Game.tileSize, player.getPosY());
+			setPosition(Player.get().getPosX() + Game.tileSize, Player.get().getPosY());
 			nearMobs.forEach(e -> {
 				if(e.isPresent() && this.checkCollision(e.get())) {
 					e.get().getAttacked(SwordDamage);
@@ -49,7 +48,7 @@ public class Sword extends PickableEntity {
 			});
 			break;
 		case EAST:
-			setPosition(player.getPosX() - Game.tileSize, player.getPosY());
+			setPosition(Player.get().getPosX() - Game.tileSize, Player.get().getPosY());
 			nearMobs.forEach(e -> {
 				if(e.isPresent() && this.checkCollision(e.get())) {
 					e.get().getAttacked(SwordDamage);
@@ -57,7 +56,7 @@ public class Sword extends PickableEntity {
 			});
 			break;
 		case NORTH:
-			setPosition(player.getPosX(), player.getPosY() - Game.tileSize);
+			setPosition(Player.get().getPosX(), Player.get().getPosY() - Game.tileSize);
 			nearMobs.forEach(e -> {
 				if(e.isPresent() && this.checkCollision(e.get())) {
 					e.get().getAttacked(SwordDamage);
@@ -65,7 +64,7 @@ public class Sword extends PickableEntity {
 			});
 			break;
 		case SOUTH:
-			setPosition(player.getPosX(), player.getPosY() + Game.tileSize);
+			setPosition(Player.get().getPosX(), Player.get().getPosY() + Game.tileSize);
 			nearMobs.forEach(e -> {
 				if(e.isPresent() && this.checkCollision(e.get())) {
 					e.get().getAttacked(SwordDamage);
@@ -75,5 +74,6 @@ public class Sword extends PickableEntity {
 		default:
 			break;
 		}
+		Game.inputHandler.ClearActiveKeys();
 	}
 }

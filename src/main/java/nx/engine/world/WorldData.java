@@ -5,10 +5,13 @@ import nx.engine.tile.TileSet;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
 public enum WorldData {
 
     START_LEVEL(
             "start",
+            new Vector2D(26,25),
             TileSet.WORLD_DARK_TILES,
             "/assets/levels/startedMap/StartedLevel_Entities.csv",
             "/assets/levels/startedMap/StartMap_map.csv",
@@ -17,6 +20,7 @@ public enum WorldData {
     ),
     DUNGEON(
             "dungeon",
+            new Vector2D(10,10),
             TileSet.DANGEON_TILES,
             "/assets/levels/level1/DungeonLevel_Entities.csv",
             "/assets/levels/level1/DungeonLevel_Mapa.csv",
@@ -24,6 +28,7 @@ public enum WorldData {
     ),
     SECRET(
             "secret",
+            new Vector2D(5,5),
             TileSet.SECRET_TILES,
             "/assets/levels/secret/entities.csv",
             "/assets/levels/secret/Secret_Floor.csv",
@@ -31,11 +36,13 @@ public enum WorldData {
     );
 
     private final String name;
+    private Vector2D spawn;
     private final TileSet tileSet;
     private final String entities;
     private final String[] mapLayers;
 
-    WorldData(String name, TileSet tileSet, String entities, String... mapLayers) {
+    WorldData(String name,Vector2D spawn, TileSet tileSet, String entities, String... mapLayers) {
+    	this.spawn = spawn;
         this.name = name;
         this.tileSet = tileSet;
         this.entities = entities;
@@ -44,6 +51,9 @@ public enum WorldData {
 
     public String getName() {
         return name;
+    }
+    public Vector2D getSpawn() {
+        return spawn;
     }
 
     public String getEntities() {

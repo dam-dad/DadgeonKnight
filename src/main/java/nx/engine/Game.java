@@ -6,8 +6,10 @@ import java.util.Arrays;
 import javax.swing.text.html.CSS;
 
 import javafx.animation.AnimationTimer;
+import javafx.concurrent.Task;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -28,6 +30,8 @@ import nx.game.App;
 import nx.util.CSV;
 
 public class Game extends AnimationTimer {
+	
+	private static Game instance;
 	
 	// Screen Settings
 	final static int originalTileSize = 16; //16 x 16 tile
@@ -57,15 +61,22 @@ public class Game extends AnimationTimer {
 	public static int SCREEN_CENTER_X = Game.screenWidth / 2 - (Game.tileSize/2);
 	public static int SCREEN_CENTER_Y = Game.screenheigth / 2 - (Game.tileSize/2);
 
-	private Scene scene;
-	private static Scene sceneToChangeTo;
+	private static Scene mainScene;
 	
-	public static Player player = Player.get(26, 25, new Camera());
+	public static Player player = Player.get(new Camera());
 	
 	public static Font font = Font.loadFont(TextScene.class.getResourceAsStream("/assets/fonts/PressStart2P-Regular.ttf"), 10);
 
+	public static Game get(Canvas canvas) {
+		return instance == null ? instance = new Game(canvas) : instance;
+	}
+	public static Game get() {
+		if(instance != null)
+			return instance;
+		return null;
+	}
 	
-	public Game(Canvas canvas) {
+	private Game(Canvas canvas) {
 		this.graphicsContext = canvas.getGraphicsContext2D();
 		graphicsContext.setImageSmoothing(false);
 		
@@ -88,7 +99,9 @@ public class Game extends AnimationTimer {
 	
 	public void init() {
 		try {
-			scene = new TextScene("/assets/levels/intro/introEN.csv");
+			mainScene = new TextScene("/assets/levels/intro/introEN.csv");
+			
+			graphicsContext.setGlobalBlendMode(BlendMode.SRC_OVER);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -107,8 +120,11 @@ public class Game extends AnimationTimer {
 		timer += (currentNanoTime - lastTime);
 		
 		if (delta >= 1) {
+			
+			
 			update();
 			draw(graphicsContext);
+
 			
 			delta--;
 			drawCount++;
@@ -125,30 +141,29 @@ public class Game extends AnimationTimer {
 	}
 
 	public void update() {
-		if (sceneToChangeTo != null) {
-			this.scene = sceneToChangeTo;
-			sceneToChangeTo = null;
-		}
 
-		if(scene instanceof TextScene) {
-			if(((TextScene) scene).hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
+		if(mainScene instanceof TextScene) {
+			if(((TextScene) mainScene).hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
 				App.mixer.getMusic().fadeOut(20);
-				this.scene = new WorldScene(WorldData.START_LEVEL);
+				this.mainScene = new WorldScene(WorldData.START_LEVEL);
 			}
 		}
 		
-		scene.update(deltaTime);
+		mainScene.update(deltaTime);
 	}
 	
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, screenWidth, screenheigth);
 		
-		scene.draw(gc);
+		mainScene.draw(gc);
 	}
 
 	public static void changeScene(Scene scene) {
-		sceneToChangeTo = scene;
+		mainScene = scene;
+	}
+	public static Scene getScene() {
+		return mainScene;
 	}
 
 }

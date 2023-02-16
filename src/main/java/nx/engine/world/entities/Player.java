@@ -97,8 +97,13 @@ public class Player extends Entity {
 
 	}
 	
-	public static Player get(double posX,double posY,Camera camera) {
-		return instance == null ? instance = new Player(posX,posY,camera) : instance;
+	public static Player get(Camera camera) {
+		return instance == null ? instance = new Player(0,0,camera) : instance;
+	}
+	public static Player get() {
+		if(instance != null)
+			return instance;
+		return null;
 	}
 
 	@Override
@@ -169,6 +174,7 @@ public class Player extends Entity {
 			move(movementX, movementY);
 			camera.setPosition(getPosX(), getPosY());	
 		}
+
 		
 		
 		animation = idle.get(direction);
@@ -190,6 +196,11 @@ public class Player extends Entity {
 		animation.update(deltaTime);
 		if(timeSinceLastHit < Player.TIME_SHOWING_ATTACK)
 			timeSinceLastHit += deltaTime;
+	}
+	
+	public void setPosition(Vector2D v) {
+		super.setPosition(v.getX() * Game.tileSize,v.getY() * Game.tileSize);
+		camera.setPosition(v.getX() * Game.tileSize, v.getY() * Game.tileSize);	
 	}
 
 	@Override

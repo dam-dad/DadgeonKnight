@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import nx.engine.Camera;
 import nx.engine.Game;
+import nx.engine.scenes.WorldScene;
 import nx.engine.tile.TileSet;
 import nx.engine.tile.TileSetManager;
 
@@ -38,6 +39,8 @@ public class Level {
 
         this.levelWidth = collisionLayer.getLayerWidth();
         this.levelHeight = collisionLayer.getLayerHeight();
+        
+        setMapSize(levelWidth,levelHeight);
     }
 
     public void draw(GraphicsContext gc, Camera camera) {
@@ -56,6 +59,7 @@ public class Level {
                     worldY - Game.tileSize  < camera.getY() + Game.screenheigth) {
 
                 //Map base
+            	
 
             	for(int i = 0; i < layers.size(); i++) {
             		if(layers.get(i).getTiles()[worldCol][worldRow] != -1)

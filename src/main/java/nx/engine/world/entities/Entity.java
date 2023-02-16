@@ -69,7 +69,7 @@ public abstract class Entity {
 		this.setPosY(y);
 	}
 
-	public static List<Entity> loadEntititiesFromCSV(String str, Camera camera) {
+	public static List<Entity> loadEntititiesFromCSV(String str) {
 		try {
 			List<String[]> a = CSV.readAllLines(Paths.get(CSV.class.getResource(str).toURI()));
 			List<Entity> toReturn  = new ArrayList<Entity>();
@@ -97,7 +97,12 @@ public abstract class Entity {
 						toReturn.add(new MagicalEntity(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;	
 					case "portal":
-						toReturn.add(new Portal(Double.parseDouble(e[1]), Double.parseDouble(e[2]), new WorldScene(WorldData.getByName(e[3])),Double.parseDouble(e[4]),Double.parseDouble(e[5])));
+						toReturn.add(
+								new Portal(
+								Double.parseDouble(e[1]),
+								Double.parseDouble(e[2]),
+								e[3]
+								));
 						break;
 					default:
 						break;
@@ -165,6 +170,20 @@ public abstract class Entity {
 		} else {
 			return Direction.NORTH;
 		}
+	}
+	public static Vector2D getVectorFromDirection(Direction d) {
+	    switch (d) {
+	        case NORTH:
+	            return new Vector2D(0, -1);
+	        case EAST:
+	            return new Vector2D(-1, 0);
+	        case SOUTH:
+	            return new Vector2D(0, 1);
+	        case WEST:
+	            return new Vector2D(1, 0);
+	        default:
+	            throw new IllegalArgumentException("Invalid direction: " + d);
+	    }
 	}
 
 	public double pushOut(Entity collition, double force) {
