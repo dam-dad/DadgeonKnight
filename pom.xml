@@ -11,6 +11,13 @@
 		<javafx.version>17.0.1</javafx.version>
 		<exec.mainClass>nx.game.Main</exec.mainClass>
 	</properties>
+	
+	<repositories>
+	  <repository>
+	    <id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+	  </repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -37,6 +44,11 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
 			<version>3.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.czyzby</groupId>
+			<artifactId>noise4j</artifactId>
+			<version>0.1.0</version>
 		</dependency>
 	</dependencies>
 	

@@ -38,6 +38,7 @@ public class Sword extends PickableEntity {
 				.toList();
 
 		player.setAttacking(true);
+		Game.inputHandler.ClearActiveKeys();
 		switch (player.getDirection()) {
 		case WEST:
 			setPosition(player.getPosX() + Game.tileSize, player.getPosY());

@@ -2,8 +2,11 @@ package nx.engine.world;
 
 import javafx.scene.canvas.GraphicsContext;
 import nx.engine.Camera;
+import nx.engine.UI.Dialog;
+import nx.engine.scenes.WorldScene;
 import nx.engine.tile.TileSet;
 import nx.engine.world.entities.Entity;
+import nx.engine.world.entities.Player;
 import nx.util.CSV;
 
 import java.util.ArrayList;
@@ -18,20 +21,25 @@ public class World {
     private final List<Entity> entitiesToAdd;
     private final List<Entity> entitiesToRemove;
 
-    public World(TileSet tileSet, String... fileNames) {
-        this.level = new Level(tileSet, fileNames);
+    public World(TileSet tileSet, Layer... layers) {
+        this.level = new Level(tileSet, layers);
         this.entities = new ArrayList<>();
 
         this.entitiesToAdd = new ArrayList<>();
         this.entitiesToRemove = new ArrayList<>();
         
     }
-    public World(TileSet tileSet, List<Entity> entities,String... fileNames) {
-    	this(tileSet, fileNames);
-    	entities.forEach(e -> addEntity(e));
+
+    public World(TileSet tileSet, List<Entity> entities, Layer... layers) {
+    	this(tileSet, layers);
+    	entities.forEach(entity -> {
+            this.entities.add(entity);
+            entity.setWorld(this);
+        });
     }
-    public World(TileSet tileSet, String entitties,String... fileNames) {
-    	this(tileSet, Entity.loadEntititiesFromCSV(entitties),fileNames);
+
+    public World(TileSet tileSet, String entitties, Camera camera, Layer... layers) {
+    	this(tileSet, Entity.loadEntititiesFromCSV(entitties, camera), layers);
     }
 
     public void update(double delta) {
@@ -46,6 +54,8 @@ public class World {
 
     public void draw(GraphicsContext gc, Camera camera) {
         level.draw(gc, camera);
+        
+        
 
         entities.stream()
                 .sorted(Comparator.comparingDouble(e -> e.getPosY() + e.getHeight()))
