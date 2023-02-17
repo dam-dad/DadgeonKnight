@@ -26,7 +26,7 @@ public class Player extends Entity {
 	private static final int MAX_PLAYER_HEALTH = 10;
 	private static final double TIME_SHOWING_ATTACK = 0.5;
 	public static final double PLAYER_FORCE = 0.1;
-	public static final double SPEED = 4;
+	public static final double SPEED = 8;
 
 	public static final String walkTileSet = "/assets/textures/player/CharacterMovementSet.png";
 	public static final String swordSet = "/assets/textures/player/player_Sword.png";

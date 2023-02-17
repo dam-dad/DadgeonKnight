@@ -10,6 +10,7 @@ import javafx.scene.text.Font;
 import nx.engine.Camera;
 import nx.engine.Game;
 import nx.engine.UI.Dialog;
+import nx.engine.UI.HealthUI;
 import nx.engine.particles.ParticleManager;
 import nx.engine.world.World;
 import nx.engine.world.WorldData;
@@ -27,7 +28,8 @@ public class WorldScene implements Scene {
 	public static Player player;
 	
 	public static Dialog dialog;
-	public static Image smoke = new Image("/assets/textures/items/smoke.gif"); 
+	public static Image smoke = new Image("/assets/textures/items/smoke.gif");
+	private HealthUI healthUI;
 	
 	private RadialGradient radialGradient = new RadialGradient(0,0,.5,.5,0.15, true, CycleMethod.NO_CYCLE,
 	        new Stop(0, Color.TRANSPARENT),
@@ -46,6 +48,7 @@ public class WorldScene implements Scene {
 
 		// TODO: Custom particle image
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
+		this.healthUI = new HealthUI(player);
 	}
 
 	@Override
@@ -64,16 +67,14 @@ public class WorldScene implements Scene {
 		gc.setFill(radialGradient);
 		gc.fillRect(Game.screenWidth/2 - 500, Game.screenheigth/2 - 500, 1000, 1000);
 
-		gc.setFont(font);
-		gc.setFill(Color.WHITESMOKE);
-		gc.fillText(String.format("Vida: %d", player.getHealth()), 10, Game.screenheigth - 10);
-
 		PickableEntity e = (PickableEntity) player.getItemSelected();
 		if(!player.getInventory().isEmpty())
 			e.drawUI(gc);
 		
 		if(dialog != null)
 			dialog.draw(gc);
+
+		healthUI.draw(gc);
 	}
 
 	public World getWorld() {

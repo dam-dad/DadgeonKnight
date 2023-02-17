@@ -13,23 +13,29 @@ import java.util.Random;
 public class Fireball extends Entity {
 
     private static final Image IMAGE = new Image("/assets/textures/bola_du_fogo.gif");
-    private static final float SPEED = 3.5f * Game.tileSize;
+    private static final float DEFAULT_SPEED = 3.5f * Game.tileSize;
     private static final double MAX_TIME_ALIVE = 2.5f;
     private static final double RADIUS = 48;
 
     private final Vector2f direction;
+    private final float speed;
     private double timeAlive = 0.0;
 
     public Fireball(double x, double y, Vector2f direction) {
+        this(x, y, direction, DEFAULT_SPEED);
+    }
+
+    public Fireball(double x, double y, Vector2f direction, float speed) {
         super(x, y, IMAGE);
 
+        this.speed = speed;
         this.direction = direction.normalize();
     }
 
     @Override
     public void update(double deltaTime) {
-        setPosX(getPosX() + direction.x * deltaTime * SPEED);
-        setPosY(getPosY() + direction.y * deltaTime * SPEED);
+        setPosX(getPosX() + direction.x * deltaTime * speed);
+        setPosY(getPosY() + direction.y * deltaTime * speed);
 
         timeAlive += deltaTime;
         if (timeAlive > MAX_TIME_ALIVE) {

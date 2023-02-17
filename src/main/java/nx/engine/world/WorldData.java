@@ -40,6 +40,15 @@ public enum WorldData {
             TileSet.DANGEON_TILES,
             "/assets/levels/secret/entities.csv",
             WorldGenerator.generateDungeon(32)
+    ),
+    BOSS_ROOM(
+            "bossroom",
+            TileSet.SECRET_TILES,
+            "/assets/levels/bossRoom/entities.csv",
+            Layer.loadLayersFromFiles(
+                    "/assets/levels/bossRoom/BossRoom_Ground.csv",
+                    "/assets/levels/bossRoom/BossRoom_Collissions.csv"
+            )
     );
 
     private final String name;
