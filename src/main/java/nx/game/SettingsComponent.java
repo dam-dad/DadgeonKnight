@@ -6,8 +6,6 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
-import javax.sound.midi.SoundbankResource;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -25,6 +23,7 @@ public class SettingsComponent extends GridPane implements Initializable {
 
 	// model
 	DecimalFormat decimalFormat = new DecimalFormat("#");
+	SoundMixer soundMixer = new SoundMixer();
 
 	// view
 	@FXML
@@ -71,15 +70,19 @@ public class SettingsComponent extends GridPane implements Initializable {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				System.out.println("modificando volumen juego");
+				for (Music m : soundMixer.getGameSounds()) {
+					m.setVolume(effectsSlider.getValue() * 0.003);
+				}
+				System.out.println("modificando efectos juego");
 			}
 		});
 
 		generalSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
+			// TODO
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				System.out.println("modificando volumen juego");
+				System.out.println("modificando volumen general");
 			}
 		});
 	}
@@ -99,7 +102,6 @@ public class SettingsComponent extends GridPane implements Initializable {
 		generalLabel.setText(rounded + "%");
 	}
 
-	// TODO cuando se cambie el volumen, actualizar la lista de la música
 	@FXML
 	void onAcceptAction(ActionEvent event) {
 		App.mainStage.getScene().setRoot(App.menuController.getView());
