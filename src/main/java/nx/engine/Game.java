@@ -6,10 +6,8 @@ import java.util.Arrays;
 import javax.swing.text.html.CSS;
 
 import javafx.animation.AnimationTimer;
-import javafx.concurrent.Task;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -30,8 +28,6 @@ import nx.game.App;
 import nx.util.CSV;
 
 public class Game extends AnimationTimer {
-	
-	private static Game instance;
 	
 	// Screen Settings
 	final static int originalTileSize = 16; //16 x 16 tile
@@ -61,22 +57,18 @@ public class Game extends AnimationTimer {
 	public static int SCREEN_CENTER_X = Game.screenWidth / 2 - (Game.tileSize/2);
 	public static int SCREEN_CENTER_Y = Game.screenheigth / 2 - (Game.tileSize/2);
 
-	private static Scene mainScene;
-	
-	public static Player player = Player.get(new Camera());
+	private Scene scene;
+	private static Scene sceneToChangeTo;
+	private static float alpha = 0;
+	private static boolean transitioning;
+	private static int transitionDirection = 1;
+
+	private RadialGradient radialGradient;
 	
 	public static Font font = Font.loadFont(TextScene.class.getResourceAsStream("/assets/fonts/PressStart2P-Regular.ttf"), 10);
 
-	public static Game get(Canvas canvas) {
-		return instance == null ? instance = new Game(canvas) : instance;
-	}
-	public static Game get() {
-		if(instance != null)
-			return instance;
-		return null;
-	}
 	
-	private Game(Canvas canvas) {
+	public Game(Canvas canvas) {
 		this.graphicsContext = canvas.getGraphicsContext2D();
 		graphicsContext.setImageSmoothing(false);
 		
@@ -91,17 +83,14 @@ public class Game extends AnimationTimer {
 		canvas.setOnScroll(inputHandler.scrollInputHandler);
 		canvas.setFocusTraversable(true);
 		canvas.requestFocus();
-		
-
 
 		init();
 	}
 	
 	public void init() {
 		try {
-			mainScene = new TextScene("/assets/levels/intro/introEN.csv");
 			
-			graphicsContext.setGlobalBlendMode(BlendMode.SRC_OVER);
+			scene = new TextScene("/assets/levels/intro/introEN.csv");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -118,13 +107,27 @@ public class Game extends AnimationTimer {
 		deltaTime = (currentNanoTime - lastTime) / 1000000000.0;
 		delta += (currentNanoTime - lastTime) / drawInterval;
 		timer += (currentNanoTime - lastTime);
+
+		if (transitioning) {
+			alpha += deltaTime * transitionDirection * 2;
+
+			if (alpha > 1) {
+				this.scene = sceneToChangeTo;
+				sceneToChangeTo = null;
+				scene.update(deltaTime);
+				transitionDirection = -1;
+				alpha = 1;
+			} else if (alpha < 0) {
+				transitioning = false;
+				alpha = 0;
+			}
+		}
 		
 		if (delta >= 1) {
-			
-			
-			update();
-			draw(graphicsContext);
+			if (!transitioning)
+				update();
 
+			draw(graphicsContext);
 			
 			delta--;
 			drawCount++;
@@ -142,28 +145,36 @@ public class Game extends AnimationTimer {
 
 	public void update() {
 
-		if(mainScene instanceof TextScene) {
-			if(((TextScene) mainScene).hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
+		if(scene instanceof TextScene) {
+			if(((TextScene) scene).hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
 				App.mixer.getMusic().fadeOut(20);
-				this.mainScene = new WorldScene(WorldData.START_LEVEL);
+				changeScene(new WorldScene(WorldData.START_LEVEL));
 			}
 		}
 		
-		mainScene.update(deltaTime);
+		scene.update(deltaTime);
 	}
 	
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, screenWidth, screenheigth);
 		
-		mainScene.draw(gc);
+		scene.draw(gc);
+
+		radialGradient = new RadialGradient(0,0,.5,.5, 1 - alpha, true, CycleMethod.NO_CYCLE,
+				new Stop(0, Color.TRANSPARENT),
+				new Stop(1, Color.rgb(10, 10, 10,1))
+		);
+
+		gc.setFill(radialGradient);
+		gc.fillRect(Game.screenWidth/2 - 500, Game.screenheigth/2 - 500, 1000, 1000);
 	}
 
 	public static void changeScene(Scene scene) {
-		mainScene = scene;
-	}
-	public static Scene getScene() {
-		return mainScene;
+		sceneToChangeTo = scene;
+		alpha = 0;
+		transitionDirection = 1;
+		transitioning = true;
 	}
 
 }
