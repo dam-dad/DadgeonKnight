@@ -14,10 +14,10 @@ import java.util.List;
 public class Level {
 
     // Map settings
-    public int maxWorldCol = 20;
-    public int maxWorldRow = 20;
-    public int worldWidth = Game.tileSize * maxWorldCol;
-    public int worldHeigth = Game.tileSize * maxWorldRow;
+    private int maxWorldCol = 20;
+    private int maxWorldRow = 20;
+    private int worldWidth = Game.tileSize * maxWorldCol;
+    private int worldHeigth = Game.tileSize * maxWorldRow;
 
     private final List<Layer> layers;
     private final Layer collisionLayer;

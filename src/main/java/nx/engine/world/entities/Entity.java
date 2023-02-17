@@ -104,6 +104,9 @@ public abstract class Entity {
 								e[3]
 								));
 						break;
+					case "testboss":
+						toReturn.add(new TestBoss(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
+						break;
 					default:
 						break;
 				}
