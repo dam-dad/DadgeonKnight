@@ -33,7 +33,7 @@ public class WorldScene implements Scene {
 	        );
 
 	public WorldScene(WorldData worldData) {
-		this.camera = Game.player.getCamera();
+		this.camera = Player.get().getCamera();
 		this.world = new World(worldData.getTileSet(), worldData.getEntities(), worldData.getMapLayers());
 		Player.get().setPosition(worldData.getSpawn());
 
@@ -62,10 +62,10 @@ public class WorldScene implements Scene {
 
 		gc.setFont(Game.font);
 		gc.setFill(Color.WHITESMOKE);
-		gc.fillText(String.format("Vida: %d", Game.player.getHealth()), 10, Game.screenheigth - 10);
+		gc.fillText(String.format("Vida: %d", Player.get().getHealth()), 10, Game.screenheigth - 10);
 
-		PickableEntity e = (PickableEntity) Game.player.getItemSelected();
-		if(!Game.player.getInventory().isEmpty())
+		PickableEntity e = (PickableEntity) Player.get().getItemSelected();
+		if(!Player.get().getInventory().isEmpty())
 			e.drawUI(gc);
 		
 		if(dialog != null)

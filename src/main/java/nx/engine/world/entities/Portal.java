@@ -25,11 +25,11 @@ public class Portal extends StaticEntity {
     }
     @Override
     public void update(double deltaTime) {
-		if(getPosX() + Game.tileSize > Game.player.getCamera().getX() - Game.screenWidth &&
-				getPosX() - Game.tileSize < Game.player.getCamera().getX() + Game.screenWidth &&
-				getPosY() + Game.tileSize > Game.player.getCamera().getY() - Game.screenheigth &&
-				getPosY() - Game.tileSize  < Game.player.getCamera().getY() + Game.screenheigth) {
-	    	if(Game.player.checkCollision(this)) {
+		if(getPosX() + Game.tileSize > Player.get().getCamera().getX() - Game.screenWidth &&
+				getPosX() - Game.tileSize < Player.get().getCamera().getX() + Game.screenWidth &&
+				getPosY() + Game.tileSize > Player.get().getCamera().getY() - Game.screenheigth &&
+				getPosY() - Game.tileSize  < Player.get().getCamera().getY() + Game.screenheigth) {
+	    	if(Player.get().checkCollision(this)) {
 	    		Game.changeScene(new WorldScene(WorldData.getByName(scene)));
 	    	}
 		}

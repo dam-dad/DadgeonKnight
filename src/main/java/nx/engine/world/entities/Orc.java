@@ -99,17 +99,17 @@ public class Orc extends MobEntity {
 	@Override
 	public void update(double deltaTime) {
 		
-		if(getPosX() + Game.tileSize > Game.player.getCamera().getX() - Game.screenWidth &&
-				getPosX() - Game.tileSize < Game.player.getCamera().getX() + Game.screenWidth &&
-				getPosY() + Game.tileSize > Game.player.getCamera().getY() - Game.screenheigth &&
-				getPosY() - Game.tileSize  < Game.player.getCamera().getY() + Game.screenheigth){
+		if(getPosX() + Game.tileSize > Player.get().getCamera().getX() - Game.screenWidth &&
+				getPosX() - Game.tileSize < Player.get().getCamera().getX() + Game.screenWidth &&
+				getPosY() + Game.tileSize > Player.get().getCamera().getY() - Game.screenheigth &&
+				getPosY() - Game.tileSize  < Player.get().getCamera().getY() + Game.screenheigth){
 			if (this.mobHealth < 0) {
 				getWorld().removeEntity(this);
 				return;
 			}
 			double lastAnimationSpeed = ANIMATION_SPEED;
 
-			double distance = getDistanceToEntity(Game.player);
+			double distance = getDistanceToEntity(Player.get());
 			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
 
 			if (distance < this.sizePlayerDetection) {
@@ -151,7 +151,7 @@ public class Orc extends MobEntity {
 				}
 				break;
 			case "follow":
-				Vector2D direction = getVector2DToEntity(Game.player);
+				Vector2D direction = getVector2DToEntity(Player.get());
 				this.direction = getDirectionFromVector2D(direction);
 				animation = walk.get(this.direction);
 				direction = direction.scalarMultiply(realSpeed);

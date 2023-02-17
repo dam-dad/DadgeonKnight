@@ -21,13 +21,13 @@ public class Pillar extends StaticEntity {
 	@Override
 	public void update(double deltaTime) {
 		
-		if(getPosX() + Game.tileSize > Game.player.getCamera().getX() - Game.screenWidth &&
-				getPosX() - Game.tileSize < Game.player.getCamera().getX() + Game.screenWidth &&
-				getPosY() + Game.tileSize > Game.player.getCamera().getY() - Game.screenheigth &&
-				getPosY() - Game.tileSize  < Game.player.getCamera().getY() + Game.screenheigth) {
-			if(this.checkCollision(Game.player)) {
+		if(getPosX() + Game.tileSize > Player.get().getCamera().getX() - Game.screenWidth &&
+				getPosX() - Game.tileSize < Player.get().getCamera().getX() + Game.screenWidth &&
+				getPosY() + Game.tileSize > Player.get().getCamera().getY() - Game.screenheigth &&
+				getPosY() - Game.tileSize  < Player.get().getCamera().getY() + Game.screenheigth) {
+			if(this.checkCollision(Player.get())) {
 				Game.inputHandler.ClearActiveButtons();
-				Game.player.pushOut(this, Player.PLAYER_FORCE);
+				Player.get().pushOut(this, Player.PLAYER_FORCE);
 			}
 		}
 	}

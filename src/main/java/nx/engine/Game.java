@@ -17,17 +17,13 @@ import javafx.scene.text.Font;
 import nx.engine.scenes.Scene;
 import nx.engine.scenes.TextScene;
 import nx.engine.scenes.WorldScene;
-import nx.engine.tile.Tile;
-import nx.engine.tile.TileSet;
-import nx.engine.tile.TileSetManager;
-import nx.engine.world.Level;
 import nx.engine.world.WorldData;
-import nx.engine.world.entities.Orc;
 import nx.engine.world.entities.Player;
 import nx.game.App;
-import nx.util.CSV;
 
 public class Game extends AnimationTimer {
+	
+	private static Game instance;
 	
 	// Screen Settings
 	final static int originalTileSize = 16; //16 x 16 tile
@@ -53,6 +49,8 @@ public class Game extends AnimationTimer {
 	private final GraphicsContext graphicsContext;
 
 	public static final InputHandler inputHandler = new InputHandler();
+	
+	public static Player player = Player.get(new Camera());
 
 	public static int SCREEN_CENTER_X = Game.screenWidth / 2 - (Game.tileSize/2);
 	public static int SCREEN_CENTER_Y = Game.screenheigth / 2 - (Game.tileSize/2);
@@ -68,7 +66,7 @@ public class Game extends AnimationTimer {
 	public static Font font = Font.loadFont(TextScene.class.getResourceAsStream("/assets/fonts/PressStart2P-Regular.ttf"), 10);
 
 	
-	public Game(Canvas canvas) {
+	private Game(Canvas canvas) {
 		this.graphicsContext = canvas.getGraphicsContext2D();
 		graphicsContext.setImageSmoothing(false);
 		
@@ -85,6 +83,15 @@ public class Game extends AnimationTimer {
 		canvas.requestFocus();
 
 		init();
+	}
+	
+	public static Game get(Canvas canvas) {
+		return instance == null ? instance = new Game(canvas) : instance;
+	}
+	public static Game get() {
+		if(instance != null)
+			return instance;
+		return null;
 	}
 	
 	public void init() {

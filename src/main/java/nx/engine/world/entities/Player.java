@@ -96,6 +96,9 @@ public class Player extends Entity {
 		this.camera = camera;
 
 	}
+	public static Player get(double posX,double posY,Camera camera) {
+		return instance == null ? instance = new Player(posX,posY,camera) : instance;
+	}
 	
 	public static Player get(Camera camera) {
 		return instance == null ? instance = new Player(0,0,camera) : instance;
