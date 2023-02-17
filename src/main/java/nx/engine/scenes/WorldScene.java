@@ -1,12 +1,13 @@
 package nx.engine.scenes;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
-import javafx.scene.text.Font;
 import nx.engine.Camera;
 import nx.engine.Game;
 import nx.engine.UI.Dialog;
@@ -27,15 +28,14 @@ public class WorldScene implements Scene {
 	public static Dialog dialog;
 	public static Image smoke = new Image("/assets/textures/items/smoke.gif"); 
 	
-	private RadialGradient radialGradient = new RadialGradient(0,0,.5,.5,0.15, true, CycleMethod.NO_CYCLE,
-	        new Stop(0, Color.TRANSPARENT),
-	        new Stop(1, Color.rgb(10, 10, 10,0.6))
-	        );
+	private final Vector2D spawn;
+	
+	private RadialGradient radialGradient;
 
 	public WorldScene(WorldData worldData) {
 		this.camera = Player.get().getCamera();
 		this.world = new World(worldData.getTileSet(), worldData.getEntities(), worldData.getMapLayers());
-		Player.get().setPosition(worldData.getSpawn());
+		spawn = worldData.getSpawn();
 
 		// TODO: Custom particle image
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
@@ -57,6 +57,11 @@ public class WorldScene implements Scene {
 	public void draw(GraphicsContext gc) {
 		world.draw(gc, camera);
 		
+		radialGradient = new RadialGradient(0,0,.5,.5, 1 - Game.alpha, true, CycleMethod.NO_CYCLE,
+				new Stop(0, Color.TRANSPARENT),
+				new Stop(0.8, Color.rgb(10, 10, 10,0.99))
+		);
+
 		gc.setFill(radialGradient);
 		gc.fillRect(Game.screenWidth/2 - 500, Game.screenheigth/2 - 500, 1000, 1000);
 
@@ -67,6 +72,8 @@ public class WorldScene implements Scene {
 		PickableEntity e = (PickableEntity) Player.get().getItemSelected();
 		if(!Player.get().getInventory().isEmpty())
 			e.drawUI(gc);
+
+
 		
 		if(dialog != null)
 			dialog.draw(gc);
@@ -77,6 +84,9 @@ public class WorldScene implements Scene {
 	}
 	public void setWordl(WorldData worldData) {
 		this.world = new World(worldData.getTileSet(), worldData.getEntities(), worldData.getMapLayers());
+	}
+	public Vector2D getSpawn() {
+		return this.spawn;
 	}
 
 }

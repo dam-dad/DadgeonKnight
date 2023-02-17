@@ -37,6 +37,8 @@ public class World {
             this.entities.add(entity);
             entity.setWorld(this);
         });
+    	
+        addEntity(Game.player);
     }
 
     public World(TileSet tileSet, String entitties, Layer... layers) {
