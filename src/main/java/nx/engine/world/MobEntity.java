@@ -38,6 +38,7 @@ public class MobEntity extends Entity {
 	public void update(double deltaTime) {}
 	
 	public void getAttacked(int damage) {
+		System.out.println(getClass());
 		mobHealth -= canDie? damage : 0;
 		timeSinceLastHit = 0;
 	}

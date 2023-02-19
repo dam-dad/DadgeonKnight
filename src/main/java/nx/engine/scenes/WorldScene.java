@@ -33,7 +33,7 @@ public class WorldScene implements Scene {
 	
 	private RadialGradient radialGradient = new RadialGradient(0,0,.5,.5,0.15, true, CycleMethod.NO_CYCLE,
 	        new Stop(0, Color.TRANSPARENT),
-	        new Stop(1, Color.rgb(10, 10, 10,0.6))
+	        new Stop(1, Color.rgb(10, 10, 10,0.2))
 	        );
 
 	public WorldScene(WorldData worldData) {
@@ -65,6 +65,7 @@ public class WorldScene implements Scene {
 		world.draw(gc, camera);
 		
 		gc.setFill(radialGradient);
+
 		gc.fillRect(Game.screenWidth/2 - 500, Game.screenheigth/2 - 500, 1000, 1000);
 
 		PickableEntity e = (PickableEntity) player.getItemSelected();

@@ -4,38 +4,42 @@ import javafx.scene.image.Image;
 import nx.engine.Game;
 import nx.engine.particles.Particle;
 import nx.game.App;
-import nx.util.Music;
 import nx.util.Vector2f;
 
 import java.util.Optional;
-import java.util.Random;
 
-public class Fireball extends Entity {
+public class MagicSphere extends Entity {
 
-    private static final Image IMAGE = new Image("/assets/textures/bola_du_fogo.gif");
-    private static final float DEFAULT_SPEED = 3.5f * Game.tileSize;
-    private static final double MAX_TIME_ALIVE = 2.5f;
+    private static final Image IMAGE = new Image("/assets/textures/magic2.gif");
+    private static final float DEFAULT_SPEED = 20 * Game.tileSize;
+    private static final double MAX_TIME_ALIVE = 4.5f;
     private static final double RADIUS = 48;
+    public static final double WAIT_TIME = 1.5;
 
-    private final Vector2f direction;
-    private final float speed;
+    private Vector2f direction;
     private double timeAlive = 0.0;
+    private final Player player;
+    private double timeSinceCreation;
 
-    public Fireball(double x, double y, Vector2f direction) {
-        this(x, y, direction, DEFAULT_SPEED);
-    }
-
-    public Fireball(double x, double y, Vector2f direction, float speed) {
+    public MagicSphere(double x, double y, Player player) {
         super(x, y, IMAGE);
 
-        this.speed = speed;
-        this.direction = direction.normalize();
+        this.player = player;
     }
 
     @Override
     public void update(double deltaTime) {
-        setPosX(getPosX() + direction.x * deltaTime * speed);
-        setPosY(getPosY() + direction.y * deltaTime * speed);
+        timeSinceCreation += deltaTime;
+
+        if (timeSinceCreation < WAIT_TIME)
+            return;
+
+        if (direction == null) {
+            direction = new Vector2f((float) (player.getPosX() - getPosX()), (float) (player.getPosY() - getPosY())).normalize();
+        }
+
+        setPosX(getPosX() + direction.x * deltaTime * DEFAULT_SPEED);
+        setPosY(getPosY() + direction.y * deltaTime * DEFAULT_SPEED);
 
         timeAlive += deltaTime;
         if (timeAlive > MAX_TIME_ALIVE) {
@@ -49,23 +53,15 @@ public class Fireball extends Entity {
             return;
         }
 
-        Optional<Player> playerOptional = getWorld().getEntities().stream()
-                .filter(entity -> entity instanceof Player)
-                .map(entity -> (Player) entity)
-                .findAny();
+        if (new Vector2f((float) getPosX(), (float) getPosY()).distance(player.getPosX(), player.getPosY()) > RADIUS)
+            return;
 
-        if (playerOptional.isPresent()) {
-            Player player = playerOptional.get();
-            if (new Vector2f((float) getPosX(), (float) getPosY()).distance(player.getPosX(), player.getPosY()) > RADIUS)
-                return;
+        player.getAttacked(5);
+        getWorld().removeEntity(this);
 
-            player.getAttacked(2);
-            getWorld().removeEntity(this);
+        App.mixer.addGameSound("explosion.wav").setVolume(0.04).play();
 
-            App.mixer.addGameSound("explosion.wav").setVolume(0.04).play();
-
-            createParticleEffect(getPosX(), getPosY(), 30);
-        }
+        createParticleEffect(getPosX(), getPosY(), 30);
     }
     
 

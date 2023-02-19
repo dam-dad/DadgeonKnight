@@ -135,7 +135,7 @@ public abstract class Entity {
 	}
 	protected void drawInternal(GraphicsContext gc, Camera camera, double scale) {
 		if (image != null)
-			gc.drawImage(image, Game.SCREEN_CENTER_X - camera.getX() + getPosX(), Game.SCREEN_CENTER_Y - camera.getY() + getPosY(), Game.tileSize * scale, Game.tileSize * scale);
+			gc.drawImage(image, Game.SCREEN_CENTER_X - camera.getX() + getPosX() - getWidth() / 2 * scale, Game.SCREEN_CENTER_Y - camera.getY() + getPosY() - getHeight() / 2 * scale, Game.tileSize * scale, Game.tileSize * scale);
 	}
 
 	public double getDistanceToEntity(Entity e) {

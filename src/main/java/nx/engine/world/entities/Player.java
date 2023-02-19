@@ -23,7 +23,7 @@ import nx.util.Direction;
 
 public class Player extends Entity {
 
-	private static final int MAX_PLAYER_HEALTH = 10;
+	private static final int MAX_PLAYER_HEALTH = 20;
 	private static final double TIME_SHOWING_ATTACK = 0.5;
 	public static final double PLAYER_FORCE = 0.1;
 	public static final double SPEED = 8;
@@ -204,7 +204,6 @@ public class Player extends Entity {
 	}
 	
 	private boolean checkCollisionsMap(Vector2D v) {
-
 		Level level = getWorld().getLevel();
 		int levelWidth = level.getLayers().get(0).getLayerWidth();
 		int levelHeight = level.getLayers().get(0).getLayerHeight();
@@ -230,6 +229,9 @@ public class Player extends Entity {
 	
 	// TODO
 	public void getAttacked(int damage) {
+		if (timeSinceLastHit < TIME_SHOWING_ATTACK)
+			return;
+
 		health -= damage;
 		timeSinceLastHit = 0;
 	}
