@@ -12,10 +12,8 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 public class Bow extends PickableEntity {
 
-	private static final double ANIMATION_SPEED = 0.15;
-	private static final double SHOT_DELAY = 0.5;
-
-	private static int SwordDamage = 4;
+	
+	private static final double SHOT_DELAY = 0.8;
 
 	private double lastShot = SHOT_DELAY;
 
@@ -37,7 +35,8 @@ public class Bow extends PickableEntity {
 
 		Vector2D direction = getVectorFromDirection(Player.get().getDirection());
 		
-		getWorld().addEntity(new Arrow(Player.get().getPosX(), Player.get().getPosY(), new Vector2f((float) direction.getX(), (float) direction.getY())));
+		
+		Player.get().getWorld().addEntity(new Arrow(Player.get().getPosX(), Player.get().getPosY(), new Vector2f((float) direction.getX(), (float) direction.getY())));
 
 	}
 

@@ -1,5 +1,6 @@
 package nx.engine.world.entities;
 
+import javafx.concurrent.Task;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Shape;
@@ -188,6 +189,10 @@ public abstract class Entity {
 	            throw new IllegalArgumentException("Invalid direction: " + d);
 	    }
 	}
+	
+	public Vector2D getPosition() {
+		return new Vector2D(getPosX(),getPosY());
+	}
 
 	public double pushOut(Entity collition, double force) {
 		Vector2D velocity = new Vector2D(0,0);
@@ -309,9 +314,11 @@ public abstract class Entity {
 
 		return distance;
 	}
-	public static void knockback(Entity player,Entity collition, double force,Camera camera) {
-		Knockback p = new Knockback(player, collition, force, camera);
-		p.start();
+	public static void knockback(Entity player,Entity collition) {
+		
+		Task<Void> t = new Knockback(player, collition, 4, 0.2);
+		
+		new Thread(t).start();
 	}
 	public static float randomFromInterval(float min, float max) { // min and max included 
   	  return (float) (Math.random() * (max - min + 1) + min);
@@ -363,5 +370,7 @@ public abstract class Entity {
 	public void setPosY(double posY) {
 		this.posY = posY;
 	}
+
+
 
 }

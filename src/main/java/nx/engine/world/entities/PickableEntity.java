@@ -48,10 +48,10 @@ public class PickableEntity extends Entity {
 	
 	public void drawUI(GraphicsContext gc) {
 		gc.setFill(Color.GOLDENROD);
-		gc.fillRoundRect(8 - 4 + 10, 8 - 4 + 10, width + 8, height + 8, 8, 8);
+		gc.fillRoundRect(Game.screenWidth - width - 20, 8 - 4 + 10, width + 8, height + 8, 8, 8);
 		gc.setFill(Color.GRAY);
-		gc.fillRoundRect(8 - 2 + 10, 8 - 2 + 10, width + 4, height + 4, 4, 4);
-		gc.drawImage(image, 18, 18, width, height);
+		gc.fillRoundRect(Game.screenWidth - width - 18, 8 - 2 + 10, width + 4, height + 4, 4, 4);
+		gc.drawImage(image, Game.screenWidth - width - 15, 18, width, height);
 	}
 
 	public boolean canBeSelected() {

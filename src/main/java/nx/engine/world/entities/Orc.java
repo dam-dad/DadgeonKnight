@@ -1,5 +1,6 @@
 package nx.engine.world.entities;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,8 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import nx.engine.Animation;
 import nx.engine.Game;
+import nx.engine.PathfindingManager;
+import nx.engine.tile.Tile;
 import nx.util.Direction;
 
 public class Orc extends MobEntity {
@@ -32,10 +35,19 @@ public class Orc extends MobEntity {
 	private final double timeToChange = 5.0;
 
 	public String state = "walk";
-	private double initialSpeed;
+	private double walkSpeed;
 	private double runSpeed;
+	
+	private static final double attackDelay = 0.1;
+	private double timeSinceLastAttack = 0.0;
 
 	private List<? extends Entity> dropItems;
+	
+	
+	private static List<Vector2D> movementToPlayer = new ArrayList<Vector2D>();
+	private Vector2D nextPosition;
+	private boolean taskExecuting = false;
+	
 
 	private final Map<Direction, Animation> walk = new HashMap<>() {
 		{
@@ -49,10 +61,11 @@ public class Orc extends MobEntity {
 	public Orc(double posX, double posY, double speed, double runSpeed) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 
-		this.speed = speed;
-		initialSpeed = speed;
+		this.walkSpeed = speed;
 		this.runSpeed = runSpeed;
 		this.scale = 2;
+		
+		this.speed = walkSpeed;
 
 		this.sizeTextureX = tileSizeX;
 		this.sizeTextureY = tileSizeY;
@@ -86,7 +99,7 @@ public class Orc extends MobEntity {
 
 	public void walk() {
 		this.state = "walk";
-		this.speed = initialSpeed;
+		this.speed = walkSpeed;
 		ANIMATION_SPEED = walkAnimationSpeed;
 	}
 
@@ -122,12 +135,16 @@ public class Orc extends MobEntity {
 				}
 			}
 
-//			if (this.checkCollision(Game.player)) {
-//				float randomValue = 0.1f + (float) (Math.random() * (0.12f - 0.1f));
-//				Game.inputHandler.ClearActiveKeys();
-//				Entity.knockback(Game.player, this, randomValue, Game.player.getCamera());
-//				Game.player.getAttacked(5);
-//			}
+			if (timeSinceLastAttack > attackDelay && this.checkCollision(Game.player)) {
+				timeSinceLastAttack -= attackDelay;
+				Game.inputHandler.ClearActiveKeys();
+				Player.get().setVectorMovement(new Vector2D(0,0));
+				Entity.knockback(Game.player, this);
+				Game.player.getAttacked(1);
+				return;
+
+			}
+			timeSinceLastAttack += deltaTime;
 
 			switch (state) {
 			case "stop":
@@ -151,12 +168,39 @@ public class Orc extends MobEntity {
 				}
 				break;
 			case "follow":
-				Vector2D direction = getVector2DToEntity(Player.get());
-				this.direction = getDirectionFromVector2D(direction);
-				animation = walk.get(this.direction);
-				direction = direction.scalarMultiply(realSpeed);
+				if(Player.get().isWalking()) {
+					PathfindingManager p = new PathfindingManager((int)(getPosX()/Game.tileSize), (int)(getPosY()/Game.tileSize));
+					p.setOnSucceeded(event -> {
+					    movementToPlayer = p.getValue();
+					    nextPosition = getPosition().add(movementToPlayer.get(movementToPlayer.size() -1).scalarMultiply(-1).scalarMultiply(48));
+					    taskExecuting = true;
+					});
+					p.setOnCancelled(event -> {
+						movementToPlayer = null;
+						nextPosition = null;
+						taskExecuting = false;
+					});
+					
+					if(p.isRunning())
+						p.cancel();
+					new Thread(p).start();
+				}
+
+
+
 				
-				move(direction);
+				if(movementToPlayer != null && movementToPlayer.size() > 0) {
+					Vector2D direction = getVector2DToEntity(Player.get());
+					this.direction = getDirectionFromVector2D(direction);
+					animation = walk.get(this.direction);
+					move(movementToPlayer.get(movementToPlayer.size() -1).scalarMultiply(-1).scalarMultiply(realSpeed));
+					if(this.getPosition().distanceSq(nextPosition) < Game.tileSize) {
+						movementToPlayer.remove(movementToPlayer.size() -1);
+						if(movementToPlayer.size() > 0)
+							nextPosition = getPosition().add(movementToPlayer.get(movementToPlayer.size() -1).scalarMultiply(-1).scalarMultiply(Game.tileSize));
+					}
+				}
+
 				break;
 			default:
 				break;

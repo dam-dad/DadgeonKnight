@@ -34,6 +34,9 @@ public class Player extends Entity {
 	public static final String swordSet = "/assets/textures/player/player_Sword.png";
 
 	private static final double ANIMATION_SPEED = 0.15;
+	
+	private double time = 0;
+	private final double timeInCollision = 0.2;
 
 	private final Map<Direction, Animation> idle = new HashMap<>() {{
 		put(Direction.SOUTH, new Animation(walkTileSet,0, 22, 25));
@@ -75,6 +78,8 @@ public class Player extends Entity {
 	private double timeSinceLastHit;
 
 	private final double initialX, initialY;
+	
+	private Vector2D movement;
 	
 	private Player(double posX, double posY, Camera camera) {
 		this.setPosX(posX * Game.tileSize);
@@ -122,7 +127,7 @@ public class Player extends Entity {
 		Set<MouseButton> activeButtons = Game.inputHandler.getActiveButtons();
 
 		isWalking = false;
-		Vector2D movement = new Vector2D(0.0, 0.0);
+		movement = new Vector2D(0.0, 0.0);
 		
 		if (activeKeys.contains(wasdKeys[0]) || activeKeys.contains(arrowsKeys[0])) {
 			isWalking = true;
@@ -177,6 +182,8 @@ public class Player extends Entity {
 			move(movementX, movementY);
 			camera.setPosition(getPosX(), getPosY());	
 		}
+
+
 
 		
 		
@@ -295,5 +302,12 @@ public class Player extends Entity {
 		if(selectionInventory <=  0)
 			return;
 		selectionInventory--;
+	}
+	
+	public Vector2D getVectorMovement() {
+		return this.movement;
+	}
+	public void setVectorMovement(Vector2D d) {
+		this.movement = d;
 	}
 }

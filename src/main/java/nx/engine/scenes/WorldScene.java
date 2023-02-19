@@ -11,6 +11,7 @@ import javafx.scene.paint.Stop;
 import nx.engine.Camera;
 import nx.engine.Game;
 import nx.engine.UI.Dialog;
+import nx.engine.UI.HealthUI;
 import nx.engine.particles.ParticleManager;
 import nx.engine.world.World;
 import nx.engine.world.WorldData;
@@ -31,6 +32,8 @@ public class WorldScene implements Scene {
 	private final Vector2D spawn;
 	
 	private RadialGradient radialGradient;
+	
+	private HealthUI healthUI;
 
 	public WorldScene(WorldData worldData) {
 		this.camera = Player.get().getCamera();
@@ -39,7 +42,7 @@ public class WorldScene implements Scene {
 
 		// TODO: Custom particle image
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
-		
+		this.healthUI = new HealthUI(Player.get());
 		
 		
 	}
@@ -65,18 +68,14 @@ public class WorldScene implements Scene {
 		gc.setFill(radialGradient);
 		gc.fillRect(Game.screenWidth/2 - 500, Game.screenheigth/2 - 500, 1000, 1000);
 
-		gc.setFont(Game.font);
-		gc.setFill(Color.WHITESMOKE);
-		gc.fillText(String.format("Vida: %d", Player.get().getHealth()), 10, Game.screenheigth - 10);
-
 		PickableEntity e = (PickableEntity) Player.get().getItemSelected();
 		if(!Player.get().getInventory().isEmpty())
 			e.drawUI(gc);
-
-
 		
 		if(dialog != null)
 			dialog.draw(gc);
+		
+		healthUI.draw(gc);
 	}
 
 	public World getWorld() {

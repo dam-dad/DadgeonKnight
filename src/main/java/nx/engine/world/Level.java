@@ -65,8 +65,8 @@ public class Level {
             	
 
             	for(int i = 0; i < layers.size(); i++) {
-            		if(layers.get(i).getTiles()[worldCol][worldRow] != -1)
-            			gc.drawImage(tileSet.getTiles()[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
+            		if(layers.get(i).getTilesValues()[worldCol][worldRow] != -1)
+            			gc.drawImage(tileSet.getTiles()[layers.get(i).getTilesValues()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
             	}
             	
 //            	displayCollisions(gc,camera,worldCol,worldRow,worldX,worldY);
@@ -91,11 +91,14 @@ public class Level {
     public List<Layer> getLayers() {
         return layers;
     }
+    public Layer getCollisionLayer() {
+        return collisionLayer;
+    }
 
     public boolean isSolid(int x, int y) {
         if (x < 0 || x >= levelWidth) return true;
         if (y < 0 || y >= levelHeight) return true;
-        return collisionLayer.getTiles()[x][y] != -1;
+        return collisionLayer.getTilesValues()[x][y] != -1;
     }
 
     public void setMapSize(int col,int row) {

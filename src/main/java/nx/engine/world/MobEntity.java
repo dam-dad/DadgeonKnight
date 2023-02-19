@@ -58,12 +58,14 @@ public class MobEntity extends Entity {
 			}
 			
 			//draw animation
-//			if (timeSinceLastHit < TIME_SHOWING_ATTACK) {
-//				double alpha = ((1.0 - timeSinceLastHit / TIME_SHOWING_ATTACK) * 0.2) + 0.2;
-//				gc.setGlobalAlpha(alpha);
-//			}
+			gc.save();
+			if (canDie && timeSinceLastHit < TIME_SHOWING_ATTACK) {
+				double alpha = ((1.0 - timeSinceLastHit / TIME_SHOWING_ATTACK) * 0.2) + 0.2;
+				gc.setGlobalAlpha(alpha);
+			}
 			gc.drawImage(animation.getCurrentFrame(), screenX, screenY,sizeTextureX * scale,sizeTextureY * scale);
-//			gc.setGlobalAlpha(10);
+			
+			gc.restore();
 		}
 
 	}

@@ -29,13 +29,11 @@ public class Sword extends PickableEntity {
 	@Override
 	public void useItem() {
 		
-		List<Optional<MobEntity>> nearMobs = getWorld().getEntities().stream()
+		List<Optional<MobEntity>> nearMobs = Player.get().getWorld().getEntities().stream()
 				.filter(entity -> entity instanceof MobEntity)
 				.filter(e -> e.getDistanceToEntity(Player.get()) < 200)
 				.map(e -> Optional.of((MobEntity) e))
 				.toList();
-		
-		System.out.println(nearMobs);
 
 		Player.get().setAttacking(true);
 		switch (Player.get().getDirection()) {

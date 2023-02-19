@@ -25,7 +25,7 @@ public class Rock extends StaticEntity {
 		
 		if(playerOptional.isPresent() && this.checkCollision(playerOptional.get())) {
 			Game.inputHandler.ClearActiveKeys();
-			Entity.knockback(this, playerOptional.get(), 0.1,null);
+			Entity.knockback(this, playerOptional.get());
 		}
 	}
 
