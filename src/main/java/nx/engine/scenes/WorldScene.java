@@ -29,8 +29,6 @@ public class WorldScene implements Scene {
 	public static Dialog dialog;
 	public static Image smoke = new Image("/assets/textures/items/smoke.gif"); 
 	
-	private final Vector2D spawn;
-	
 	private RadialGradient radialGradient;
 	
 	private HealthUI healthUI;
@@ -38,7 +36,9 @@ public class WorldScene implements Scene {
 	public WorldScene(WorldData worldData) {
 		this.camera = Player.get().getCamera();
 		this.world = new World(worldData.getTileSet(), worldData.getEntities(), worldData.getMapLayers());
-		spawn = worldData.getSpawn();
+		
+		World.spawn = worldData.getSpawn() != null ? worldData.getSpawn() : new Vector2D(0,0);
+		Player.get().setPosition(World.spawn);
 
 		// TODO: Custom particle image
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
@@ -83,9 +83,6 @@ public class WorldScene implements Scene {
 	}
 	public void setWordl(WorldData worldData) {
 		this.world = new World(worldData.getTileSet(), worldData.getEntities(), worldData.getMapLayers());
-	}
-	public Vector2D getSpawn() {
-		return this.spawn;
 	}
 
 }

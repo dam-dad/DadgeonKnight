@@ -1,18 +1,12 @@
 package nx.engine;
 
-import java.nio.file.Paths;
-import java.util.Arrays;
-
-import javax.swing.text.html.CSS;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import nx.engine.scenes.Scene;
 import nx.engine.scenes.TextScene;
@@ -22,6 +16,8 @@ import nx.engine.world.entities.Player;
 import nx.game.App;
 
 public class Game extends AnimationTimer {
+	
+	public static Logger logger = Logger.getLogger(Game.class.getName());
 	
 	private static Game instance;
 	
@@ -66,6 +62,9 @@ public class Game extends AnimationTimer {
 
 	
 	private Game(Canvas canvas) {
+		
+		Game.logger.setLevel(Level.OFF);
+		
 		this.graphicsContext = canvas.getGraphicsContext2D();
 		graphicsContext.setImageSmoothing(false);
 		
@@ -119,8 +118,6 @@ public class Game extends AnimationTimer {
 
 			if (alpha > 1) {
 				mainScene = sceneToChangeTo;
-				if(mainScene instanceof WorldScene)
-					Player.get().setPosition(((WorldScene) mainScene).getSpawn());
 				sceneToChangeTo = null;
 				mainScene.update(deltaTime);
 				transitionDirection = -1;

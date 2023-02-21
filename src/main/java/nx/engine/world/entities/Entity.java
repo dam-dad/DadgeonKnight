@@ -144,6 +144,9 @@ public abstract class Entity {
 	public double getDistanceToEntity(Entity e) {
 		return Math.sqrt(Math.pow((e.getPosX() + (e.width/2)) - (this.getPosX() + (this.width/2)), 2) + Math.pow((e.getPosY() + (e.height/2)) - (this.getPosY() + (this.height/1.5)), 2));
 	}
+	public double getDistanceToTile(Vector2D e) {
+		return Math.sqrt(Math.pow((e.getX() + (Game.tileSize/2)) - (this.getPosX() + (this.width/2)), 2) + Math.pow((e.getY() + (Game.tileSize/2)) - (this.getPosY() + (this.height/2)), 2));
+	}
 
 	public double getDistanceToTile(int x, int y) {
 		return Math.sqrt(Math.pow((x + (Game.tileSize/2)) - (this.getPosX() + (this.width/2)), 2) + Math.pow((y + (Game.tileSize/2)) - (this.getPosY() + (this.height/1.5)), 2));
@@ -192,6 +195,9 @@ public abstract class Entity {
 	
 	public Vector2D getPosition() {
 		return new Vector2D(getPosX(),getPosY());
+	}
+	public Vector2D getTilePosition() {
+		return new Vector2D(getPosX()/Game.tileSize,getPosY()/Game.tileSize);
 	}
 
 	public double pushOut(Entity collition, double force) {

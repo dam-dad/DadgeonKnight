@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.logging.Level;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -16,7 +17,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import nx.engine.Animation;
 import nx.engine.Game;
-import nx.engine.PathfindingManager;
+import nx.engine.tile.PathfindingManager;
 import nx.engine.tile.Tile;
 import nx.util.Direction;
 
@@ -83,6 +84,8 @@ public class Orc extends MobEntity {
 		direction = Direction.values()[2];
 
 		this.animation = walk.get(direction);
+		
+		follow();
 
 	}
 
@@ -108,6 +111,15 @@ public class Orc extends MobEntity {
 		this.speed = runSpeed;
 		ANIMATION_SPEED = runAnimationSpeed;
 	}
+	
+	@Override
+	public Vector2D getPosition() {
+		return new Vector2D(getPosX(),getPosY() + (sizeTextureY * scale) - Game.tileSize);
+	}
+	@Override
+	public Vector2D getTilePosition() {
+		return new Vector2D(getPosX()/Game.tileSize,(getPosY() + (sizeTextureY * scale) - Game.tileSize)/Game.tileSize);
+	}
 
 	@Override
 	public void update(double deltaTime) {
@@ -125,15 +137,15 @@ public class Orc extends MobEntity {
 			double distance = getDistanceToEntity(Player.get());
 			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
 
-			if (distance < this.sizePlayerDetection) {
-				if (!state.equals("follow")) {
-					follow();
-				}
-			} else {
-				if (!state.equals("walk")) {
-					walk();
-				}
-			}
+//			if (distance < this.sizePlayerDetection) {
+//				if (!state.equals("follow")) {
+//					follow();
+//				}
+//			} else {
+//				if (!state.equals("walk")) {
+//					walk();
+//				}
+//			}
 
 			if (timeSinceLastAttack > attackDelay && this.checkCollision(Game.player)) {
 				timeSinceLastAttack -= attackDelay;
@@ -169,11 +181,13 @@ public class Orc extends MobEntity {
 				break;
 			case "follow":
 				if(Player.get().isWalking()) {
-					PathfindingManager p = new PathfindingManager((int)(getPosX()/Game.tileSize), (int)(getPosY()/Game.tileSize));
+					PathfindingManager p = new PathfindingManager(getTilePosition());
+					
 					p.setOnSucceeded(event -> {
 					    movementToPlayer = p.getValue();
-					    nextPosition = getPosition().add(movementToPlayer.get(movementToPlayer.size() -1).scalarMultiply(-1).scalarMultiply(48));
-					    taskExecuting = true;
+					    if(movementToPlayer != null)
+					    	nextPosition = this.getPosition().add(movementToPlayer.get(movementToPlayer.size() -1).scalarMultiply(-1).scalarMultiply(48));
+					    taskExecuting = false;
 					});
 					p.setOnCancelled(event -> {
 						movementToPlayer = null;
@@ -184,20 +198,21 @@ public class Orc extends MobEntity {
 					if(p.isRunning())
 						p.cancel();
 					new Thread(p).start();
+					taskExecuting = true;
 				}
 
-
-
 				
-				if(movementToPlayer != null && movementToPlayer.size() > 0) {
+				if(!taskExecuting && movementToPlayer != null && movementToPlayer.size() > 0) {
 					Vector2D direction = getVector2DToEntity(Player.get());
 					this.direction = getDirectionFromVector2D(direction);
 					animation = walk.get(this.direction);
 					move(movementToPlayer.get(movementToPlayer.size() -1).scalarMultiply(-1).scalarMultiply(realSpeed));
-					if(this.getPosition().distanceSq(nextPosition) < Game.tileSize) {
+					if(getPosition().distanceSq(nextPosition) < Game.tileSize) {
 						movementToPlayer.remove(movementToPlayer.size() -1);
-						if(movementToPlayer.size() > 0)
+						if(movementToPlayer.size() > 0) {
+							Game.logger.log(Level.INFO,movementToPlayer.toString());
 							nextPosition = getPosition().add(movementToPlayer.get(movementToPlayer.size() -1).scalarMultiply(-1).scalarMultiply(Game.tileSize));
+						}
 					}
 				}
 

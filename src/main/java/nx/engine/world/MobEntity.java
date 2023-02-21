@@ -64,6 +64,7 @@ public class MobEntity extends Entity {
 				gc.setGlobalAlpha(alpha);
 			}
 			gc.drawImage(animation.getCurrentFrame(), screenX, screenY,sizeTextureX * scale,sizeTextureY * scale);
+//			gc.fillRect(screenX, screenY + (sizeTextureY * scale) - Game.tileSize, sizeTextureX * scale, Game.tileSize);
 			
 			gc.restore();
 		}

@@ -1,12 +1,14 @@
-package nx.engine;
+package nx.engine.tile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import javafx.concurrent.Task;
-import nx.engine.tile.Tile;
+import nx.engine.Game;
 import nx.engine.world.entities.Player;
 
 public class PathfindingManager extends Task<List<Vector2D>> {
@@ -25,7 +27,7 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 	boolean isSearching = false;
 	
 	int steps = 0;
-	final int maxSteps = 1000;
+	final int maxSteps = 100;
 	
 	public PathfindingManager(int startX,int startY) {
 		map = Player.get().getWorld().getLevel().getCollisionLayer().getTiles();
@@ -34,13 +36,17 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 		maxRow = map[0].length;
 		
 		setStart(startX, startY);
-		setEnd((int)(Player.get().getPosX()/Game.tileSize), (int)(Player.get().getPosY()/Game.tileSize));
+		setEnd((int)(Math.round(Player.get().getPosX()/Game.tileSize)), (int)(Math.round(Player.get().getPosY()/Game.tileSize)));
 		
 		currentNode = startNode;
 		
 		setCost();
 		
-		System.out.println("finding: " + endNode.col + "," + endNode.row);
+		Game.logger.log(Level.INFO,"finding: " + endNode.col + "," + endNode.row);
+	}
+	
+	public PathfindingManager(Vector2D v) {
+		this((int)Math.round(v.getX()),(int)Math.round(v.getY()));
 	}
 	
 	@Override
@@ -62,16 +68,16 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 				search();
 				
 				steps++;
-				System.out.println("steps: " + steps);
+				Game.logger.log(Level.INFO,"steps: " + steps);
 				if(steps > maxSteps) {
-					System.out.println("notFound");
+					Game.logger.log(Level.INFO,"Player not found");
 					return null;
 				}
 					
 				delta--;
 			}
 			if(goalReach) {
-				System.out.println("Found");
+				Game.logger.log(Level.INFO,"Player found");
 				return trackThePath();
 			}
 				
@@ -88,15 +94,13 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 			int col = currentNode.col;
 			int row = currentNode.row;
 			
-
-			
 			currentNode.setAsChecked();
 			checkedList.add(currentNode);
 			openList.remove(currentNode);
 			
-			System.out.println("goalReach: " + goalReach + " " + col + " " + row);
-			System.out.println(openList);
-			System.out.println(checkedList);
+			Game.logger.log(Level.INFO,"goalReach: " + goalReach + " " + col + " " + row);
+			Game.logger.log(Level.INFO,openList.toString());
+			Game.logger.log(Level.INFO,checkedList.toString());
 			
 			// OPEN THE UP NODE
 			if(row - 1 >= 0) {
@@ -136,8 +140,6 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 			//After the loop i done, we get the next best node,the next step
 			
 			currentNode = openList.get(bestNodeIndex);
-			
-
 			
 			if(currentNode == endNode) 
 			{

@@ -19,6 +19,7 @@ import nx.engine.Animation;
 import nx.engine.Game;
 import nx.engine.tile.Tile;
 import nx.engine.world.Level;
+import nx.engine.world.World;
 import nx.util.Direction;
 
 public class Player extends Entity {
@@ -34,9 +35,6 @@ public class Player extends Entity {
 	public static final String swordSet = "/assets/textures/player/player_Sword.png";
 
 	private static final double ANIMATION_SPEED = 0.15;
-	
-	private double time = 0;
-	private final double timeInCollision = 0.2;
 
 	private final Map<Direction, Animation> idle = new HashMap<>() {{
 		put(Direction.SOUTH, new Animation(walkTileSet,0, 22, 25));
@@ -77,7 +75,8 @@ public class Player extends Entity {
 	private int health;
 	private double timeSinceLastHit;
 
-	private final double initialX, initialY;
+	private double initialX;
+	private double initialY;
 	
 	private Vector2D movement;
 	
@@ -118,8 +117,8 @@ public class Player extends Entity {
 	public void update(double deltaTime) {
 
 		if (health <= 0) {
-			posX = initialX;
-			posY = initialY;
+			posX = World.spawn.getX();
+			posY = World.spawn.getY();;
 			health = 10;
 		}
 
@@ -180,12 +179,8 @@ public class Player extends Entity {
 
 		if(!checkCollisionsMap(new Vector2D(movementX,movementY))) {
 			move(movementX, movementY);
-			camera.setPosition(getPosX(), getPosY());	
+			camera.setPosition(getPosX(), getPosY());
 		}
-
-
-
-		
 		
 		animation = idle.get(direction);
 		
@@ -210,7 +205,11 @@ public class Player extends Entity {
 	
 	public void setPosition(Vector2D v) {
 		super.setPosition(v.getX() * Game.tileSize,v.getY() * Game.tileSize);
-		camera.setPosition(v.getX() * Game.tileSize, v.getY() * Game.tileSize);	
+		camera.setPosition(v.getX() * Game.tileSize, v.getY() * Game.tileSize);
+	}
+	public void setSpawn(Vector2D v) {
+		this.initialX = v.getX();
+		this.initialY = v.getY();
 	}
 
 	@Override
