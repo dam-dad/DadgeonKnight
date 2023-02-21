@@ -6,10 +6,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import nx.engine.Camera;
 import nx.engine.Game;
-import nx.engine.world.entities.boss.BossAttack;
-import nx.engine.world.entities.boss.ChargeAttack;
-import nx.engine.world.entities.boss.FireAttack;
-import nx.engine.world.entities.boss.MagicAttack;
+import nx.engine.world.entities.boss.*;
 import nx.game.App;
 import nx.util.SoundMixer;
 import nx.util.Vector2f;
@@ -22,6 +19,7 @@ import java.util.Random;
 public class TestBoss extends Entity implements Enemy {
 
     protected static final Image sprite = new Image("/assets/textures/player/kevin_idle_00.png");
+    protected static final Image shadow = new Image("/assets/textures/shadow.png");
     private static final double attackDelay = 0.15;
     private static final double RADIUS = 10 * Game.tileSize;
     private static final float FIREBALL_SPEED = 8.5f * Game.tileSize;
@@ -33,6 +31,8 @@ public class TestBoss extends Entity implements Enemy {
     private BossAttack currentAttack;
     private final List<BossAttack> attackList;
     private final Random random;
+    private double yOffset = 0.0;
+    private boolean isShadowEnabled;
 
     private boolean musicPlayed;
 
@@ -46,6 +46,7 @@ public class TestBoss extends Entity implements Enemy {
         attackList.add(new FireAttack(this));
         attackList.add(new MagicAttack(this));
         attackList.add(new ChargeAttack(this));
+        attackList.add(new JumpAttack(this));
 
         currentAttack = attackList.get(random.nextInt(attackList.size()));
     }
@@ -55,6 +56,9 @@ public class TestBoss extends Entity implements Enemy {
 	}
     
 	public void getAttacked(int damage) {
+        if (yOffset != 0.0)
+            return;
+
 		mobHealth -= canDie? damage : 0;
 	}
 
@@ -69,13 +73,13 @@ public class TestBoss extends Entity implements Enemy {
                 musicPlayed = true;
                 App.mixer.addGameSound("battleThemeA.mp3").setVolume(0.5).play();
             }
+            return;
         }
 
         if (currentAttack.shouldChange()) {
             currentAttack.onFinish();
             currentAttack = attackList.get(random.nextInt(attackList.size()));
             currentAttack.onStart();
-            System.out.println("Changing attack: " + currentAttack.getClass());
         }
 
         currentAttack.update(deltaTime);
@@ -85,20 +89,33 @@ public class TestBoss extends Entity implements Enemy {
     public void draw(GraphicsContext gc, Camera camera) {
         drawInternal(gc, camera, 2);
 
-        currentAttack.draw(gc);
+        currentAttack.draw(gc, camera);
+    }
+
+    protected void drawInternal(GraphicsContext gc, Camera camera, double scale) {
+        if (image == null)
+            return;
+
+        if (isShadowEnabled)
+            gc.drawImage(shadow, Game.SCREEN_CENTER_X - camera.getX() + getPosX() - getWidth() / 2 * scale, Game.SCREEN_CENTER_Y - camera.getY() + getPosY() - getHeight() / 4 * scale, Game.tileSize * scale, Game.tileSize * scale);
+
+        gc.drawImage(image, Game.SCREEN_CENTER_X - camera.getX() + getPosX() - getWidth() / 2 * scale, Game.SCREEN_CENTER_Y - camera.getY() + getPosY() - getHeight() / 2 * scale - yOffset, Game.tileSize * scale, Game.tileSize * scale);
+    }
+
+    public void setyOffset(double yOffset) {
+        this.yOffset = yOffset;
     }
 
     @Override
     public void getAttacked(double damage) {
+        if (yOffset != 0.0)
+            return;
+
         this.mobHealth -= damage;
     }
 
-    public void follow(double delta) {
-//        double realSpeed = SPEED * Game.LastFrameRate * delta;
-//        Vector2D direction = getVector2DToEntity(playerOptional.get());
-//        direction = direction.scalarMultiply(realSpeed);
-//
-//        move(direction);
+    public void setShadowEnabled(boolean shadowEnabled) {
+        isShadowEnabled = shadowEnabled;
     }
 
 }

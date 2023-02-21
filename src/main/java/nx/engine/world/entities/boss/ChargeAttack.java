@@ -1,10 +1,15 @@
 package nx.engine.world.entities.boss;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import nx.engine.Camera;
+import nx.engine.Game;
 import nx.engine.world.entities.TestBoss;
 
 public class ChargeAttack extends BossAttack {
 
-    private static final double MAX_ATTACK_TIME = 5.0;
+    private static final Image IMAGE = new Image("/assets/textures/magic2.gif");
+    private static final double MAX_ATTACK_TIME = 2.0;
 
     private double timeAttacking = 0.0;
 
@@ -20,6 +25,11 @@ public class ChargeAttack extends BossAttack {
     @Override
     public void onStart() {
 
+    }
+
+    @Override
+    public void draw(GraphicsContext gc, Camera camera) {
+        gc.drawImage(IMAGE, Game.SCREEN_CENTER_X - camera.getX() + getBoss().getPosX() - Game.tileSize, Game.SCREEN_CENTER_Y - camera.getY() + getBoss().getPosY() - (getBoss().getHeight() / 2) * 4, Game.tileSize * 4, Game.tileSize * 4);
     }
 
     @Override

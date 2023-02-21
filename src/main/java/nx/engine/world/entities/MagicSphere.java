@@ -11,7 +11,7 @@ import java.util.Optional;
 public class MagicSphere extends Entity {
 
     private static final Image IMAGE = new Image("/assets/textures/magic2.gif");
-    private static final float DEFAULT_SPEED = 20 * Game.tileSize;
+    private static final float DEFAULT_SPEED = 30 * Game.tileSize;
     private static final double MAX_TIME_ALIVE = 4.5f;
     private static final double RADIUS = 48;
     public static final double WAIT_TIME = 1.5;

@@ -4,13 +4,12 @@ import nx.engine.Game;
 import nx.engine.world.entities.MagicSphere;
 import nx.engine.world.entities.Player;
 import nx.engine.world.entities.TestBoss;
-import nx.util.Vector2f;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 public class MagicAttack extends BossAttack {
 
     private static final double ATTACK_RADIUS = 10;
-    private static final double SPHERE_DELAY = 0.125;
+    private static final double SPHERE_DELAY = 0.1;
     private static final int MAX_SPHERES = 8;
     private static final int SPHERE_RADIUS = 2 * Game.tileSize;
 

@@ -1,6 +1,7 @@
 package nx.engine.world.entities.boss;
 
 import javafx.scene.canvas.GraphicsContext;
+import nx.engine.Camera;
 import nx.engine.world.entities.TestBoss;
 
 public abstract class BossAttack {
@@ -19,7 +20,7 @@ public abstract class BossAttack {
 
     public abstract boolean shouldChange();
 
-    public void draw(GraphicsContext gc) {
+    public void draw(GraphicsContext gc, Camera camera) {
 
     }
 
