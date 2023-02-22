@@ -234,12 +234,13 @@ public class Player extends Entity {
 	
 	private boolean checkCollisionsMap(Vector2D v) {
 		Level level = getWorld().getLevel();
-		int levelWidth = level.getLayers().get(0).getLayerWidth();
-		int levelHeight = level.getLayers().get(0).getLayerHeight();
-		
+
+		int currentX = (int) (getPosX() / Game.tileSize);
+		int currentY = (int) (getPosY() / Game.tileSize);
+
 		//collisions player with tiles
-		for (int i = 0; i < levelHeight; i++) {
-			for (int j = 0; j < levelWidth; j++) {
+		for (int i = currentX - 2; i < currentX + 2; i++) {
+			for (int j = currentY - 2; j < currentY + 2; j++) {
 				if (level.isSolid(i,j) && Tile.checkCollision(getNextCollisionShape(v), i, j)) {
 					return true;
 				}

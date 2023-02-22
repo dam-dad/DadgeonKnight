@@ -14,16 +14,12 @@ import java.util.Random;
 
 public class TestBoss extends MobEntity {
 
-    protected static final Image sprite = new Image("/assets/textures/player/kevin_idle_00.png");
+    protected static final Image sprite = new Image("/assets/textures/boss/Selection84.png");
     protected static final Image shadow = new Image("/assets/textures/shadow.png");
-    private static final double attackDelay = 0.15;
     private static final double RADIUS = 10 * Game.tileSize;
-    private static final float FIREBALL_SPEED = 8.5f * Game.tileSize;
-    private static final float SPEED = 2.5f * Game.tileSize;
 	protected boolean canDie = true;
 	protected double mobHealth = 150;
 
-    private double timeSinceLastAttack = 0.0;
     private BossAttack currentAttack;
     private final List<BossAttack> attackList;
     private final Random random;
@@ -65,6 +61,10 @@ public class TestBoss extends MobEntity {
 		mobHealth -= canDie? damage : 0;
 	}
 
+    /**
+     * Updates the boss and its current attack
+     * @param deltaTime Frame delta
+     */
 	@Override
     public void update(double deltaTime) {
         if (mobHealth <= 0) {
@@ -93,6 +93,11 @@ public class TestBoss extends MobEntity {
         currentAttack.update(deltaTime);
     }
 
+    /**
+     * Overrides the draw function
+     * @param gc
+     * @param camera
+     */
     @Override
     public void draw(GraphicsContext gc, Camera camera) {
         super.draw(gc, camera);
@@ -100,6 +105,12 @@ public class TestBoss extends MobEntity {
         currentAttack.draw(gc, camera);
     }
 
+    /**
+     * Overrides the internal draw function to show a shadow
+     * @param gc GraphicsContext to draw on
+     * @param camera World camera
+     * @param scale Scale of the boss
+     */
     protected void drawInternal(GraphicsContext gc, Camera camera, double scale) {
         if (image == null)
             return;

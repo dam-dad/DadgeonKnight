@@ -42,6 +42,7 @@ public abstract class Entity {
 		this.setPosY(posY);
 		this.image = image;
 	}
+
 	public Entity(Image image,double posX, double posY,double width,double height) {
 		this.setPosX(posX);
 		this.setPosY(posY);
@@ -50,6 +51,10 @@ public abstract class Entity {
 		this.height = height;
 	}
 
+	/**
+	 * Updates the entity
+	 * @param deltaTime Frame delta
+	 */
 	public abstract void update(double deltaTime);
 
 	public void draw(GraphicsContext gc, Camera camera) {

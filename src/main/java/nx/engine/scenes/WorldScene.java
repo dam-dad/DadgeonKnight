@@ -21,9 +21,12 @@ import nx.engine.world.entities.Player;
 
 import java.util.Optional;
 
+/**
+ * Defines a scene with a world (player, entities, map...)
+ */
 public class WorldScene implements Scene {
 
-	private World world;
+	private final World world;
 	
 	private final ParticleManager particleManager;
 	
@@ -36,7 +39,7 @@ public class WorldScene implements Scene {
 
 	private RadialGradient radialGradient;
 	
-	private HealthUI healthUI;
+	private final HealthUI healthUI;
 
 	public WorldScene(WorldData worldData) {
 		this.camera = Player.get().getCamera();
@@ -51,6 +54,10 @@ public class WorldScene implements Scene {
 		this.healthUI = new HealthUI(Player.get());
 	}
 
+	/**
+	 * Updates the world and the particle manager (and dialogs is there is any)
+	 * @param delta
+	 */
 	@Override
 	public void update(double delta) {
 		world.update(delta);
@@ -60,6 +67,10 @@ public class WorldScene implements Scene {
 			dialog.update(delta);
 	}
 
+	/**
+	 * Draws the world with a light effect and the UI
+	 * @param gc GraphicsContext to draw on
+	 */
 	@Override
 	public void draw(GraphicsContext gc) {
 		world.draw(gc, camera);
@@ -97,9 +108,6 @@ public class WorldScene implements Scene {
 
 	public World getWorld() {
 		return world;
-	}
-	public void setWordl(WorldData worldData) {
-		this.world = new World(worldData.getTileSet(), worldData.getEntities(), worldData.getMapLayers());
 	}
 
 }
