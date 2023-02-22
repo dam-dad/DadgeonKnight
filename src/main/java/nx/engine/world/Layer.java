@@ -1,5 +1,6 @@
 package nx.engine.world;
 
+import nx.engine.tile.Tile;
 import nx.util.CSV;
 
 public class Layer {
@@ -11,7 +12,6 @@ public class Layer {
 
     public Layer(int[][] tiles) {
         this.tiles = tiles;
-//        this.tiles = CSV.loadMapValues(fileName);
 
         this.layerWidth = tiles.length;
         this.layerHeight = tiles[0].length;
@@ -43,8 +43,22 @@ public class Layer {
         return layerHeight;
     }
 
-    public int[][] getTiles() {
+    public int[][] getTilesValues() {
         return tiles;
+    }
+    
+    public Tile[][] getTiles() {
+    	int[][] values = getTilesValues();
+    	Tile[][] toReturn = new Tile[values.length][values[0].length];
+    	
+    	
+    	for(int i = 0; i < values.length; i++) {
+        	for(int j = 0; j < values[0].length; j++) {
+        		toReturn[i][j] = new Tile(i,j,values[i][j] != -1);
+        	}
+    	}
+    	
+    	return toReturn;
     }
 
     public static Layer[] loadLayersFromFiles(String... fileNames) {

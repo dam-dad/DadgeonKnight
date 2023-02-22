@@ -1,11 +1,13 @@
 package nx.engine.world.entities;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.logging.Level;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -15,6 +17,8 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import nx.engine.Animation;
 import nx.engine.Game;
+import nx.engine.tile.PathfindingManager;
+import nx.engine.tile.Tile;
 import nx.util.Direction;
 
 public class Orc extends MobEntity {
@@ -32,12 +36,19 @@ public class Orc extends MobEntity {
 	private final double timeToChange = 5.0;
 
 	public String state = "walk";
-	private double initialSpeed;
+	private double walkSpeed;
 	private double runSpeed;
-
-	Optional<Player> playerOptional;
+	
+	private static final double attackDelay = 0.1;
+	private double timeSinceLastAttack = 0.0;
 
 	private List<? extends Entity> dropItems;
+	
+	
+	private static List<Vector2D> movementToPlayer = new ArrayList<Vector2D>();
+	private Vector2D nextPosition;
+	private boolean taskExecuting = false;
+	
 
 	private final Map<Direction, Animation> walk = new HashMap<>() {
 		{
@@ -51,10 +62,11 @@ public class Orc extends MobEntity {
 	public Orc(double posX, double posY, double speed, double runSpeed) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 
-		this.speed = speed;
-		initialSpeed = speed;
+		this.walkSpeed = speed;
 		this.runSpeed = runSpeed;
 		this.scale = 2;
+		
+		this.speed = walkSpeed;
 
 		this.sizeTextureX = tileSizeX;
 		this.sizeTextureY = tileSizeY;
@@ -72,6 +84,8 @@ public class Orc extends MobEntity {
 		direction = Direction.values()[2];
 
 		this.animation = walk.get(direction);
+		
+		follow();
 
 	}
 
@@ -88,7 +102,7 @@ public class Orc extends MobEntity {
 
 	public void walk() {
 		this.state = "walk";
-		this.speed = initialSpeed;
+		this.speed = walkSpeed;
 		ANIMATION_SPEED = walkAnimationSpeed;
 	}
 
@@ -97,84 +111,123 @@ public class Orc extends MobEntity {
 		this.speed = runSpeed;
 		ANIMATION_SPEED = runAnimationSpeed;
 	}
+	
+	@Override
+	public Vector2D getPosition() {
+		return new Vector2D(getPosX(),getPosY() + (sizeTextureY * scale) - Game.tileSize);
+	}
+	@Override
+	public Vector2D getTilePosition() {
+		return new Vector2D(getPosX()/Game.tileSize,(getPosY() + (sizeTextureY * scale) - Game.tileSize)/Game.tileSize);
+	}
 
 	@Override
 	public void update(double deltaTime) {
-		playerOptional = getWorld().getEntities().stream().filter(entity -> entity instanceof Player)
-				.map(entity -> (Player) entity).findAny();
 		
-		if (playerOptional.isPresent()) {
-			if(getPosX() + Game.tileSize > playerOptional.get().getCamera().getX() - Game.screenWidth &&
-					getPosX() - Game.tileSize < playerOptional.get().getCamera().getX() + Game.screenWidth &&
-					getPosY() + Game.tileSize > playerOptional.get().getCamera().getY() - Game.screenheigth &&
-					getPosY() - Game.tileSize  < playerOptional.get().getCamera().getY() + Game.screenheigth){
-				if (this.mobHealth < 0) {
-					getWorld().removeEntity(this);
-					return;
+		if(getPosX() + Game.tileSize > Player.get().getCamera().getX() - Game.screenWidth &&
+				getPosX() - Game.tileSize < Player.get().getCamera().getX() + Game.screenWidth &&
+				getPosY() + Game.tileSize > Player.get().getCamera().getY() - Game.screenheigth &&
+				getPosY() - Game.tileSize  < Player.get().getCamera().getY() + Game.screenheigth){
+			if (this.mobHealth < 0) {
+				getWorld().removeEntity(this);
+				return;
+			}
+			double lastAnimationSpeed = ANIMATION_SPEED;
+
+			double distance = getDistanceToEntity(Player.get());
+			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
+
+//			if (distance < this.sizePlayerDetection) {
+//				if (!state.equals("follow")) {
+//					follow();
+//				}
+//			} else {
+//				if (!state.equals("walk")) {
+//					walk();
+//				}
+//			}
+
+			if (timeSinceLastAttack > attackDelay && this.checkCollision(Game.player)) {
+				timeSinceLastAttack -= attackDelay;
+				Game.inputHandler.ClearActiveKeys();
+				Player.get().setVectorMovement(new Vector2D(0,0));
+				Entity.knockback(Game.player, this);
+				Game.player.getAttacked(1);
+				return;
+
+			}
+			timeSinceLastAttack += deltaTime;
+
+			switch (state) {
+			case "stop":
+				break;
+			case "walk":
+				time += deltaTime;
+
+				if (time > timeToChange) {
+					changeDirection();
+					time = 0;
 				}
-				double lastAnimationSpeed = ANIMATION_SPEED;
 
-				double distance = getDistanceToEntity(playerOptional.get());
-				double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
-
-				if (distance < this.sizePlayerDetection) {
-					if (!state.equals("follow")) {
-						follow();
-					}
-				} else {
-					if (!state.equals("walk")) {
-						walk();
-					}
+				if (direction == Direction.EAST) {
+					this.setPosX(this.getPosX() + realSpeed);
+				} else if (direction == Direction.WEST) {
+					this.setPosX(this.getPosX() - realSpeed);
+				} else if (direction == Direction.NORTH) {
+					this.setPosY(this.getPosY() - realSpeed);
+				} else if (direction == Direction.SOUTH) {
+					this.setPosY(this.getPosY() + realSpeed);
+				}
+				break;
+			case "follow":
+				if(Player.get().isWalking()) {
+					PathfindingManager p = new PathfindingManager(getTilePosition());
+					
+					p.setOnSucceeded(event -> {
+					    movementToPlayer = p.getValue();
+					    if(movementToPlayer != null)
+					    	nextPosition = this.getPosition().add(movementToPlayer.get(movementToPlayer.size() -1).scalarMultiply(-1).scalarMultiply(48));
+					    taskExecuting = false;
+					});
+					p.setOnCancelled(event -> {
+						movementToPlayer = null;
+						nextPosition = null;
+						taskExecuting = false;
+					});
+					
+					if(p.isRunning())
+						p.cancel();
+					new Thread(p).start();
+					taskExecuting = true;
 				}
 
-				if (this.checkCollision(playerOptional.get())) {
-					float randomValue = 0.1f + (float) (Math.random() * (0.12f - 0.1f));
-					Game.inputHandler.ClearActiveKeys();
-					Entity.knockback(playerOptional.get(), this, randomValue, playerOptional.get().getCamera());
-					playerOptional.get().getAttacked(5);
-				}
-
-				switch (state) {
-				case "stop":
-					break;
-				case "walk":
-					time += deltaTime;
-
-					if (time > timeToChange) {
-						changeDirection();
-						time = 0;
-					}
-
-					if (direction == Direction.EAST) {
-						this.setPosX(this.getPosX() + realSpeed);
-					} else if (direction == Direction.WEST) {
-						this.setPosX(this.getPosX() - realSpeed);
-					} else if (direction == Direction.NORTH) {
-						this.setPosY(this.getPosY() - realSpeed);
-					} else if (direction == Direction.SOUTH) {
-						this.setPosY(this.getPosY() + realSpeed);
-					}
-					break;
-				case "follow":
-					Vector2D direction = getVector2DToEntity(playerOptional.get());
+				
+				if(!taskExecuting && movementToPlayer != null && movementToPlayer.size() > 0) {
+					Vector2D direction = getVector2DToEntity(Player.get());
 					this.direction = getDirectionFromVector2D(direction);
 					animation = walk.get(this.direction);
-					direction = direction.scalarMultiply(realSpeed);
-					
-					move(direction);
-					break;
-				default:
-					break;
-
+					move(movementToPlayer.get(movementToPlayer.size() -1).scalarMultiply(-1).scalarMultiply(realSpeed));
+					if(getPosition().distanceSq(nextPosition) < Game.tileSize) {
+						movementToPlayer.remove(movementToPlayer.size() -1);
+						if(movementToPlayer.size() > 0) {
+							Game.logger.log(Level.INFO,movementToPlayer.toString());
+							nextPosition = getPosition().add(movementToPlayer.get(movementToPlayer.size() -1).scalarMultiply(-1).scalarMultiply(Game.tileSize));
+						}
+					}
 				}
 
-				if (lastAnimationSpeed != ANIMATION_SPEED)
-					Animation.updatadeMapDuration(walk, ANIMATION_SPEED);
+				break;
+			default:
+				break;
 
-				animation.update(deltaTime);
-				if(timeSinceLastHit < MobEntity.TIME_SHOWING_ATTACK)
-					timeSinceLastHit += deltaTime;
 			}
+
+			if (lastAnimationSpeed != ANIMATION_SPEED)
+				Animation.updatadeMapDuration(walk, ANIMATION_SPEED);
+
+			animation.update(deltaTime);
+			if(timeSinceLastHit < MobEntity.TIME_SHOWING_ATTACK)
+				timeSinceLastHit += deltaTime;
 		}
 	}
 

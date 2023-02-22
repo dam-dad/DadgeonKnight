@@ -2,16 +2,22 @@ package nx.engine.world;
 
 import javafx.scene.canvas.GraphicsContext;
 import nx.engine.Camera;
+import nx.engine.Game;
 import nx.engine.UI.Dialog;
 import nx.engine.scenes.WorldScene;
 import nx.engine.tile.TileSet;
+import nx.engine.world.entities.Chest;
 import nx.engine.world.entities.Entity;
 import nx.engine.world.entities.Player;
+import nx.engine.world.entities.Sword;
 import nx.util.CSV;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 public class World {
 
@@ -20,6 +26,8 @@ public class World {
 
     private final List<Entity> entitiesToAdd;
     private final List<Entity> entitiesToRemove;
+    
+	public static Vector2D spawn;
 
     public World(TileSet tileSet, Layer... layers) {
         this.level = new Level(tileSet, layers);
@@ -36,10 +44,13 @@ public class World {
             this.entities.add(entity);
             entity.setWorld(this);
         });
+    	
+        addEntity(Game.player);
+        addEntity(new Chest(26, 27));
     }
 
-    public World(TileSet tileSet, String entitties, Camera camera, Layer... layers) {
-    	this(tileSet, Entity.loadEntititiesFromCSV(entitties, camera), layers);
+    public World(TileSet tileSet, String entitties, Layer... layers) {
+    	this(tileSet, Entity.loadEntititiesFromCSV(entitties), layers);
     }
 
     public void update(double delta) {
@@ -54,8 +65,6 @@ public class World {
 
     public void draw(GraphicsContext gc, Camera camera) {
         level.draw(gc, camera);
-        
-        
 
         entities.stream()
                 .sorted(Comparator.comparingDouble(e -> e.getPosY() + e.getHeight()))
@@ -78,5 +87,15 @@ public class World {
     public Level getLevel() {
         return level;
     }
+
+	public Vector2D getSpawn() {
+		return spawn;
+	}
+
+	public void setSpawn(Vector2D spawn) {
+		this.spawn = spawn;
+	}
+    
+    
 
 }

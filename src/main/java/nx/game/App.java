@@ -2,6 +2,7 @@ package nx.game;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import nx.util.SoundMixer;
 
@@ -9,9 +10,8 @@ public class App extends Application {
 
 	public static Stage mainStage;
 
-	
-	private MenuController menuController;
-	
+	public static MenuController menuController;
+
 	public static SoundMixer mixer = new SoundMixer();
 
 	@Override
@@ -19,13 +19,11 @@ public class App extends Application {
 
 		App.mainStage = stage;
 
-		
 		menuController = new MenuController();
-		
-		mixer.setMusic("xDeviruchi - Title Theme .wav").setLoop(true).fadeIn(0,0.05,2);
 
 		stage.setResizable(false);
 		stage.setTitle("Dadgeon Knight");
+		stage.getIcons().addAll(new Image("/assets/icons/helmet-16x16.png"),new Image("/assets/icons/helmet-32x32.png"),new Image("/assets/icons/helmet-64x64.png"));
 		stage.setScene(new Scene(menuController.getView()));
 		stage.show();
 

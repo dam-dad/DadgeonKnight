@@ -1,8 +1,7 @@
 package nx.engine.world.entities;
 
-import java.util.Optional;
 
-import javafx.scene.image.Image;
+
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import nx.engine.Game;
@@ -21,12 +20,15 @@ public class Pillar extends StaticEntity {
 	
 	@Override
 	public void update(double deltaTime) {
-		Optional<Player> playerOptional = getWorld().getEntities().stream().filter(entity -> entity instanceof Player)
-		.map(entity -> (Player) entity).findAny();
 		
-		if(playerOptional.isPresent() && this.checkCollision(playerOptional.get())) {
-			Game.inputHandler.ClearActiveKeys();
-			playerOptional.get().pushOut(this, Player.PLAYER_FORCE);
+		if(getPosX() + Game.tileSize > Player.get().getCamera().getX() - Game.screenWidth &&
+				getPosX() - Game.tileSize < Player.get().getCamera().getX() + Game.screenWidth &&
+				getPosY() + Game.tileSize > Player.get().getCamera().getY() - Game.screenheigth &&
+				getPosY() - Game.tileSize  < Player.get().getCamera().getY() + Game.screenheigth) {
+			if(this.checkCollision(Player.get())) {
+				Game.inputHandler.ClearActiveButtons();
+				Player.get().pushOut(this, Player.PLAYER_FORCE);
+			}
 		}
 	}
 	
