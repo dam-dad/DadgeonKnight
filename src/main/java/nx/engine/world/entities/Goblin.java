@@ -6,40 +6,51 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Vector;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import javafx.scene.control.Alert;
 import nx.engine.Animation;
 import nx.engine.Game;
+import nx.engine.particles.Particle;
+import nx.engine.scenes.WorldScene;
 import nx.engine.world.MobEntity;
 import nx.util.Direction;
+import nx.util.Vector2f;
 
 public class Goblin extends MobEntity {
 
-private final String walkTileSet = "/assets/textures/goblin/goblinsheet.png";
-private final String takeTileSet = "/assets/textures/goblin/goblin-take.png";
+private final String walkTileSet = "/assets/textures/goblin/goblin-sprite-sheet.png";
 	
+	public static final int tileSizeX = 19;
+	public static final int tileSizeY = 23;
+
 	public double ANIMATION_SPEED = 0.8;
 	private double walkAnimationSpeed;
 	private double runAnimationSpeed;
 	
 	private double time = 0.0;
 	private final double timeToChange = 5.0;
+	private double timeRunning = 0.0;
+	private final double timeToRun = 3.5;
 	
 	public String state = "walk";
 	private double initialSpeed;
 	private double runSpeed;
 	
+	private int selectionInventory = 0;
+	
 	Optional<Player> playerOptional;
 	
+	private Entity pickedItem;
 	private List<Entity> inventory = new ArrayList<>();
-	private List<? extends Entity> dropItems;
 	
 	private final Map<Direction, Animation> walk = new HashMap<>() {{
-		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkTileSet,0,61,62));
-		put(Direction.EAST, new Animation(ANIMATION_SPEED,walkTileSet,2,61,62));
-		put(Direction.WEST, new Animation(ANIMATION_SPEED,walkTileSet,1,61,62));
-		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,3,61,62));
+		put(Direction.SOUTH, new Animation(ANIMATION_SPEED,walkTileSet,0,tileSizeX,tileSizeY));
+		put(Direction.EAST, new Animation(ANIMATION_SPEED,walkTileSet,2,tileSizeX,tileSizeY));
+		put(Direction.WEST, new Animation(ANIMATION_SPEED,walkTileSet,1,tileSizeX,tileSizeY));
+		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkTileSet,3,tileSizeX,tileSizeY));
 	}};
 	
 	
@@ -51,8 +62,8 @@ private final String takeTileSet = "/assets/textures/goblin/goblin-take.png";
 		this.runSpeed = runSpeed;
 		this.scale = 2;
 		
-		this.sizeTextureX = 32;
-		this.sizeTextureY = 64;
+		this.sizeTextureX = tileSizeX;
+		this.sizeTextureY = tileSizeY;
 		
 		this.width = this.sizeTextureX * this.scale;
 		this.height = this.sizeTextureY * this.scale;
@@ -89,10 +100,34 @@ private final String takeTileSet = "/assets/textures/goblin/goblin-take.png";
 		this.speed = runSpeed;
 		ANIMATION_SPEED = runAnimationSpeed;
 	}
+	public void run() {
+		this.state = "run";
+		this.speed = runSpeed;
+		ANIMATION_SPEED = runAnimationSpeed;
+	}
+	
+	public void scapeFromPlayer(double realSpeed) { 
+		Vector2D huida = getVector2DToEntity(playerOptional.get()).negate();
+		this.direction = getDirectionFromVector2D(huida);
+		animation = walk.get(this.direction);
+		huida = huida.scalarMultiply(realSpeed);
+		
+		this.setPosX(this.getPosX() + huida.getX());
+		this.setPosY(this.getPosY() + huida.getY());
+	}
+	
+	public List<Entity> getInventory() {
+		return inventory;
+	}
+	
+	public Entity getItemSelected() {
+		return getInventory().size() > 0 ? this.getInventory().get(selectionInventory) : new PickableEntity();
+	}
 
 	@Override
 	public void update(double deltaTime) {
 		if(this.mobHealth < 0) {
+			getWorld().addEntity(pickedItem);
 			getWorld().removeEntity(this);
 			return;
 		}
@@ -104,22 +139,34 @@ private final String takeTileSet = "/assets/textures/goblin/goblin-take.png";
 		
 		if(playerOptional.isPresent()) {
 			double lastAnimationSpeed = ANIMATION_SPEED;
-			
 	        double distance = getDistanceToEntity(playerOptional.get());
 			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
 			
-			if(distance < this.sizePlayerDetection) {
+			if(!state.equals("run") && distance < this.sizePlayerDetection) {
 				if(!state.equals("follow")) {
 					follow();
+					if(!this.inventory.isEmpty()) {
+						createExclamationEffect(posX, posY);  //*** NO VA AQUI ***
+						System.out.println("HOLAAAA");
+						run();
+					}
 				}
-			}else {
+			} else if(!state.equals("run")) {
 				if(!state.equals("walk")) {
 					walk();
 				}
 			}
 			
-			if(this.checkCollision(playerOptional.get())) { //TODO aqui es donde roba el objeto
-				
+			if(this.checkCollision(playerOptional.get())) { 
+				if((inventory.size() == 1) || (playerOptional.get().getInventory().size() <= 1)) {
+					Entity.knockback(playerOptional.get(), this,0.07,playerOptional.get().getCamera());
+					playerOptional.get().getAttacked(1);
+				} else if((playerOptional.get().getInventory().size() > 1) || (this.inventory.size() < 1)) {
+					this.getInventory().add(playerOptional.get().getItemSelected());
+					playerOptional.get().getInventory().remove(getItemSelected());
+					pickedItem = this.getItemSelected();
+					run();
+				}
 			}
 
 			switch (state) {
@@ -155,6 +202,14 @@ private final String takeTileSet = "/assets/textures/goblin/goblin-take.png";
 					this.setPosX(this.getPosX() + direction.getX());
 					this.setPosY(this.getPosY() + direction.getY());
 					break;
+				case "run":
+					scapeFromPlayer(realSpeed);
+					if(timeRunning > timeToRun) {
+						walk();
+					}
+					
+					timeRunning += deltaTime;
+					break;
 				default:
 					break;
 
@@ -166,4 +221,12 @@ private final String takeTileSet = "/assets/textures/goblin/goblin-take.png";
 			animation.update(deltaTime);
 		}
 	}
+	
+	private void createExclamationEffect(double posX, double posY) {
+        for (int i = 0; i < 20; i++) {
+            float directionX = randomFromInterval(-1.0f, 1.0f);
+            float directionY = randomFromInterval(-1.0f, 1.0f);
+            getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(0.0f, 1.0f), WorldScene.exclamation, randomFromInterval(1.0f, 200.0f) + 100.0f));
+        }
+    }
 }

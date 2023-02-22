@@ -28,6 +28,7 @@ public class WorldScene implements Scene {
 	
 	public static Dialog dialog;
 	public static Image smoke = new Image("/assets/textures/items/smoke.gif"); 
+	public static Image exclamation = new Image("/assets/textures/items/exclamation.png");
 	
 	private RadialGradient radialGradient = new RadialGradient(0,0,.5,.5,0.15, true, CycleMethod.NO_CYCLE,
 	        new Stop(0, Color.TRANSPARENT),
