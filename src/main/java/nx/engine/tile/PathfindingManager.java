@@ -29,14 +29,14 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 	int steps = 0;
 	final int maxSteps = 100;
 	
-	public PathfindingManager(int startX,int startY) {
+	public PathfindingManager(int startX,int startY,int endX,int endY) {
 		map = Player.get().getWorld().getLevel().getCollisionLayer().getTiles();
 		
 		maxCol = map.length;
 		maxRow = map[0].length;
 		
 		setStart(startX, startY);
-		setEnd((int)(Math.round(Player.get().getPosX()/Game.tileSize)), (int)(Math.round(Player.get().getPosY()/Game.tileSize)));
+		setEnd((int)(Math.round(endX/Game.tileSize)), (int)(Math.round(endY/Game.tileSize)));
 		
 		currentNode = startNode;
 		
@@ -45,8 +45,8 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 		Game.logger.log(Level.INFO,"finding: " + endNode.col + "," + endNode.row);
 	}
 	
-	public PathfindingManager(Vector2D v) {
-		this((int)Math.round(v.getX()),(int)Math.round(v.getY()));
+	public PathfindingManager(Vector2D ini,Vector2D end) {
+		this((int)Math.round(ini.getX()),(int)Math.round(ini.getY()),(int)Math.round(end.getX()),(int)Math.round(end.getY()));
 	}
 	
 	@Override

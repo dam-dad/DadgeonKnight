@@ -53,5 +53,13 @@ public class Chest extends StaticEntity {
 			}
 		}
 	}
+	public List<Entity> getInventory() {
+		return inventory;
+	}
+	public void setInventory(List<Entity> inventory) {
+		this.inventory = inventory;
+	}
+	
+	
 
 }

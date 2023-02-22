@@ -38,7 +38,6 @@ public class WorldScene implements Scene {
 		this.world = new World(worldData.getTileSet(), worldData.getEntities(), worldData.getMapLayers());
 		
 		World.spawn = worldData.getSpawn() != null ? worldData.getSpawn() : new Vector2D(0,0);
-		Player.get().setPosition(World.spawn);
 
 		// TODO: Custom particle image
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");

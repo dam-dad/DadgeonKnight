@@ -11,6 +11,7 @@ import javafx.scene.text.Font;
 import nx.engine.scenes.Scene;
 import nx.engine.scenes.TextScene;
 import nx.engine.scenes.WorldScene;
+import nx.engine.world.World;
 import nx.engine.world.WorldData;
 import nx.engine.world.entities.Player;
 import nx.game.App;
@@ -94,7 +95,6 @@ public class Game extends AnimationTimer {
 	
 	public void init() {
 		try {
-			
 			mainScene = new TextScene("/assets/levels/intro/introEN.csv");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,6 +119,9 @@ public class Game extends AnimationTimer {
 			if (alpha > 1) {
 				mainScene = sceneToChangeTo;
 				sceneToChangeTo = null;
+				if(mainScene instanceof WorldScene) {
+					Player.get().setPosition(World.spawn);
+				}
 				mainScene.update(deltaTime);
 				transitionDirection = -1;
 				alpha = 1;
@@ -139,7 +142,7 @@ public class Game extends AnimationTimer {
 		}
 
 		if (timer >= 1000000000) {
-//			System.out.println("FPS: " + drawCount);
+			Game.logger.log(Level.CONFIG,"FPS: " + drawCount);
 			LastFrameRate = drawCount;
 			drawCount = 0;
 			timer = 0;

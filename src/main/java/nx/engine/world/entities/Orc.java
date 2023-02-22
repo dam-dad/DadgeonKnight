@@ -39,11 +39,8 @@ public class Orc extends MobEntity {
 	private double walkSpeed;
 	private double runSpeed;
 	
-	private static final double attackDelay = 0.1;
+	private static final double attackDelay = 0.4;
 	private double timeSinceLastAttack = 0.0;
-
-	private List<? extends Entity> dropItems;
-	
 	
 	private static List<Vector2D> movementToPlayer = new ArrayList<Vector2D>();
 	private Vector2D nextPosition;
@@ -92,6 +89,15 @@ public class Orc extends MobEntity {
 	public void changeDirection() {
 		direction = Direction.values()[new Random().nextInt(4)];
 		this.animation = walk.get(direction);
+		
+		
+		Vector2D nextPosition = getPosition().add(getVectorFromDirection(direction));
+		if(getWorld().getLevel().isSolid((int)Math.round(nextPosition.getX()/Game.tileSize),(int)Math.round(nextPosition.getY()/Game.tileSize))) {
+			direction = Direction.values()[new Random().nextInt(4)];
+			this.animation = walk.get(direction);
+		}
+		System.out.println(nextPosition);	
+
 	}
 
 	public void stop() {
@@ -104,12 +110,14 @@ public class Orc extends MobEntity {
 		this.state = "walk";
 		this.speed = walkSpeed;
 		ANIMATION_SPEED = walkAnimationSpeed;
+		sizePlayerDetection = 250;
 	}
 
 	public void follow() {
 		this.state = "follow";
 		this.speed = runSpeed;
 		ANIMATION_SPEED = runAnimationSpeed;
+		sizePlayerDetection = 500;
 	}
 	
 	@Override
@@ -123,7 +131,6 @@ public class Orc extends MobEntity {
 
 	@Override
 	public void update(double deltaTime) {
-		
 		if(getPosX() + Game.tileSize > Player.get().getCamera().getX() - Game.screenWidth &&
 				getPosX() - Game.tileSize < Player.get().getCamera().getX() + Game.screenWidth &&
 				getPosY() + Game.tileSize > Player.get().getCamera().getY() - Game.screenheigth &&
@@ -137,22 +144,24 @@ public class Orc extends MobEntity {
 			double distance = getDistanceToEntity(Player.get());
 			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
 
-//			if (distance < this.sizePlayerDetection) {
-//				if (!state.equals("follow")) {
-//					follow();
-//				}
-//			} else {
-//				if (!state.equals("walk")) {
-//					walk();
-//				}
-//			}
+			if (distance < this.sizePlayerDetection) {
+				if (!state.equals("follow") && timeSinceLastAttack > attackDelay) {
+					follow();
+				}
+			} else {
+				if (!state.equals("walk")) {
+					walk();
+				}
+			}
 
 			if (timeSinceLastAttack > attackDelay && this.checkCollision(Game.player)) {
-				timeSinceLastAttack -= attackDelay;
+				System.out.println(timeSinceLastAttack);
+				timeSinceLastAttack = 0;
 				Game.inputHandler.ClearActiveKeys();
 				Player.get().setVectorMovement(new Vector2D(0,0));
-				Entity.knockback(Game.player, this);
+				Player.get().pushOut(this,Player.PLAYER_FORCE * 10);
 				Game.player.getAttacked(1);
+				walk();
 				return;
 
 			}
@@ -180,12 +189,25 @@ public class Orc extends MobEntity {
 				}
 				break;
 			case "follow":
+				
+				Vector2D direction = getVector2DToEntity(Player.get());
+				this.direction = getDirectionFromVector2D(direction);
+				animation = walk.get(this.direction);
+				
+				if(distance < Game.tileSize * 2) {
+					direction = direction.scalarMultiply(realSpeed);
+					move(direction);
+					break;
+				}
+				
+				
+				
 				if(Player.get().isWalking()) {
-					PathfindingManager p = new PathfindingManager(getTilePosition());
+					PathfindingManager p = new PathfindingManager(getTilePosition(),Player.get().getPosition());
 					
 					p.setOnSucceeded(event -> {
 					    movementToPlayer = p.getValue();
-					    if(movementToPlayer != null)
+					    if(movementToPlayer != null && movementToPlayer.size() > 0)
 					    	nextPosition = this.getPosition().add(movementToPlayer.get(movementToPlayer.size() -1).scalarMultiply(-1).scalarMultiply(48));
 					    taskExecuting = false;
 					});
@@ -201,11 +223,8 @@ public class Orc extends MobEntity {
 					taskExecuting = true;
 				}
 
-				
+
 				if(!taskExecuting && movementToPlayer != null && movementToPlayer.size() > 0) {
-					Vector2D direction = getVector2DToEntity(Player.get());
-					this.direction = getDirectionFromVector2D(direction);
-					animation = walk.get(this.direction);
 					move(movementToPlayer.get(movementToPlayer.size() -1).scalarMultiply(-1).scalarMultiply(realSpeed));
 					if(getPosition().distanceSq(nextPosition) < Game.tileSize) {
 						movementToPlayer.remove(movementToPlayer.size() -1);
