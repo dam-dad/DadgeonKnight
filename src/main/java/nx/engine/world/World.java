@@ -6,16 +6,10 @@ import nx.engine.Game;
 import nx.engine.UI.Dialog;
 import nx.engine.scenes.WorldScene;
 import nx.engine.tile.TileSet;
-import nx.engine.world.entities.Chest;
-import nx.engine.world.entities.Entity;
-import nx.engine.world.entities.Player;
-import nx.engine.world.entities.Sword;
+import nx.engine.world.entities.*;
 import nx.util.CSV;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
@@ -35,7 +29,6 @@ public class World {
 
         this.entitiesToAdd = new ArrayList<>();
         this.entitiesToRemove = new ArrayList<>();
-        
     }
 
     public World(TileSet tileSet, List<Entity> entities, Layer... layers) {
@@ -69,6 +62,22 @@ public class World {
         entities.stream()
                 .sorted(Comparator.comparingDouble(e -> e.getPosY() + e.getHeight()))
                 .forEach(entity -> entity.draw(gc, camera));
+    }
+
+    public void onPlayerDeath() {
+        Optional<TestBoss> bossOptional = entities.stream()
+                .filter(entity -> entity instanceof TestBoss)
+                .map(TestBoss.class::cast)
+                .findFirst();
+
+        if (bossOptional.isEmpty())
+            return;
+
+        TestBoss boss = bossOptional.get();
+        removeEntity(boss);
+
+        TestBoss newBoss = new TestBoss(boss.getInitialX(), boss.getInitialY());
+        addEntity(newBoss);
     }
 
     public void addEntity(Entity entity) {

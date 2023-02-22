@@ -47,7 +47,6 @@ public class JumpAttack extends BossAttack {
             yOffset = Interpolator.EASE_OUT.interpolate(0, ATTACK_HEIGHT, attackProgress / (ATTACK_TIME / 2.0));
             getBoss().setyOffset(yOffset);
         }
-        System.out.println(yOffset);
 
         if (attackProgress > ATTACK_TIME) {
             hasAttackEnded = true;

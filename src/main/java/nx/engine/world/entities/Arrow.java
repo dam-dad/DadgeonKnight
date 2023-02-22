@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class Arrow extends Entity {
 
-    private static final float SPEED = 8.5f * Game.tileSize;
+    private static final float SPEED = 16f * Game.tileSize;
     private static final double MAX_TIME_ALIVE = 0.5f;
     private static final int DAMAGE = 2;
 
@@ -45,10 +45,10 @@ public class Arrow extends Entity {
             getWorld().removeEntity(this);
         }
 
-        List<Enemy> entities = getWorld().getEntities().stream()
-                .filter(entity -> entity instanceof Enemy)
-                .filter(entity -> getDistanceToEntity(entity) < 1.0 * Game.tileSize)
-                .map(Enemy.class::cast)
+        List<MobEntity> entities = getWorld().getEntities().stream()
+                .filter(entity -> entity instanceof MobEntity)
+                .filter(entity -> getDistanceToEntity(entity) < 1 * Game.tileSize)
+                .map(MobEntity.class::cast)
                 .collect(Collectors.toList());
 
         if (entities.size() > 0)

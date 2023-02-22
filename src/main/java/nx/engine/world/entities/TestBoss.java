@@ -2,21 +2,17 @@ package nx.engine.world.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import nx.engine.Camera;
 import nx.engine.Game;
+import nx.engine.world.MobEntity;
 import nx.engine.world.entities.boss.*;
 import nx.game.App;
-import nx.util.SoundMixer;
-import nx.util.Vector2f;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class TestBoss extends Entity implements Enemy {
+public class TestBoss extends MobEntity {
 
     protected static final Image sprite = new Image("/assets/textures/player/kevin_idle_00.png");
     protected static final Image shadow = new Image("/assets/textures/shadow.png");
@@ -25,7 +21,7 @@ public class TestBoss extends Entity implements Enemy {
     private static final float FIREBALL_SPEED = 8.5f * Game.tileSize;
     private static final float SPEED = 2.5f * Game.tileSize;
 	protected boolean canDie = true;
-	protected double mobHealth = 50;
+	protected double mobHealth = 150;
 
     private double timeSinceLastAttack = 0.0;
     private BossAttack currentAttack;
@@ -36,9 +32,16 @@ public class TestBoss extends Entity implements Enemy {
 
     private boolean musicPlayed;
 
+    private final int initialX, initialY;
+
     public TestBoss(int x, int y) {
-        super(x * Game.tileSize, y * Game.tileSize, sprite);
+        super(x * Game.tileSize, y * Game.tileSize);
+        setImage(sprite);
         height = Game.tileSize;
+        scale = 2;
+
+        this.initialX = x;
+        this.initialY = y;
 
         this.random = new Random();
 
@@ -64,6 +67,11 @@ public class TestBoss extends Entity implements Enemy {
 
 	@Override
     public void update(double deltaTime) {
+        if (mobHealth <= 0) {
+            getWorld().removeEntity(this);
+            return;
+        }
+
         if (!musicPlayed) {
             Player player = getWorld().getEntities().stream().filter(entity -> entity instanceof Player)
                     .map(Player.class::cast)
@@ -87,7 +95,7 @@ public class TestBoss extends Entity implements Enemy {
 
     @Override
     public void draw(GraphicsContext gc, Camera camera) {
-        drawInternal(gc, camera, 2);
+        super.draw(gc, camera);
 
         currentAttack.draw(gc, camera);
     }
@@ -106,16 +114,20 @@ public class TestBoss extends Entity implements Enemy {
         this.yOffset = yOffset;
     }
 
-    @Override
-    public void getAttacked(double damage) {
-        if (yOffset != 0.0)
-            return;
-
-        this.mobHealth -= damage;
-    }
-
     public void setShadowEnabled(boolean shadowEnabled) {
         isShadowEnabled = shadowEnabled;
+    }
+
+    public double getMobHealth() {
+        return mobHealth;
+    }
+
+    public int getInitialX() {
+        return initialX;
+    }
+
+    public int getInitialY() {
+        return initialY;
     }
 
 }

@@ -107,6 +107,7 @@ public class Player extends Entity {
 	public static Player get(Camera camera) {
 		return instance == null ? instance = new Player(0,0,camera) : instance;
 	}
+
 	public static Player get() {
 		if(instance != null)
 			return instance;
@@ -115,11 +116,12 @@ public class Player extends Entity {
 
 	@Override
 	public void update(double deltaTime) {
-
 		if (health <= 0) {
-			posX = World.spawn.getX();
-			posY = World.spawn.getY();;
+			setPosX(initialX);
+			setPosY(initialY);
 			health = 10;
+			getWorld().onPlayerDeath();
+			return;
 		}
 
 		Set<KeyCode> activeKeys = Game.inputHandler.getActiveKeys();
@@ -207,9 +209,10 @@ public class Player extends Entity {
 		super.setPosition(v.getX() * Game.tileSize,v.getY() * Game.tileSize);
 		camera.setPosition(v.getX() * Game.tileSize, v.getY() * Game.tileSize);
 	}
+
 	public void setSpawn(Vector2D v) {
-		this.initialX = v.getX();
-		this.initialY = v.getY();
+		this.initialX = v.getX() * Game.tileSize;
+		this.initialY = v.getY() * Game.tileSize;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package nx.engine.scenes;
 
+import nx.engine.world.entities.TestBoss;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -18,6 +19,8 @@ import nx.engine.world.WorldData;
 import nx.engine.world.entities.PickableEntity;
 import nx.engine.world.entities.Player;
 
+import java.util.Optional;
+
 public class WorldScene implements Scene {
 
 	private World world;
@@ -27,7 +30,9 @@ public class WorldScene implements Scene {
 	private final Camera camera;
 	
 	public static Dialog dialog;
-	public static Image smoke = new Image("/assets/textures/items/smoke.gif"); 
+	public static Image smoke = new Image("/assets/textures/items/smoke.gif");
+
+	public static float light = 0.8f;
 
 	private RadialGradient radialGradient;
 	
@@ -39,12 +44,11 @@ public class WorldScene implements Scene {
 		
 		World.spawn = worldData.getSpawn() != null ? worldData.getSpawn() : new Vector2D(0,0);
 		Player.get().setPosition(World.spawn);
+		Player.get().setSpawn(World.spawn);
 
 		// TODO: Custom particle image
 		this.particleManager = new ParticleManager(world, "/assets/textures/bola_du_fogo.gif");
 		this.healthUI = new HealthUI(Player.get());
-		
-		
 	}
 
 	@Override
@@ -62,7 +66,7 @@ public class WorldScene implements Scene {
 		
 		radialGradient = new RadialGradient(0,0,.5,.5, 1 - Game.alpha, true, CycleMethod.NO_CYCLE,
 				new Stop(0, Color.TRANSPARENT),
-				new Stop(0.8, Color.rgb(10, 10, 10,0.99))
+				new Stop(light, Color.rgb(10, 10, 10,0.99))
 		);
 
 		gc.setFill(radialGradient);
@@ -77,6 +81,18 @@ public class WorldScene implements Scene {
 			dialog.draw(gc);
 		
 		healthUI.draw(gc);
+
+		Optional<TestBoss> bossOptional = world.getEntities().stream()
+				.filter(entity -> entity instanceof TestBoss)
+				.map(TestBoss.class::cast)
+				.findFirst();
+
+		if (bossOptional.isPresent()) {
+			TestBoss boss = bossOptional.get();
+
+			gc.setFill(Color.RED);
+			gc.fillRect(16, Game.screenheigth - 24, (Game.screenWidth - 32) * (boss.getMobHealth() / 150f), 16);
+		}
 	}
 
 	public World getWorld() {

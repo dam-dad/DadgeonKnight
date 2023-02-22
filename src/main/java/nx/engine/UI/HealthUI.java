@@ -28,7 +28,7 @@ public class HealthUI implements UI {
         }
 
         if (player.getHealth() % 2 != 0) {
-            gc.drawImage(half_heart, 8 + (player.getHealth() / 2) * (Game.tileSize/2 + 8), 8, Game.tileSize/2, Game.tileSize/2);
+            gc.drawImage(half_heart, 8 + (player.getHealth() / 2) * (Game.tileSize/2 + 2), 8, Game.tileSize/2, Game.tileSize/2);
         }
     }
 
