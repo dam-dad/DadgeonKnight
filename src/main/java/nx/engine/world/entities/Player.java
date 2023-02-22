@@ -172,10 +172,10 @@ public class Player extends Entity {
 		double movementY = Math.round(movement.getY());
 
 		if(!checkCollisionsMap(new Vector2D(movementX,movementY))) {
-
+			move(movementX, movementY);
+			camera.setPosition(getPosX(), getPosY());
 		}
-		move(movementX, movementY);
-		camera.setPosition(getPosX(), getPosY());
+
 
 		
 		animation = idle.get(direction);

@@ -69,7 +69,7 @@ public class Level {
             			gc.drawImage(tileSet.getTiles()[layers.get(i).getTilesValues()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
             	}
             	
-            	displayCollisions(gc,camera,worldCol,worldRow,worldX,worldY);
+//            	displayCollisions(gc,camera,worldCol,worldRow,worldX,worldY);
             }
 
             worldCol++;
