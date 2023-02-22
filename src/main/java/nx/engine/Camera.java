@@ -4,14 +4,18 @@ public class Camera {
 
     private double xPos, yPos;
 
-    public void move(float x, float y) {
+    public Camera move(float x, float y) {
         this.xPos += x;
         this.yPos += y;
+        
+        return this;
     }
 
-    public void setPosition(double x, double y) {
+    public Camera setPosition(double x, double y) {
         this.xPos = x;
         this.yPos = y;
+        
+        return this;
     }
 
     public double getX() {

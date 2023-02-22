@@ -1,41 +1,35 @@
 package nx.util;
 
-import java.util.Iterator;
-
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import nx.engine.Camera;
-import nx.engine.Game;
+import javafx.concurrent.Task;
 import nx.engine.tile.Tile;
 import nx.engine.world.Level;
 import nx.engine.world.entities.Entity;
+import nx.engine.world.entities.Player;
 
-public class Knockback extends Thread {
-	
-//	public static boolean isBeingUsed = false;
+public class Knockback extends Task<Void> {
 	
 	private Entity player;
-	private Entity collition;
-	private double force;
-	private Camera camera;
+	private Entity collision;
 	
-	private double friction = 0.005;
+	
+	private double knockbackSpeed;
+	private double knockbackDuration;
 	
 	Level level;
 	int levelWidth;
 	int levelHeight;
 	
-	public Knockback(Entity player,Entity collition,double force,Camera camera) {
-		this.collition = collition;
-		this.force = force;
-		this.camera = camera;
+	public Knockback(Entity player, Entity collision, double knockbackForce, double knockbackDuration) {
+		this.collision = collision;
 		this.player = player;
+		this.knockbackSpeed = knockbackForce;
+		this.knockbackDuration = knockbackDuration;
 		
 		level = player.getWorld().getLevel();
 		levelWidth = level.getLayers().get(0).getLayerWidth();
 		levelHeight = level.getLayers().get(0).getLayerHeight();
-		
-		
 	}
 	public double getDistanceBetweenEntity(Entity player,Entity e) {
 		return Math.sqrt(Math.pow((e.getPosX() + (e.getWidth()/2)) - (player.getPosX() + (player.getWidth()/2)), 2) + Math.pow((e.getPosY() + (e.getHeight()/2)) - (player.getPosY() + (player.getHeight()/1.5)), 2));
@@ -46,66 +40,63 @@ public class Knockback extends Thread {
 
 		return direction;
 	}
-	
-	@Override
-	public void run() {
-//		if(isBeingUsed)
-//			return;
-//		
-//		isBeingUsed = true;
-		
-		while(force > 0) {
-			for (int i = 0; i < levelHeight; i++) {
-				for (int j = 0; j < levelWidth; j++) {
-					if(level.isSolid(i, j) && Tile.checkCollision(player, i, j)) {
-						return;
-					}
-				}
-			}
-
-			Vector2D velocity = new Vector2D(0,0);
-			double distance = getDistanceBetweenEntity(player,collition);
-
-			Vector2D collisionNormal = getVector2DeBetweenEntity(player,collition);
-			Vector2D movement = new Vector2D(0,0);
-			switch (Entity.getDirectionFromVector2D(collisionNormal.scalarMultiply(-1))) {
-				case WEST:
-					movement = new Vector2D(-1,0);
-					break;
-				case EAST:
-					movement = new Vector2D(1,0);
-					break;
-				case NORTH:
-					movement = new Vector2D(0,-1);
-					break;
-				case SOUTH:
-					movement = new Vector2D(0,1);
-					break;
-				default:
-					break;
-			}
-			movement = movement.scalarMultiply(distance).scalarMultiply(force).add(velocity);
-			
-			velocity = movement;
-			
-			try {
-				move(movement);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			if(camera != null)
-				camera.setPosition(player.getPosX(), player.getPosY());
-			force -= friction;
-		}
-
-//		isBeingUsed = false;
-	}
-	
 	protected void move(Vector2D move) throws InterruptedException {
 		player.setPosX(player.getPosX() + move.getX());
 		player.setPosY(player.getPosY() + move.getY());
 		
-		Thread.sleep(10);
+		Player.get().getCamera().setPosition(player.getPosX() + move.getX(), player.getPosY() + move.getY());
 	}
+	public static double lerp(double a, double b, double t) {
+	    return a + (b - a) * t;
+	}
+	@Override
+	protected Void call() throws Exception {
+		long lastTime = System.nanoTime();
+		double time = 0.0;
+		double delta = 0;
+		double currentSpeed = 0.4;
 
+		Vector2D collisionNormal = getVector2DeBetweenEntity(player,collision);
+		Vector2D movement = new Vector2D(0,0);
+		switch (Entity.getDirectionFromVector2D(collisionNormal.scalarMultiply(-1))) {
+			case WEST:
+				movement = new Vector2D(-1,0);
+				break;
+			case EAST:
+				movement = new Vector2D(1,0);
+				break;
+			case NORTH:
+				movement = new Vector2D(0,-1);
+				break;
+			case SOUTH:
+				movement = new Vector2D(0,1);
+				break;
+			default:
+				break;
+		}
+		movement = movement.scalarMultiply(100);
+		
+		while (time < knockbackDuration) {
+			long currentTime = System.nanoTime();
+			double deltaTime = (currentTime - lastTime) / 1000000000.0;
+			delta += (currentTime - lastTime) / (1000000000.0 / 60);
+			lastTime = currentTime;
+			
+
+			
+			if (delta >= 1) {
+				currentSpeed = lerp(currentSpeed,0.2,0.1);
+				
+				
+				movement = movement.scalarMultiply(currentSpeed);
+				
+				move(movement);
+				delta--;
+			}
+			
+			time += deltaTime;
+		}
+		
+		return null;
+	}
 }

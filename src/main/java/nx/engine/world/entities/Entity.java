@@ -1,5 +1,6 @@
 package nx.engine.world.entities;
 
+import javafx.concurrent.Task;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Shape;
@@ -69,7 +70,7 @@ public abstract class Entity {
 		this.setPosY(y);
 	}
 
-	public static List<Entity> loadEntititiesFromCSV(String str, Camera camera) {
+	public static List<Entity> loadEntititiesFromCSV(String str) {
 		try {
 			List<String[]> a = CSV.readAllLines(Paths.get(CSV.class.getResource(str).toURI()));
 			List<Entity> toReturn  = new ArrayList<Entity>();
@@ -93,14 +94,16 @@ public abstract class Entity {
 					case "pillar":
 						toReturn.add(new Pillar(TileSet.DANGEON_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;
-					case "player":
-						toReturn.add(new Player(Double.parseDouble(e[1]), Double.parseDouble(e[2]), camera));
-						break;
 					case "magicalman":
 						toReturn.add(new MagicalEntity(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;	
 					case "portal":
-						toReturn.add(new Portal(Double.parseDouble(e[1]), Double.parseDouble(e[2]), e[3]));
+						toReturn.add(
+								new Portal(
+								Double.parseDouble(e[1]),
+								Double.parseDouble(e[2]),
+								e[3]
+								));
 						break;
 					case "testboss":
 						toReturn.add(new TestBoss(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
@@ -141,6 +144,9 @@ public abstract class Entity {
 	public double getDistanceToEntity(Entity e) {
 		return Math.sqrt(Math.pow((e.getPosX() + (e.width/2)) - (this.getPosX() + (this.width/2)), 2) + Math.pow((e.getPosY() + (e.height/2)) - (this.getPosY() + (this.height/1.5)), 2));
 	}
+	public double getDistanceToTile(Vector2D e) {
+		return Math.sqrt(Math.pow((e.getX() + (Game.tileSize/2)) - (this.getPosX() + (this.width/2)), 2) + Math.pow((e.getY() + (Game.tileSize/2)) - (this.getPosY() + (this.height/2)), 2));
+	}
 
 	public double getDistanceToTile(int x, int y) {
 		return Math.sqrt(Math.pow((x + (Game.tileSize/2)) - (this.getPosX() + (this.width/2)), 2) + Math.pow((y + (Game.tileSize/2)) - (this.getPosY() + (this.height/1.5)), 2));
@@ -171,6 +177,27 @@ public abstract class Entity {
 		} else {
 			return Direction.NORTH;
 		}
+	}
+	public static Vector2D getVectorFromDirection(Direction d) {
+	    switch (d) {
+	        case NORTH:
+	            return new Vector2D(0, -1);
+	        case EAST:
+	            return new Vector2D(-1, 0);
+	        case SOUTH:
+	            return new Vector2D(0, 1);
+	        case WEST:
+	            return new Vector2D(1, 0);
+	        default:
+	            throw new IllegalArgumentException("Invalid direction: " + d);
+	    }
+	}
+	
+	public Vector2D getPosition() {
+		return new Vector2D(getPosX(),getPosY());
+	}
+	public Vector2D getTilePosition() {
+		return new Vector2D(getPosX()/Game.tileSize,getPosY()/Game.tileSize);
 	}
 
 	public double pushOut(Entity collition, double force) {
@@ -293,9 +320,11 @@ public abstract class Entity {
 
 		return distance;
 	}
-	public static void knockback(Entity player,Entity collition, double force,Camera camera) {
-		Knockback p = new Knockback(player, collition, force, camera);
-		p.start();
+	public static void knockback(Entity player,Entity collition) {
+		
+		Task<Void> t = new Knockback(player, collition, 4, 0.2);
+		
+		new Thread(t).start();
 	}
 	public static float randomFromInterval(float min, float max) { // min and max included 
   	  return (float) (Math.random() * (max - min + 1) + min);
@@ -347,5 +376,7 @@ public abstract class Entity {
 	public void setPosY(double posY) {
 		this.posY = posY;
 	}
+
+
 
 }
