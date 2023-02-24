@@ -45,7 +45,7 @@ public class GameController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		game = new Game(canvas);
+		game = Game.get(canvas);
 		game.start();
 	}
 

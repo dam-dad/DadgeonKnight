@@ -8,12 +8,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 public class MenuController implements Initializable {
 
@@ -42,7 +40,20 @@ public class MenuController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		settingsComponent = new SettingsComponent();
-
+		
+		
+		exitButton.setOnMouseEntered(e -> {
+			App.mixer.addGameSound("text_regular.mp3").play();
+		});
+		fameButton.setOnMouseEntered(e -> {
+			App.mixer.addGameSound("text_regular.mp3").play();
+		});
+		playButton.setOnMouseEntered(e -> {
+			App.mixer.addGameSound("text_regular.mp3").play();
+		});
+		settingsButton.setOnMouseEntered(e -> {
+			App.mixer.addGameSound("text_regular.mp3").play();
+		});
 	}
 
 	@FXML
@@ -58,14 +69,12 @@ public class MenuController implements Initializable {
 	@FXML
 	void onPlayAction(ActionEvent event) {
 		App.mainStage.setScene(new Scene(GameController.getInstance().getView()));
+		App.mixer.setMusic("xDeviruchi - Title Theme .wav").setLoop(true).fadeIn(0, 0.05, 2);
 	}
 
 	@FXML
 	void onSettingsAction(ActionEvent event) throws IOException {
-
-//		App.secondStage.initOwner(App.mainStage);
-//		App.secondStage.getScene().setRoot(settingsComponent);
-//		App.secondStage.setScene(new Scene(settingsComponent));
+//		App.mainStage.getScene().setRoot(settingsComponent);
 	}
 
 	public GridPane getView() {

@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SoundMixer {
-	
+
 	public static double GENERAL_VOLUME = 1;
 	public static double GAME_VOLUME = 0.1;
 	public static double MUSIC_VOLUME = 0.05;
-	
-	
+
 	private Music music;
 	private List<Music> gameSounds;
-	
+
 	public SoundMixer() {
 		gameSounds = new ArrayList<Music>();
 	}
@@ -22,7 +21,7 @@ public class SoundMixer {
 	}
 
 	public Music setMusic(String uri) {
-		if(this.music != null) {
+		if (this.music != null) {
 			this.music.pause();
 			this.music = null;
 		}
@@ -31,10 +30,14 @@ public class SoundMixer {
 		return music;
 	}
 
+	public void setVolume(double volume) {
+		this.music.setVolume(volume);
+	}
+
 	public List<Music> getGameSounds() {
 		return gameSounds;
 	}
-	
+
 	public Music addGameSound(String uri) {
 		Music music = new Music(uri);
 		this.gameSounds.add(music.setVolume(GAME_VOLUME));
@@ -43,12 +46,11 @@ public class SoundMixer {
 		});
 
 		return music;
-		
+
 	}
-	
+
 	public void removeMusic(Music m) {
 		this.gameSounds.remove(m);
 	}
-	
-	
+
 }

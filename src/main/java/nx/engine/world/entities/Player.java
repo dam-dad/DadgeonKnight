@@ -19,14 +19,17 @@ import nx.engine.Animation;
 import nx.engine.Game;
 import nx.engine.tile.Tile;
 import nx.engine.world.Level;
+import nx.engine.world.World;
 import nx.util.Direction;
 
 public class Player extends Entity {
+	
+	private static Player instance;
 
 	private static final int MAX_PLAYER_HEALTH = 10;
 	private static final double TIME_SHOWING_ATTACK = 0.5;
 	public static final double PLAYER_FORCE = 0.1;
-	public static final double SPEED = 4;
+	public static final double SPEED = 10;
 
 	public static final String walkTileSet = "/assets/textures/player/CharacterMovementSet.png";
 	public static final String swordSet = "/assets/textures/player/player_Sword.png";
@@ -71,15 +74,12 @@ public class Player extends Entity {
 
 	private int health;
 	private double timeSinceLastHit;
-
-	private final double initialX, initialY;
 	
-	public Player(double posX, double posY, Camera camera) {
+	private Vector2D movement;
+	
+	private Player(double posX, double posY, Camera camera) {
 		this.setPosX(posX * Game.tileSize);
 		this.setPosY(posY * Game.tileSize);
-
-		this.initialX = getPosX();
-		this.initialY = getPosY();
 		
 		screenX = Game.screenWidth / 2 - (Game.tileSize/2);
 		screenY = Game.screenheigth / 2 - (Game.tileSize/2);
@@ -94,13 +94,25 @@ public class Player extends Entity {
 		this.camera = camera;
 
 	}
+	public static Player get(double posX,double posY,Camera camera) {
+		return instance == null ? instance = new Player(posX,posY,camera) : instance;
+	}
+	
+	public static Player get(Camera camera) {
+		return instance == null ? instance = new Player(0,0,camera) : instance;
+	}
+	public static Player get() {
+		if(instance != null)
+			return instance;
+		return null;
+	}
 
 	@Override
 	public void update(double deltaTime) {
 
 		if (health <= 0) {
-			posX = initialX;
-			posY = initialY;
+			posX = World.spawn.getX() * Game.tileSize;
+			posY = World.spawn.getY() * Game.tileSize;
 			health = 10;
 		}
 
@@ -108,7 +120,7 @@ public class Player extends Entity {
 		Set<MouseButton> activeButtons = Game.inputHandler.getActiveButtons();
 
 		isWalking = false;
-		Vector2D movement = new Vector2D(0.0, 0.0);
+		movement = new Vector2D(0.0, 0.0);
 		
 		if (activeKeys.contains(wasdKeys[0]) || activeKeys.contains(arrowsKeys[0])) {
 			isWalking = true;
@@ -161,9 +173,10 @@ public class Player extends Entity {
 
 		if(!checkCollisionsMap(new Vector2D(movementX,movementY))) {
 			move(movementX, movementY);
-			camera.setPosition(getPosX(), getPosY());	
+			camera.setPosition(getPosX(), getPosY());
 		}
-		
+
+
 		
 		animation = idle.get(direction);
 		
@@ -184,6 +197,15 @@ public class Player extends Entity {
 		animation.update(deltaTime);
 		if(timeSinceLastHit < Player.TIME_SHOWING_ATTACK)
 			timeSinceLastHit += deltaTime;
+	}
+	
+	public void setPosition(Vector2D v) {
+		super.setPosition(v.getX() * Game.tileSize,v.getY() * Game.tileSize);
+		camera.setPosition(v.getX() * Game.tileSize, v.getY() * Game.tileSize);
+	}
+	@Override
+	public Vector2D getPosition() {
+		return new Vector2D(getPosX() + (Game.tileSize/2),getPosY() + (Game.tileSize/2));
 	}
 
 	@Override
@@ -254,9 +276,8 @@ public class Player extends Entity {
 	public void setAttacking(boolean a) {
 		this.isAttacking = a;
 	}
-	public void AddEntityToInventory(PickableEntity e) {
+	public void addEntityToInventory(PickableEntity e) {
 		getInventory().add(e);
-//		getInventory().stream().sorted(Comparator.comparingInt(e::compareTo));
 	}
 	public Direction getDirection() {
 		return direction;
@@ -276,5 +297,12 @@ public class Player extends Entity {
 		if(selectionInventory <=  0)
 			return;
 		selectionInventory--;
+	}
+	
+	public Vector2D getVectorMovement() {
+		return this.movement;
+	}
+	public void setVectorMovement(Vector2D d) {
+		this.movement = d;
 	}
 }

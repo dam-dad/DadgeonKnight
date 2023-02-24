@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import nx.engine.Camera;
 import nx.engine.Game;
+import nx.engine.scenes.WorldScene;
 import nx.engine.tile.TileSet;
 import nx.engine.tile.TileSetManager;
 
@@ -13,10 +14,10 @@ import java.util.List;
 public class Level {
 
     // Map settings
-    public int maxWorldCol = 20;
-    public int maxWorldRow = 20;
-    public int worldWidth = Game.tileSize * maxWorldCol;
-    public int worldHeigth = Game.tileSize * maxWorldRow;
+    private int maxWorldCol = 20;
+    private int maxWorldRow = 20;
+    private int worldWidth = Game.tileSize * maxWorldCol;
+    private int worldHeigth = Game.tileSize * maxWorldRow;
 
     private final List<Layer> layers;
     private final Layer collisionLayer;
@@ -41,6 +42,8 @@ public class Level {
 
         this.levelWidth = collisionLayer.getLayerWidth();
         this.levelHeight = collisionLayer.getLayerHeight();
+        
+        setMapSize(levelWidth,levelHeight);
     }
 
     public void draw(GraphicsContext gc, Camera camera) {
@@ -59,10 +62,11 @@ public class Level {
                     worldY - Game.tileSize  < camera.getY() + Game.screenheigth) {
 
                 //Map base
+            	
 
             	for(int i = 0; i < layers.size(); i++) {
-            		if(layers.get(i).getTiles()[worldCol][worldRow] != -1)
-            			gc.drawImage(tileSet.getTiles()[layers.get(i).getTiles()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
+            		if(layers.get(i).getTilesValues()[worldCol][worldRow] != -1)
+            			gc.drawImage(tileSet.getTiles()[layers.get(i).getTilesValues()[worldCol][worldRow]], Game.SCREEN_CENTER_X - camera.getX() + worldX, Game.SCREEN_CENTER_Y - camera.getY() + worldY, Game.tileSize, Game.tileSize);
             	}
             	
 //            	displayCollisions(gc,camera,worldCol,worldRow,worldX,worldY);
@@ -87,11 +91,14 @@ public class Level {
     public List<Layer> getLayers() {
         return layers;
     }
+    public Layer getCollisionLayer() {
+        return collisionLayer;
+    }
 
     public boolean isSolid(int x, int y) {
         if (x < 0 || x >= levelWidth) return true;
         if (y < 0 || y >= levelHeight) return true;
-        return collisionLayer.getTiles()[x][y] != -1;
+        return collisionLayer.getTilesValues()[x][y] != -1;
     }
 
     public void setMapSize(int col,int row) {

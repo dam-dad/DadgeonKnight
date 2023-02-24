@@ -1,9 +1,15 @@
 package nx.game;
 
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
+import javax.sound.midi.SoundbankResource;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,15 +18,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
+import nx.util.Music;
+import nx.util.SoundMixer;
 
 public class SettingsComponent extends GridPane implements Initializable {
 
-	/*
-	 * TODO 1. crear componene de los ajustes. 2. añadir componente a un group. 3.
-	 * añadir group a la vista principal. 4. usar properties para habilitarlo y
-	 * deshabilitarlo.
-	 */
+	// model
+	DecimalFormat decimalFormat = new DecimalFormat("#");
 
+	// view
 	@FXML
 	private Button acceptButton, cancelButton;
 
@@ -28,7 +34,7 @@ public class SettingsComponent extends GridPane implements Initializable {
 	private Slider effectsSlider, generalSlider, musicSlider;
 
 	@FXML
-	private Label settingsLabel;
+	private Label settingsLabel, effectsLabel, generalLabel, musicLabel;
 
 	public SettingsComponent() {
 		super();
@@ -46,17 +52,62 @@ public class SettingsComponent extends GridPane implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		decimalFormat.setRoundingMode(RoundingMode.FLOOR);
 
+		musicSlider.valueProperty().addListener(this::changeMusicValue);
+		effectsSlider.valueProperty().addListener(this::changeEffectsValue);
+		generalSlider.valueProperty().addListener(this::changeGeneralValue);
+
+		musicSlider.valueProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				App.mixer.setVolume(musicSlider.getValue() * 0.003);
+				System.out.println("modificando volumen musica");
+			}
+		});
+
+		effectsSlider.valueProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				System.out.println("modificando volumen juego");
+			}
+		});
+
+		generalSlider.valueProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				System.out.println("modificando volumen juego");
+			}
+		});
 	}
 
+	private void changeMusicValue(ObservableValue<? extends Number> o, Number ov, Number nv) {
+		String rounded = decimalFormat.format(Double.parseDouble(nv.toString()));
+		musicLabel.setText(rounded + "%");
+	}
+
+	private void changeEffectsValue(ObservableValue<? extends Number> o, Number ov, Number nv) {
+		String rounded = decimalFormat.format(Double.parseDouble(nv.toString()));
+		effectsLabel.setText(rounded + "%");
+	}
+
+	private void changeGeneralValue(ObservableValue<? extends Number> o, Number ov, Number nv) {
+		String rounded = decimalFormat.format(Double.parseDouble(nv.toString()));
+		generalLabel.setText(rounded + "%");
+	}
+
+	// TODO cuando se cambie el volumen, actualizar la lista de la música
 	@FXML
 	void onAcceptAction(ActionEvent event) {
-
+		App.mainStage.getScene().setRoot(App.menuController.getView());
 	}
 
 	@FXML
 	void onCancelAction(ActionEvent event) {
-
+		App.mainStage.getScene().setRoot(App.menuController.getView());
 	}
 
 }
