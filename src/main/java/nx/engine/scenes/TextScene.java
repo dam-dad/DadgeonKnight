@@ -1,36 +1,39 @@
 package nx.engine.scenes;
 
-import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Set;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import nx.engine.Animation;
 import nx.engine.Game;
 import nx.engine.TextAnimation;
-import nx.game.App;
 
+/**
+ * Represents a scene showing a text
+ */
 public class TextScene implements Scene {
 	
 	private final TextAnimation animation;
 	
 	private double time = 0;
 	private double fadeTime = 2;
-	
+
 	private boolean ended = false;
-	
-	public TextScene(List<String> texts) {
-		animation = new TextAnimation(texts);
-		animation.play();
-	}
-	public TextScene(String texts) throws URISyntaxException, Exception {
+
+	/**
+	 * Constructor
+	 * @param texts Texts to show
+	 * @throws Exception
+	 */
+	public TextScene(String texts) throws Exception {
 		animation = new TextAnimation(texts);
 		animation.play();
 	}
 
+	/**
+	 * Updates the scene
+	 * @param delta Frame delta time
+	 */
 	@Override
 	public void update(double delta) {
 		if(animation.hasEnded()) {
@@ -50,9 +53,11 @@ public class TextScene implements Scene {
 		
 		animation.update(delta);
 	}
-	
 
-
+	/**
+	 * Draws the scene
+	 * @param gc GraphicsContext to draw on
+	 */
 	@Override
 	public void draw(GraphicsContext gc) {
 		if(animation.hasEnded()) {

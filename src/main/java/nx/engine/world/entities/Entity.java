@@ -21,6 +21,9 @@ import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+/**
+ * Represents an entity (enemy, player, item on the ground...)
+ */
 public abstract class Entity {
 	
 	protected double posX;
@@ -29,20 +32,42 @@ public abstract class Entity {
 	protected Image image;
 	private World world;
 
+	/**
+	 * Constructor
+	 */
 	public Entity() {
 		this(0, 0);
 	}
 
+	/**
+	 * Constructor
+	 * @param posX Spawn position X
+	 * @param posY Spawn position Y
+	 */
 	public Entity(double posX, double posY) {
 		this(posX, posY, null);
 	}
 
+	/**
+	 * Constructor
+	 * @param posX Spawn position X
+	 * @param posY Spawn position Y
+	 * @param image Entity sprite
+	 */
 	public Entity(double posX, double posY, Image image) {
 		this.setPosX(posX);
 		this.setPosY(posY);
 		this.image = image;
 	}
 
+	/**
+	 * Constructor
+	 * @param image Entity image
+	 * @param posX Spawn position X
+	 * @param posY Spawn position Y
+	 * @param width Entity width
+	 * @param height Entity height
+	 */
 	public Entity(Image image,double posX, double posY,double width,double height) {
 		this.setPosX(posX);
 		this.setPosY(posY);
@@ -57,24 +82,49 @@ public abstract class Entity {
 	 */
 	public abstract void update(double deltaTime);
 
+	/**
+	 * Draws the entity using a scale of 1.0
+	 * @param gc GraphicsContext to draw on
+	 * @param camera World camera
+	 */
 	public void draw(GraphicsContext gc, Camera camera) {
 		drawInternal(gc, camera, 1.0);
 	}
 
-	// TODO: Make collisions work
+	/**
+	 * Move the entity the specified offset
+	 * @param v Offset vector
+	 */
 	protected void move(Vector2D v) {
 		this.setPosX(this.getPosX() + v.getX());
 		this.setPosY(this.getPosY() + v.getY());
 	}
+
+	/**
+	 * Move the entity the specified offset
+	 * @param x X offset
+	 * @param y Y offset
+	 */
 	protected void move(double x, double y) {
 		this.setPosX(this.getPosX() + x);
 		this.setPosY(this.getPosY() + y);
 	}
+
+	/**
+	 * Sets the entity position to the specified coordinates
+	 * @param x X position
+	 * @param y Y position
+	 */
 	protected void setPosition(double x, double y) {
 		this.setPosX(x);
 		this.setPosY(y);
 	}
 
+	/**
+	 * Load entities from a string
+	 * @param str CSV data
+	 * @return List of entities loaded
+	 */
 	public static List<Entity> loadEntititiesFromCSV(String str) {
 		try {
 			List<String[]> a = CSV.readAllLines(Paths.get(CSV.class.getResource(str).toURI()));
@@ -123,7 +173,12 @@ public abstract class Entity {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Check collision with another entity
+	 * @param entity Entity to check collision with
+	 * @return True if it collides, false if not
+	 */
 	public boolean checkCollision(Entity entity) {
 		if (entity.getCollisionShape() == null)
 			return false;
@@ -132,31 +187,63 @@ public abstract class Entity {
 		boolean collide = getCollisionShape().intersects(entity.getCollisionShape().getLayoutBounds());
 		return collide;
 	}
+
+	/**
+	 * Check collision with a shape
+	 * @param shape Shape to check collision with
+	 * @return True if it collides, false if not
+	 */
 	public boolean checkCollision(Shape shape) {
 		boolean collide = getCollisionShape().intersects(shape.getLayoutBounds());
 		return collide;
 	}
 
+	/**
+	 * Draws the entity on the world
+	 * @param gc GraphicsContext to draw on
+	 * @param camera World camera
+	 * @param scaleX X scale of the entity
+	 * @param scaleY Y scale of the entity
+	 */
 	protected void drawInternal(GraphicsContext gc, Camera camera, double scaleX,double scaleY) {
 		if (image != null)
 			gc.drawImage(image, Game.SCREEN_CENTER_X - camera.getX() + getPosX(), Game.SCREEN_CENTER_Y - camera.getY() + getPosY(),scaleX,scaleY);
 	}
+
+	/**
+	 * Draws the entity on the world
+	 * @param gc GraphicsContext to draw on
+	 * @param camera World camera
+	 * @param scale Entity scale
+	 */
 	protected void drawInternal(GraphicsContext gc, Camera camera, double scale) {
 		if (image != null)
 			gc.drawImage(image, Game.SCREEN_CENTER_X - camera.getX() + getPosX() - getWidth() / 2 * scale, Game.SCREEN_CENTER_Y - camera.getY() + getPosY() - getHeight() / 2 * scale, Game.tileSize * scale, Game.tileSize * scale);
 	}
 
+	/**
+	 * Returns the distance to another entity
+	 * @param e Entity to compare with
+	 * @return Distance between {@code this} and {@code e}
+	 */
 	public double getDistanceToEntity(Entity e) {
 		return Math.sqrt(Math.pow((e.getPosX() + (e.width/2)) - (this.getPosX() + (this.width/2)), 2) + Math.pow((e.getPosY() + (e.height/2)) - (this.getPosY() + (this.height/1.5)), 2));
 	}
-	public double getDistanceToTile(Vector2D e) {
-		return Math.sqrt(Math.pow((e.getX() + (Game.tileSize/2)) - (this.getPosX() + (this.width/2)), 2) + Math.pow((e.getY() + (Game.tileSize/2)) - (this.getPosY() + (this.height/2)), 2));
-	}
 
+	/**
+	 * Returns the distance to a tile
+	 * @param x Tile position X
+	 * @param y Tile position Y
+	 * @return Distance between {@code this} and the tile position
+	 */
 	public double getDistanceToTile(int x, int y) {
 		return Math.sqrt(Math.pow((x + (Game.tileSize/2)) - (this.getPosX() + (this.width/2)), 2) + Math.pow((y + (Game.tileSize/2)) - (this.getPosY() + (this.height/1.5)), 2));
 	}
 
+	/**
+	 * @param e Entity from which to get the vector to
+	 * @return Vector to {@code e}
+	 */
 	public Vector2D getVector2DToEntity(Entity e) {
 		Vector2D direction = new Vector2D((e.getPosX() + (e.width/2)) - (this.getPosX() + (this.width/2)), (e.getPosY() + (e.height/2)) - (this.getPosY() + (this.height/1.5)));
 		direction = direction.normalize();
@@ -164,6 +251,11 @@ public abstract class Entity {
 		return direction;
 	}
 
+	/**
+	 * @param x Tile position X
+	 * @param y Tile position Y
+	 * @return Vector to the tile
+	 */
 	public Vector2D getVector2DToTile(int x, int y) {
 		Vector2D direction = new Vector2D((x + (Game.tileSize/2)) - (this.getPosX() + (this.width/2)), (y + (Game.tileSize/2)) - (this.getPosY() + (this.height/1.5)));
 		direction = direction.normalize();
@@ -171,6 +263,10 @@ public abstract class Entity {
 		return direction;
 	}
 
+	/**
+	 * @param direction Movement vector of an entity
+	 * @return Direction of the vector
+	 */
 	public static Direction getDirectionFromVector2D(Vector2D direction) {
 		double angle = Math.atan2(direction.getY(), direction.getX());
 		if (angle >= -Math.PI/4 && angle < Math.PI/4) {
@@ -183,6 +279,11 @@ public abstract class Entity {
 			return Direction.NORTH;
 		}
 	}
+
+	/**
+	 * @param d Direction of an entity
+	 * @return Normalized vector of the direction
+	 */
 	public static Vector2D getVectorFromDirection(Direction d) {
 	    switch (d) {
 	        case NORTH:
@@ -197,14 +298,27 @@ public abstract class Entity {
 	            throw new IllegalArgumentException("Invalid direction: " + d);
 	    }
 	}
-	
+
+	/**
+	 * @return Position of the entity
+	 */
 	public Vector2D getPosition() {
 		return new Vector2D(getPosX(),getPosY());
 	}
+
+	/**
+	 * @return Tile the entity is in
+	 */
 	public Vector2D getTilePosition() {
 		return new Vector2D(getPosX()/Game.tileSize,getPosY()/Game.tileSize);
 	}
 
+	/**
+	 * Pushes an entity out of another
+	 * @param collition Entity to collide with
+	 * @param force Force to apply
+	 * @return Distance between entities
+	 */
 	public double pushOut(Entity collition, double force) {
 		Vector2D velocity = new Vector2D(0,0);
 		double distance = getDistanceToEntity(collition);
@@ -235,108 +349,26 @@ public abstract class Entity {
 
 		return distance;
 	}
-	public double pushOut(Entity collition, double force,Camera camera) {
-		double distance = getDistanceToEntity(collition);
 
-		Vector2D collisionNormal = getVector2DToEntity(collition);
-		Vector2D movement = new Vector2D(0,0);
-		switch (getDirectionFromVector2D(collisionNormal.scalarMultiply(-1))) {
-			case WEST:
-				movement = new Vector2D(-1,0);
-				break;
-			case EAST:
-				movement = new Vector2D(1,0);
-				break;
-			case NORTH:
-				movement = new Vector2D(0,-1);
-				break;
-			case SOUTH:
-				movement = new Vector2D(0,1);
-				break;
-			default:
-				break;
-		}
-		movement = movement.scalarMultiply(distance).scalarMultiply(force);
-
-		move(movement);
-		
-		if(getClass() == Player.class)
-			camera.setPosition(this.getPosX(), this.getPosY());
-
-		return distance;
-	}
-	public double pushOut(int x, int y, double force) {
-		double distance = getDistanceToTile(x * Game.tileSize, y * Game.tileSize);
-
-		Vector2D collisionNormal = getVector2DToTile(x * Game.tileSize, y * Game.tileSize);
-		Vector2D movement = new Vector2D(0,0);
-		switch (getDirectionFromVector2D(collisionNormal.scalarMultiply(-1))) {
-			case WEST:
-				movement = new Vector2D(-1,0);
-				break;
-			case EAST:
-				movement = new Vector2D(1,0);
-				break;
-			case NORTH:
-				movement = new Vector2D(0,-1);
-				break;
-			case SOUTH:
-				movement = new Vector2D(0,1);
-				break;
-			default:
-				break;
-		}
-		movement = movement.scalarMultiply(distance).scalarMultiply(force);
-		
-		move(movement);
-
-		return distance;
-	}
-	public double pushOut(int x, int y, double force,Camera camera) {
-		Vector2D velocity = new Vector2D(0,0);
-		double distance = getDistanceToTile(x * Game.tileSize, y * Game.tileSize);
-
-		Vector2D collisionNormal = getVector2DToTile(x * Game.tileSize, y * Game.tileSize);
-		Vector2D movement = new Vector2D(0,0);
-		switch (getDirectionFromVector2D(collisionNormal.scalarMultiply(-1))) {
-			case WEST:
-				movement = new Vector2D(-1,0);
-				break;
-			case EAST:
-				movement = new Vector2D(1,0);
-				break;
-			case NORTH:
-				movement = new Vector2D(0,-1);
-				break;
-			case SOUTH:
-				movement = new Vector2D(0,1);
-				break;
-			default:
-				break;
-		}
-		movement = movement.scalarMultiply(distance).scalarMultiply(force).add(velocity);
-		
-		velocity = movement;
-		
-		move(movement);
-		
-		if(getClass() == Player.class)
-			camera.setPosition(this.getPosX(), this.getPosY());
-
-		return distance;
-	}
-	public static void knockback(Entity player,Entity collition) {
-		
+	/**
+	 * Pushes the player out of an entity
+	 * @param player Player
+	 * @param collition Collision to push out from
+	 */
+	public static void knockback(Entity player, Entity collition) {
 		Task<Void> t = new Knockback(player, collition, 4, 0.2);
 		
 		new Thread(t).start();
 	}
-	public static float randomFromInterval(float min, float max) { // min and max included 
+
+	/**
+	 * @param min Minimum value
+	 * @param max Maximum value
+	 * @return Random value between the specified interval
+	 */
+	public static float randomFromInterval(float min, float max) {
   	  return (float) (Math.random() * (max - min + 1) + min);
 	}
-	
-	
-	//Getters / Setters
 
 	public void setWorld(World world) {
 		this.world = world;
@@ -381,7 +413,5 @@ public abstract class Entity {
 	public void setPosY(double posY) {
 		this.posY = posY;
 	}
-
-
 
 }

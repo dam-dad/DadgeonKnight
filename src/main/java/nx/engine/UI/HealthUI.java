@@ -5,6 +5,9 @@ import javafx.scene.image.Image;
 import nx.engine.Game;
 import nx.engine.world.entities.Player;
 
+/**
+ * Represents the health UI
+ */
 public class HealthUI implements UI {
 
     private static final Image heart = new Image("/assets/textures/ui/heart.png");
@@ -12,15 +15,27 @@ public class HealthUI implements UI {
 
     private Player player;
 
+    /**
+     * Constructor
+     * @param player Player to show the health from
+     */
     public HealthUI(Player player) {
         this.player = player;
     }
 
+    /**
+     * Updates the health ui
+     * @param delta Frame delta time
+     */
     @Override
     public void update(double delta) {
 
     }
 
+    /**
+     * Draws the health ui
+     * @param gc GraphicsContext to draw on
+     */
     @Override
     public void draw(GraphicsContext gc) {
         for (int i = 0; i < player.getHealth() / 2; i++) {

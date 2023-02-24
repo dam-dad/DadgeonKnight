@@ -11,6 +11,9 @@ import javafx.concurrent.Task;
 import nx.engine.Game;
 import nx.engine.world.entities.Player;
 
+/**
+ * Manages the pathfinding on a world
+ */
 public class PathfindingManager extends Task<List<Vector2D>> {
 	
 	final int maxCol;
@@ -28,7 +31,12 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 	
 	int steps = 0;
 	final int maxSteps = 100;
-	
+
+	/**
+	 * Constructor
+	 * @param startX Start position X
+	 * @param startY Start position Y
+	 */
 	public PathfindingManager(int startX,int startY) {
 		map = Player.get().getWorld().getLevel().getCollisionLayer().getTiles();
 		
@@ -44,11 +52,20 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 		
 		Game.logger.log(Level.INFO,"finding: " + endNode.col + "," + endNode.row);
 	}
-	
+
+	/**
+	 * Constructor
+	 * @param v Start position
+	 */
 	public PathfindingManager(Vector2D v) {
 		this((int)Math.round(v.getX()),(int)Math.round(v.getY()));
 	}
-	
+
+	/**
+	 * Returns a path to a target position
+	 * @return Position list
+	 * @throws Exception
+	 */
 	@Override
 	protected List<Vector2D> call() throws Exception {
 		double drawInterval = 1000000000/1000;
@@ -87,6 +104,9 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 		}
 	}
 
+	/**
+	 * Searches walkable neighboring tiles
+	 */
 	public void search() 
 	{
 		if(goalReach == false) 
@@ -150,6 +170,10 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 		}
 		
 	}
+
+	/**
+	 * Sets the cost of tiles
+	 */
 	public void setCost() 
 	{
 		for(int col = 0; col < map.length; col++) {
@@ -158,7 +182,11 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 			}
 		}
 	}
-	
+
+	/**
+	 * Returns the walk cost of a tile
+	 * @param tile
+	 */
 	public void getCost(Tile tile)
 	{
 		//gCost
@@ -177,16 +205,31 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 		tile.fCost = tile.gCost + tile.hCost;
 		
 	}
-	private void setStart(int col,int row) 
-	{
+
+	/**
+	 * Sets the start position
+	 * @param col
+	 * @param row
+	 */
+	private void setStart(int col,int row) {
 		map[col][row].setStart();
 		startNode = map[col][row];
 	}
-	private void setEnd(int col,int row) 
-	{
+
+	/**
+	 * Sets the end position
+	 * @param col
+	 * @param row
+	 */
+	private void setEnd(int col,int row) {
 		map[col][row].setEnd();
 		endNode = map[col][row];
 	}
+
+	/**
+	 * Opens a node
+	 * @param node Node to open
+	 */
 	private void openNode(Tile node) {
 		  
 		if(!node.open && !node.checked && !node.isSolid()) 
@@ -196,6 +239,10 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 			openList.add(node);
 		}
 	}
+
+	/**
+	 * @return Tracked path
+	 */
 	public List<Vector2D> trackThePath() {
 		Tile current = endNode;
 		
@@ -213,4 +260,5 @@ public class PathfindingManager extends Task<List<Vector2D>> {
 		
 		return  movement;
 	}
+
 }

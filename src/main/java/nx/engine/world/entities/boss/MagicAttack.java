@@ -6,6 +6,9 @@ import nx.engine.world.entities.Player;
 import nx.engine.world.entities.TestBoss;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+/**
+ * Represents the magic attack of the boss
+ */
 public class MagicAttack extends BossAttack {
 
     private static final double ATTACK_RADIUS = 10;
@@ -20,10 +23,18 @@ public class MagicAttack extends BossAttack {
     double start = 0;
     double cos;
 
+    /**
+     * Constructor
+     * @param boss Boss instance
+     */
     public MagicAttack(TestBoss boss) {
         super(boss);
     }
 
+    /**
+     * Updates the attack
+     * @param delta Frame delta time
+     */
     @Override
     public void update(double delta) {
         timeSinceLastSphere += delta;
@@ -48,17 +59,26 @@ public class MagicAttack extends BossAttack {
         }
     }
 
+    /**
+     * Executes at the beginning of the attack
+     */
     @Override
     public void onStart() {
 
     }
 
+    /**
+     * Executes at the end of the attack
+     */
     @Override
     public void onFinish() {
         timeSinceLastSphere = 0.0;
         spheresLaunched = 0;
     }
 
+    /**
+     * @return True if the boss should change to a different attack, false if not
+     */
     @Override
     public boolean shouldChange() {
         return timeSinceLastSphere >= SPHERE_DELAY * MAX_SPHERES + MagicSphere.WAIT_TIME;

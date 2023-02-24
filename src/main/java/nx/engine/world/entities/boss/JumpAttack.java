@@ -6,6 +6,9 @@ import nx.engine.world.entities.Player;
 import nx.engine.world.entities.TestBoss;
 import nx.game.App;
 
+/**
+ * Represents the jump attack of the boss
+ */
 public class JumpAttack extends BossAttack {
 
     private static final double ATTACK_TIME = 1.0;
@@ -17,10 +20,18 @@ public class JumpAttack extends BossAttack {
     private boolean hasMoved;
     private Player player;
 
+    /**
+     * Constructor
+     * @param boss Boss instance
+     */
     public JumpAttack(TestBoss boss) {
         super(boss);
     }
 
+    /**
+     * Updates the attack
+     * @param delta Delta time
+     */
     @Override
     public void update(double delta) {
         attackProgress += delta;
@@ -57,11 +68,17 @@ public class JumpAttack extends BossAttack {
         }
     }
 
+    /**
+     * Executes at the beginning of the attack
+     */
     @Override
     public void onStart() {
 
     }
 
+    /**
+     * Executes at the end of the attack
+     */
     @Override
     public void onFinish() {
         attackProgress = 0;
@@ -71,6 +88,9 @@ public class JumpAttack extends BossAttack {
         getBoss().setShadowEnabled(false);
     }
 
+    /**
+     * @return True if the boss should change to a different attack, false if not
+     */
     @Override
     public boolean shouldChange() {
         return hasAttackEnded;

@@ -6,8 +6,9 @@ import nx.engine.particles.Particle;
 import nx.game.App;
 import nx.util.Vector2f;
 
-import java.util.Optional;
-
+/**
+ * Represents a magic sphere entity
+ */
 public class MagicSphere extends Entity {
 
     private static final Image IMAGE = new Image("/assets/textures/magic2.gif");
@@ -21,12 +22,22 @@ public class MagicSphere extends Entity {
     private final Player player;
     private double timeSinceCreation;
 
+    /**
+     * Constructor
+     * @param x Spawn position X
+     * @param y Spawn position Y
+     * @param player Player
+     */
     public MagicSphere(double x, double y, Player player) {
         super(x, y, IMAGE);
 
         this.player = player;
     }
 
+    /**
+     * Updates the entity
+     * @param deltaTime Frame delta
+     */
     @Override
     public void update(double deltaTime) {
         timeSinceCreation += deltaTime;
@@ -63,9 +74,13 @@ public class MagicSphere extends Entity {
 
         createParticleEffect(getPosX(), getPosY(), 30);
     }
-    
 
-
+    /**
+     * Creates a particle effect
+     * @param posX Spawn position X
+     * @param posY Spawn position Y
+     * @param particleAmount Amount of particles
+     */
     private void createParticleEffect(double posX, double posY, int particleAmount) {
     	//TODO No se si es esto pero cuando las particulas son creadas generan un poco de lag.
     	//cambie Random por Math.random por si pudiera ser eso.
@@ -76,15 +91,6 @@ public class MagicSphere extends Entity {
             float directionY = randomFromInterval(-1.0f, 1.0f);
             getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(directionX, directionY).normalize(), image, randomFromInterval(1.0f, 200.0f) + 100.0f));
         }
-        
-    	
-//      Random random = new Random();
-
-//      for (int i = 0; i < 20; i++) {
-//          float directionX = (random.nextFloat(2) - 1);
-//          float directionY = (random.nextFloat(2) - 1);
-//          getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(directionX, directionY).normalize(), image, random.nextFloat(200) + 300));
-//      }
     }
 
 }

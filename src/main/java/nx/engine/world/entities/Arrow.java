@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Represents an arrow entity
+ */
 public class Arrow extends Entity {
 
     private static final float SPEED = 16f * Game.tileSize;
@@ -28,6 +31,12 @@ public class Arrow extends Entity {
 
     private double cos;
 
+    /**
+     * Constructor
+     * @param x Spawn position X
+     * @param y Spawn position Y
+     * @param direction Arrow direction
+     */
     public Arrow(double x, double y, Vector2f direction) {
         super(x, y, TileSetManager.loadImageFromTileSet(TileSet.ITEMS_TILES, 109, 16, 16));
 
@@ -35,6 +44,10 @@ public class Arrow extends Entity {
         this.cos = 180.0 / Math.PI * Math.atan2(direction.x - 0, direction.y);
     }
 
+    /**
+     * Updates the arrow and damages a mob if hit
+     * @param deltaTime Frame delta
+     */
     @Override
     public void update(double deltaTime) {
         setPosX(getPosX() + direction.x * deltaTime * SPEED);
@@ -57,6 +70,11 @@ public class Arrow extends Entity {
         entities.forEach(mobEntity -> mobEntity.getAttacked(DAMAGE));
     }
 
+    /**
+     * Draws the arrow with proper rotation
+     * @param gc GraphicsContext to draw on
+     * @param camera World camera
+     */
     @Override
     public void draw(GraphicsContext gc, Camera camera) {
         gc.save();

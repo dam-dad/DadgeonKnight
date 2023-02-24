@@ -6,6 +6,9 @@ import nx.engine.world.entities.Player;
 import nx.engine.world.entities.TestBoss;
 import nx.util.Vector2f;
 
+/**
+ * Represents the fire attack of the boss
+ */
 public class FireAttack extends BossAttack {
 
     private static final double RADIUS = 10;
@@ -16,10 +19,18 @@ public class FireAttack extends BossAttack {
     private double timeAttacking = 0.0;
     private double timeSinceLastAttack = 0.0;
 
+    /**
+     * Constructor
+     * @param boss Boss instance
+     */
     public FireAttack(TestBoss boss) {
         super(boss);
     }
 
+    /**
+     * Updates the attack
+     * @param delta Frame delta time
+     */
     @Override
     public void update(double delta) {
         timeAttacking += delta;
@@ -43,17 +54,26 @@ public class FireAttack extends BossAttack {
                 });
     }
 
+    /**
+     * @return True if the boss should change to a different attack, false if not
+     */
     @Override
     public boolean shouldChange() {
         return timeAttacking >= MAX_ATTACK_TIME;
     }
 
+    /**
+     * Executes at the beginning of the attack
+     */
     @Override
     public void onStart() {
         timeAttacking = 0.0;
         timeSinceLastAttack = 0.0;
     }
 
+    /**
+     * Executes at the end of the attack
+     */
     @Override
     public void onFinish() {
 

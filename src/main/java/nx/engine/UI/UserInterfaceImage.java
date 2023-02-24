@@ -3,6 +3,9 @@ package nx.engine.UI;
 import javafx.scene.image.Image;
 import nx.engine.Game;
 
+/**
+ * Represents a user interface image
+ */
 public class UserInterfaceImage {
 	
 	public static UserInterfaceImage Dialog = new UserInterfaceImage(0, Game.screenheigth - 100, Game.screenWidth, 100,new Image("/assets/textures/ui/dialogbox.png"));
@@ -14,9 +17,15 @@ public class UserInterfaceImage {
 	private int height;
 	
 	private Image image;
-	
-	
 
+	/**
+	 * Constructor
+	 * @param posX Position X
+	 * @param posY Position Y
+	 * @param with Width
+	 * @param height Height
+	 * @param image Image
+	 */
 	public UserInterfaceImage(int posX, int posY, int with, int height, Image image) {
 		this.posX = posX;
 		this.posY = posY;

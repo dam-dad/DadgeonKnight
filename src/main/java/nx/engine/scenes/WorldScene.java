@@ -41,6 +41,10 @@ public class WorldScene implements Scene {
 	
 	private final HealthUI healthUI;
 
+	/**
+	 * Constructor
+	 * @param worldData World data to load the world from
+	 */
 	public WorldScene(WorldData worldData) {
 		this.camera = Player.get().getCamera();
 		this.world = new World(worldData.getTileSet(), worldData.getEntities(), worldData.getMapLayers());

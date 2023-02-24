@@ -1,26 +1,23 @@
 package nx.engine.world.entities;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Level;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import nx.engine.Camera;
 import nx.engine.world.MobEntity;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import nx.engine.Animation;
 import nx.engine.Game;
 import nx.engine.tile.PathfindingManager;
-import nx.engine.tile.Tile;
 import nx.util.Direction;
 
+/**
+ * Represents an orc entity
+ */
 public class Orc extends MobEntity {
 
 	private final String walkTileSet = "/assets/textures/orc/muscleman.png";
@@ -43,12 +40,10 @@ public class Orc extends MobEntity {
 	private double timeSinceLastAttack = 0.0;
 
 	private List<? extends Entity> dropItems;
-	
-	
+
 	private static List<Vector2D> movementToPlayer = new ArrayList<Vector2D>();
 	private Vector2D nextPosition;
 	private boolean taskExecuting = false;
-	
 
 	private final Map<Direction, Animation> walk = new HashMap<>() {
 		{
@@ -59,6 +54,13 @@ public class Orc extends MobEntity {
 		}
 	};
 
+	/**
+	 * Constructor
+	 * @param posX Spawn position X
+	 * @param posY Spawn position Y
+	 * @param speed Speed
+	 * @param runSpeed Run speed
+	 */
 	public Orc(double posX, double posY, double speed, double runSpeed) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 
@@ -86,9 +88,11 @@ public class Orc extends MobEntity {
 		this.animation = walk.get(direction);
 		
 		follow();
-
 	}
 
+	/**
+	 * Set a new random direction
+	 */
 	public void changeDirection() {
 		direction = Direction.values()[new Random().nextInt(4)];
 		this.animation = walk.get(direction);
@@ -116,6 +120,7 @@ public class Orc extends MobEntity {
 	public Vector2D getPosition() {
 		return new Vector2D(getPosX(),getPosY() + (sizeTextureY * scale) - Game.tileSize);
 	}
+
 	@Override
 	public Vector2D getTilePosition() {
 		return new Vector2D(getPosX()/Game.tileSize,(getPosY() + (sizeTextureY * scale) - Game.tileSize)/Game.tileSize);
@@ -136,16 +141,6 @@ public class Orc extends MobEntity {
 
 			double distance = getDistanceToEntity(Player.get());
 			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
-
-//			if (distance < this.sizePlayerDetection) {
-//				if (!state.equals("follow")) {
-//					follow();
-//				}
-//			} else {
-//				if (!state.equals("walk")) {
-//					walk();
-//				}
-//			}
 
 			if (timeSinceLastAttack > attackDelay && this.checkCollision(Game.player)) {
 				timeSinceLastAttack -= attackDelay;

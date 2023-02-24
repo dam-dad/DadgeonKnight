@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Represents a boss entity
+ */
 public class TestBoss extends MobEntity {
 
     protected static final Image sprite = new Image("/assets/textures/boss/Selection84.png");
@@ -30,6 +33,11 @@ public class TestBoss extends MobEntity {
 
     private final int initialX, initialY;
 
+    /**
+     * Boss constructor
+     * @param x Spawn position tile X
+     * @param y Spawn position tile Y
+     */
     public TestBoss(int x, int y) {
         super(x * Game.tileSize, y * Game.tileSize);
         setImage(sprite);
@@ -50,11 +58,20 @@ public class TestBoss extends MobEntity {
         currentAttack = attackList.get(random.nextInt(attackList.size()));
     }
 
+    /**
+     * Constructor for parsing
+     * @param parseDouble Spawn position X
+     * @param parseDouble2 Spawn position Y
+     */
     public TestBoss(double parseDouble, double parseDouble2) {
     	this((int) parseDouble,(int) parseDouble2);
 	}
-    
-	public void getAttacked(int damage) {
+
+    /**
+     * Subtract health to the boss when it is on the ground
+     * @param damage Damage to deal
+     */
+    public void getAttacked(int damage) {
         if (yOffset != 0.0)
             return;
 
@@ -121,22 +138,39 @@ public class TestBoss extends MobEntity {
         gc.drawImage(image, Game.SCREEN_CENTER_X - camera.getX() + getPosX() - getWidth() / 2 * scale, Game.SCREEN_CENTER_Y - camera.getY() + getPosY() - getHeight() / 2 * scale - yOffset, Game.tileSize * scale, Game.tileSize * scale);
     }
 
+    /**
+     * Sets Y offset
+     * @param yOffset New value
+     */
     public void setyOffset(double yOffset) {
         this.yOffset = yOffset;
     }
 
+    /**
+     * Sets if the boss casts a shadow on the ground
+     * @param shadowEnabled True if enabled, false if not
+     */
     public void setShadowEnabled(boolean shadowEnabled) {
         isShadowEnabled = shadowEnabled;
     }
 
+    /**
+     * @return Health of the boss
+     */
     public double getMobHealth() {
         return mobHealth;
     }
 
+    /**
+     * @return Initial X component of the spawn position
+     */
     public int getInitialX() {
         return initialX;
     }
 
+    /**
+     * @return Initial Y component of the spawn position
+     */
     public int getInitialY() {
         return initialY;
     }
