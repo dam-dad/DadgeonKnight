@@ -115,7 +115,7 @@ public class Orc extends MobEntity implements SmartMovement {
 
 			double distance = getDistanceToEntity(Player.get());
 			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
-			Vector2D direction = getVector2DToEntity(Player.get());
+			Vector2D directionToPlayer = getVector2DToEntity(Player.get());
 
 			if (distance < this.sizePlayerDetection) {
 				if (!state.equals("follow") && timeSinceLastAttack > attackDelay) {
@@ -160,14 +160,14 @@ public class Orc extends MobEntity implements SmartMovement {
 					this.setPosY(this.getPosY() + realSpeed);
 				}
 				break;
-			case "follow":
+			case "smartfollow":
 				
-				this.direction = getDirectionFromVector2D(direction);
+				this.direction = getDirectionFromVector2D(directionToPlayer);
 				animation = walk.get(this.direction);
 				
 				if(distance < Game.tileSize * 2) {
-					direction = direction.scalarMultiply(realSpeed);
-					move(direction);
+					directionToPlayer = directionToPlayer.scalarMultiply(realSpeed);
+					move(directionToPlayer);
 					break;
 				}
 				if(Player.get().isWalking())
@@ -178,23 +178,14 @@ public class Orc extends MobEntity implements SmartMovement {
 					follow(movementToPlayer,realSpeed);
 
 				break;
-			case "smartfollow":
+			case "follow":
 				
 				
-				this.direction = getDirectionFromVector2D(direction);
+				this.direction = getDirectionFromVector2D(directionToPlayer);
 				animation = walk.get(this.direction);
-				
-				if(distance < Game.tileSize * 2) {
-					direction = direction.scalarMultiply(realSpeed);
-					move(direction);
-					break;
-				}
-				if(Player.get().isWalking())
-					find(this, Player.get());
 
+				move(directionToPlayer.scalarMultiply(speed));
 
-				if(!taskExecuting && movementToPlayer != null && movementToPlayer.size() > 0)
-					follow(movementToPlayer,realSpeed);
 
 				break;
 			default:
