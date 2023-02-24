@@ -75,13 +75,6 @@
                   <Label fx:id="effectsLabel" styleClass="text" text="50%" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-               <children>
-                  <Label styleClass="text" text="General" />
-                  <Slider fx:id="generalSlider" maxWidth="1.7976931348623157E308" value="50.0" />
-                  <Label fx:id="generalLabel" styleClass="text" text="50%" />
-               </children>
-            </HBox>
          </children>
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" />

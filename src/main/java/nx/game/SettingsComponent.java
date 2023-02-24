@@ -31,10 +31,10 @@ public class SettingsComponent extends GridPane implements Initializable {
 	private Button acceptButton, cancelButton;
 
 	@FXML
-	private Slider effectsSlider, generalSlider, musicSlider;
+	private Slider effectsSlider, musicSlider;
 
 	@FXML
-	private Label settingsLabel, effectsLabel, generalLabel, musicLabel;
+	private Label settingsLabel, effectsLabel, musicLabel;
 
 	public SettingsComponent() {
 		super();
@@ -56,7 +56,6 @@ public class SettingsComponent extends GridPane implements Initializable {
 
 		musicSlider.valueProperty().addListener(this::changeMusicValue);
 		effectsSlider.valueProperty().addListener(this::changeEffectsValue);
-		generalSlider.valueProperty().addListener(this::changeGeneralValue);
 
 		musicSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
@@ -75,13 +74,6 @@ public class SettingsComponent extends GridPane implements Initializable {
 			}
 		});
 
-		generalSlider.valueProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				System.out.println("modificando volumen juego");
-			}
-		});
 	}
 
 	private void changeMusicValue(ObservableValue<? extends Number> o, Number ov, Number nv) {
@@ -92,11 +84,6 @@ public class SettingsComponent extends GridPane implements Initializable {
 	private void changeEffectsValue(ObservableValue<? extends Number> o, Number ov, Number nv) {
 		String rounded = decimalFormat.format(Double.parseDouble(nv.toString()));
 		effectsLabel.setText(rounded + "%");
-	}
-
-	private void changeGeneralValue(ObservableValue<? extends Number> o, Number ov, Number nv) {
-		String rounded = decimalFormat.format(Double.parseDouble(nv.toString()));
-		generalLabel.setText(rounded + "%");
 	}
 
 	// TODO cuando se cambie el volumen, actualizar la lista de la música
