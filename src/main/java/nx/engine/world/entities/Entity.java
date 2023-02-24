@@ -323,7 +323,7 @@ public abstract class Entity {
 
 		return distance;
 	}
-	public static void knockback(Entity player,Entity collition) {
+	public static void knockback(Entity player,Entity collition, double knockbackForce, double knockbackDuration) {
 		
 		Task<Void> t = new Knockback(player, collition, 4, 0.2);
 		

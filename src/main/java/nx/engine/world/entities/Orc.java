@@ -151,7 +151,7 @@ public class Orc extends MobEntity {
 				timeSinceLastAttack -= attackDelay;
 				Game.inputHandler.ClearActiveKeys();
 				Player.get().setVectorMovement(new Vector2D(0,0));
-				Entity.knockback(Game.player, this);
+				Entity.knockback(Game.player, this, 0.7, 1.0);
 				Game.player.getAttacked(1);
 				return;
 
