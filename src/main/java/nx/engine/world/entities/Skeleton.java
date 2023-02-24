@@ -150,7 +150,7 @@ public class Skeleton extends MobEntity {
 			}
 
 			if (this.checkCollision(playerOptional.get())) {
-				Entity.knockback(playerOptional.get(), this,0.07,playerOptional.get().getCamera());
+				Entity.knockback(playerOptional.get(), this);
 				playerOptional.get().getAttacked(5);
 			}
 
