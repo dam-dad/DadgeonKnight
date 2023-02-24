@@ -74,18 +74,12 @@ public class Player extends Entity {
 
 	private int health;
 	private double timeSinceLastHit;
-
-	private double initialX;
-	private double initialY;
 	
 	private Vector2D movement;
 	
 	private Player(double posX, double posY, Camera camera) {
 		this.setPosX(posX * Game.tileSize);
 		this.setPosY(posY * Game.tileSize);
-
-		this.initialX = getPosX();
-		this.initialY = getPosY();
 		
 		screenX = Game.screenWidth / 2 - (Game.tileSize/2);
 		screenY = Game.screenheigth / 2 - (Game.tileSize/2);
@@ -117,8 +111,8 @@ public class Player extends Entity {
 	public void update(double deltaTime) {
 
 		if (health <= 0) {
-			posX = World.spawn.getX();
-			posY = World.spawn.getY();;
+			posX = World.spawn.getX() * Game.tileSize;
+			posY = World.spawn.getY() * Game.tileSize;
 			health = 10;
 		}
 
@@ -181,6 +175,8 @@ public class Player extends Entity {
 			move(movementX, movementY);
 			camera.setPosition(getPosX(), getPosY());
 		}
+
+
 		
 		animation = idle.get(direction);
 		
@@ -207,9 +203,9 @@ public class Player extends Entity {
 		super.setPosition(v.getX() * Game.tileSize,v.getY() * Game.tileSize);
 		camera.setPosition(v.getX() * Game.tileSize, v.getY() * Game.tileSize);
 	}
-	public void setSpawn(Vector2D v) {
-		this.initialX = v.getX();
-		this.initialY = v.getY();
+	@Override
+	public Vector2D getPosition() {
+		return new Vector2D(getPosX() + (Game.tileSize/2),getPosY() + (Game.tileSize/2));
 	}
 
 	@Override
