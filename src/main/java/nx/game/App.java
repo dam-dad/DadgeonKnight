@@ -19,7 +19,7 @@ public class App extends Application {
 
 		App.mainStage = stage;
 
-		menuController = new MenuController();
+		menuController = MenuController.getInstance();
 
 		stage.setResizable(false);
 		stage.setTitle("Dadgeon Knight");

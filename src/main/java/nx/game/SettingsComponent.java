@@ -61,8 +61,10 @@ public class SettingsComponent extends GridPane implements Initializable {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				App.mixer.setVolume(musicSlider.getValue() * 0.003);
-				System.out.println("modificando volumen musica");
+				SoundMixer.MUSIC_VOLUME = (double) newValue * 0.1;
+				if(App.mixer.getMusic() != null) {
+					App.mixer.getMusic().setVolume((double) newValue * 0.1);
+				}
 			}
 		});
 
@@ -70,7 +72,10 @@ public class SettingsComponent extends GridPane implements Initializable {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				System.out.println("modificando volumen juego");
+				SoundMixer.GAME_VOLUME = ((double) newValue) * 0.1;
+				if(App.mixer.getGameSounds().size() > 0) {
+					App.mixer.getGameSounds().forEach(e -> e.setVolume((double) newValue * 0.01));
+				}
 			}
 		});
 
@@ -85,16 +90,14 @@ public class SettingsComponent extends GridPane implements Initializable {
 		String rounded = decimalFormat.format(Double.parseDouble(nv.toString()));
 		effectsLabel.setText(rounded + "%");
 	}
-
-	// TODO cuando se cambie el volumen, actualizar la lista de la música
 	@FXML
-	void onAcceptAction(ActionEvent event) {
-		App.mainStage.getScene().setRoot(App.menuController.getView());
+	void onAcceptAction(ActionEvent event) throws IOException {
+		MenuController.getInstance().onSettingsAction(event);
 	}
 
 	@FXML
-	void onCancelAction(ActionEvent event) {
-		App.mainStage.getScene().setRoot(App.menuController.getView());
+	void onCancelAction(ActionEvent event) throws IOException {
+		MenuController.getInstance().onSettingsAction(event);
 	}
 
 }

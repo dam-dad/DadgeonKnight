@@ -6,8 +6,8 @@ import java.util.List;
 public class SoundMixer {
 
 	public static double GENERAL_VOLUME = 1;
-	public static double GAME_VOLUME = 0.1;
-	public static double MUSIC_VOLUME = 0.05;
+	public static double GAME_VOLUME = 0.5;
+	public static double MUSIC_VOLUME = 0.5;
 
 	private Music music;
 	private List<Music> gameSounds;
