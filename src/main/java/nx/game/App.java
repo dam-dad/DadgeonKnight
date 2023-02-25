@@ -13,6 +13,8 @@ public class App extends Application {
 	public static MenuController menuController;
 
 	public static SoundMixer mixer = new SoundMixer();
+	
+	public static boolean onMenu = true;
 
 	@Override
 	public void start(Stage stage) throws Exception {

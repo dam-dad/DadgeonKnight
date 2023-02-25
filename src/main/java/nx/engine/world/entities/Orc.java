@@ -119,7 +119,7 @@ public class Orc extends MobEntity implements SmartMovement {
 
 			if (distance < this.sizePlayerDetection) {
 				if (!state.equals("follow") && timeSinceLastAttack > attackDelay) {
-					follow();
+					smartFollow();
 				}
 			} else {
 				if (!state.equals("walk")) {
