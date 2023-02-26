@@ -40,14 +40,14 @@ public class Chest extends StaticEntity {
 				getPosY() + Game.tileSize > Player.get().getCamera().getY() - Game.screenheigth &&
 				getPosY() - Game.tileSize  < Player.get().getCamera().getY() + Game.screenheigth){
 			if(Player.get().checkCollision(this)) {
-				Game.inputHandler.ClearActiveButtons();
+				Game.inputHandler.ClearActiveKeys();
 				Player.get().pushOut(this, Player.PLAYER_FORCE);
 				if(closed) {
 					App.mixer.addGameSound("chestOpen.mp3").play();
 					this.image = open;
 					closed = false;
 					inventory.forEach(e -> {
-						Player.get().addEntityToInventory((PickableEntity) e);
+						Player.get().getInventory().addEntityToInventory((PickableEntity) e);
 					});
 				}
 			}

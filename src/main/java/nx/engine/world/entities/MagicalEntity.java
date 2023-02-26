@@ -11,6 +11,7 @@ import nx.engine.Game;
 import nx.engine.UI.Dialog;
 import nx.engine.UI.UserInterfaceImage;
 import nx.engine.particles.Particle;
+import nx.engine.particles.ParticleManager;
 import nx.engine.scenes.WorldScene;
 import nx.engine.tile.TileSet;
 import nx.engine.world.MobEntity;
@@ -101,7 +102,7 @@ public class MagicalEntity extends MobEntity {
         for (int i = 0; i < 20; i++) {
             float directionX = randomFromInterval(-1.0f, 1.0f);
             float directionY = randomFromInterval(-1.0f, 1.0f);
-            getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(directionX, directionY).normalize(), WorldScene.smoke, randomFromInterval(1.0f, 200.0f) + 100.0f));
+            getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(directionX, directionY).normalize(), ParticleManager.smoke, randomFromInterval(1.0f, 200.0f) + 100.0f));
         }
     }
 }
