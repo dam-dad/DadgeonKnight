@@ -103,6 +103,9 @@ public abstract class Entity {
 					case "enchantedring":
 						toReturn.add(new EnchantedRing(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;
+					case "villager":
+						toReturn.add(new Villager(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
+						break;
 					default:
 						break;
 					case "portal":

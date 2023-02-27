@@ -62,38 +62,39 @@ public class MagicalEntity extends MobEntity {
 	
 	@Override
 	public void update(double deltaTime) {
-		Optional<Player> player = getWorld()
-				.getEntities()
-				.stream()
-				.filter(e -> e instanceof Player)
-				.map(e -> (Player)e)
-				.findAny();
 		
-		animation.update(deltaTime);
-		
-		if(!player.isPresent() || isFinish)
-			return;
-		double distance = getDistanceToEntity(player.get());
-		if(distance < sizePlayerDetection && WorldScene.dialog == null) {
-			WorldScene.dialog = new Dialog(".....","/assets/levels/startedMap/oldManText.csv",UserInterfaceImage.Dialog);
-			WorldScene.dialog.play();
-		}
-		else if(distance >= sizePlayerDetection) {
-			WorldScene.dialog = null;
+		if(getPosX() + Game.tileSize > Player.get().getCamera().getX() - Game.screenWidth &&
+				getPosX() - Game.tileSize < Player.get().getCamera().getX() + Game.screenWidth &&
+				getPosY() + Game.tileSize > Player.get().getCamera().getY() - Game.screenheigth &&
+				getPosY() - Game.tileSize  < Player.get().getCamera().getY() + Game.screenheigth){
+			animation.update(deltaTime);
 			
+			if(isFinish)
+				return;
+			double distance = getDistanceToEntity(Player.get());
+			if(distance < sizePlayerDetection && WorldScene.dialog == null) {
+				WorldScene.dialog = new Dialog(".....","/assets/levels/startedMap/oldManText.csv",UserInterfaceImage.Dialog);
+				WorldScene.dialog.play();
+			}
+			else if(distance >= sizePlayerDetection) {
+				WorldScene.dialog = null;
+				
+			}
+			
+			if(WorldScene.dialog != null && WorldScene.dialog.hasFinish()) {
+				time += deltaTime;
+			}
+			if(time > timeToDie) {
+				getWorld().addEntity(entity);
+				createParticleEffect(getPosX(),getPosY());
+				App.mixer.addGameSound("SmokeExplosion.wav").setVolume(0.04).play();
+				getWorld().removeEntity(this);
+				WorldScene.dialog = null;
+				isFinish = true;
+			}
 		}
 		
-		if(WorldScene.dialog != null && WorldScene.dialog.hasFinish()) {
-			time += deltaTime;
-		}
-		if(time > timeToDie) {
-			getWorld().addEntity(entity);
-			createParticleEffect(getPosX(),getPosY());
-			App.mixer.addGameSound("SmokeExplosion.wav").setVolume(0.04).play();
-			getWorld().removeEntity(this);
-			WorldScene.dialog = null;
-			isFinish = true;
-		}
+
 		
 		
 	}
