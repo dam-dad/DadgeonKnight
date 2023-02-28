@@ -9,45 +9,25 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 public enum WorldData {
 
-	START_LEVEL("start",
-			new Vector2D(26, 25),
-			TileSet.WORLD_DARK_TILES,
+	START_LEVEL("start", new Vector2D(26, 25), TileSet.WORLD_DARK_TILES,
 			"/assets/levels/startedMap/StartedLevel_Entities.csv",
-			Layer.loadLayersFromFiles(
-					"/assets/levels/startedMap/StartMap_map.csv",
+			Layer.loadLayersFromFiles("/assets/levels/startedMap/StartMap_map.csv",
 					"/assets/levels/startedMap/StartMap_detail.csv",
-					"/assets/levels/startedMap/StartMap_collitions.csv"
-					)
-			),
-	
-	DUNGEON("dungeon",
-			new Vector2D(10, 10),
-			TileSet.DANGEON_TILES,
-			"/assets/levels/level1/DungeonLevel_Entities.csv",
-			Layer.loadLayersFromFiles(
-					"/assets/levels/level1/DungeonLevel_Mapa.csv",
-					"/assets/levels/level1/DungeonLevel_Collitions.csv"
-					)
-			),
-	SECRET("secret",
-			new Vector2D(5, 5),
-			TileSet.SECRET_TILES,
-			"/assets/levels/secret/entities.csv",
-			Layer.loadLayersFromFiles(
-					"/assets/levels/secret/Secret_Floor.csv",
-					"/assets/levels/secret/Secret_Collisions.csv"
-					)
-			);
-//	BRIDGE("bridge",
-//			new Vector2D(0, 0),
-//			TileSet.WORLD_BRIDGE_TILES,
-//			"/assets/levels/level3/DungeonBridgeLevel_entities.csv",
-//			Layer.loadLayersFromFiles(
-//					"/assets/levels/level3/map.csv",
-//					"/assets/levels/level3/DungeonBridgeLevel_details.csv",
-//					"/assets/levels/secret/Secret_collitions.csv"
-//					)
-//			);
+					"/assets/levels/startedMap/StartMap_collitions.csv")),
+
+	DUNGEON("dungeon", new Vector2D(10, 10), TileSet.DANGEON_TILES, "/assets/levels/level1/DungeonLevel_Entities.csv",
+			Layer.loadLayersFromFiles("/assets/levels/level1/DungeonLevel_Mapa.csv",
+					"/assets/levels/level1/DungeonLevel_Collitions.csv")),
+
+	SECRET("secret", new Vector2D(5, 5), TileSet.SECRET_TILES, "/assets/levels/secret/entities.csv",
+			Layer.loadLayersFromFiles("/assets/levels/secret/Secret_Floor.csv",
+					"/assets/levels/secret/Secret_Collisions.csv")),
+
+	BRIDGE("bridge", new Vector2D(3, 16), TileSet.WORLD_BRIDGE_TILES,
+			"/assets/levels/level3/DungeonBridgeLevel_entities.csv",
+			Layer.loadLayersFromFiles("/assets/levels/level3/DungeonBridgeLevel_map.csv",
+					"/assets/levels/level3/DungeonBridgeLevel_details.csv",
+					"/assets/levels/level3/DungeonBridgeLevel_collitions.csv"));
 
 	private final String name;
 	private Vector2D spawn;
