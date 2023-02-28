@@ -46,7 +46,6 @@ public class World {
         });
     	
         addEntity(Game.player);
-        addEntity(new Chest(26, 27,"armor"));
     }
 
     public World(TileSet tileSet, String entitties, Layer... layers) {
