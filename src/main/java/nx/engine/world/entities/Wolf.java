@@ -25,7 +25,9 @@ public class Wolf extends MobEntity {
 
 	public String state = "walk";
 	private double initialSpeed;
-	private Player player;
+	private double runSpeed;
+
+	Player player = Player.get();
 
 	@SuppressWarnings("serial")
 	private final Map<Direction, Animation> walk = new HashMap<>() {
@@ -37,14 +39,14 @@ public class Wolf extends MobEntity {
 		}
 	};
 
-	public Wolf(double posX, double posY, double speed, Player player) {
+	public Wolf(double posX, double posY, double speed, double runSpeed) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 
 		this.speed = speed;
 		initialSpeed = speed;
+		this.runSpeed = runSpeed;
 		this.scale = 2;
-		this.player = player;
-		
+
 		this.sizeTextureX = tileSizeX;
 		this.sizeTextureY = tileSizeY;
 

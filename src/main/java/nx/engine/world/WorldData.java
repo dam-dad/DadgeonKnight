@@ -23,8 +23,7 @@ public enum WorldData {
 			Layer.loadLayersFromFiles("/assets/levels/secret/Secret_Floor.csv",
 					"/assets/levels/secret/Secret_Collisions.csv")),
 
-	BRIDGE("bridge", new Vector2D(3, 16), TileSet.WORLD_BRIDGE_TILES,
-			"/assets/levels/level3/DungeonBridgeLevel_entities.csv",
+	BRIDGE("bridge", new Vector2D(3, 16), TileSet.WORLD_BRIDGE_TILES, "/assets/levels/level3/entities.csv",
 			Layer.loadLayersFromFiles("/assets/levels/level3/DungeonBridgeLevel_map.csv",
 					"/assets/levels/level3/DungeonBridgeLevel_details.csv",
 					"/assets/levels/level3/DungeonBridgeLevel_collitions.csv"));
