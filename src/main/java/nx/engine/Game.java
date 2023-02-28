@@ -94,8 +94,13 @@ public class Game extends AnimationTimer {
 	
 	public void init() {
 		try {
-			
-			mainScene = new TextScene("/assets/levels/intro/introEN.csv");
+			TextScene textScene = new TextScene("/assets/levels/intro/introEN.csv");
+			textScene.setOnEndingAction(() -> {
+				App.mixer.getMusic().fadeOut(20);
+				changeScene(new WorldScene(WorldData.BOSS_ROOM));
+			});
+			mainScene = textScene;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -149,10 +154,9 @@ public class Game extends AnimationTimer {
 	}
 	public void update() {
 
-		if(mainScene instanceof TextScene) {
-			if(((TextScene) mainScene).hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
-				App.mixer.getMusic().fadeOut(20);
-				changeScene(new WorldScene(WorldData.BOSS_ROOM));
+		if(mainScene instanceof TextScene textScene) {
+			if(textScene.hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
+				textScene.getOnEndingAction().run();
 			}
 		}
 		

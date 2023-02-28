@@ -20,6 +20,8 @@ public class TextScene implements Scene {
 
 	private boolean ended = false;
 
+	private Runnable onEndingAction;
+
 	/**
 	 * Constructor
 	 * @param texts Texts to show
@@ -78,6 +80,14 @@ public class TextScene implements Scene {
 	
 	public boolean hasEnded() {
 		return this.ended;
+	}
+
+	public Runnable getOnEndingAction() {
+		return onEndingAction;
+	}
+
+	public void setOnEndingAction(Runnable onEndingAction) {
+		this.onEndingAction = onEndingAction;
 	}
 
 }

@@ -27,6 +27,8 @@ public class MenuController implements Initializable {
 	@FXML
 	private GridPane view;
 
+	private Scene gameScene;
+
 	public MenuController() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MenuView.fxml"));
@@ -68,7 +70,11 @@ public class MenuController implements Initializable {
 
 	@FXML
 	void onPlayAction(ActionEvent event) {
-		App.mainStage.setScene(new Scene(GameController.getInstance().getView()));
+		if (gameScene == null) {
+			gameScene = new Scene(GameController.getInstance().getView());
+		}
+
+		App.mainStage.setScene(gameScene);
 		App.mixer.setMusic("xDeviruchi - Title Theme .wav").setLoop(true).fadeIn(0, 0.05, 2);
 	}
 

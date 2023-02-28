@@ -1,10 +1,14 @@
 package nx.engine.world.entities;
 
+import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import nx.engine.Camera;
 import nx.engine.Game;
+import nx.engine.scenes.TextScene;
+import nx.engine.scenes.WorldScene;
 import nx.engine.world.MobEntity;
+import nx.engine.world.WorldData;
 import nx.engine.world.entities.boss.*;
 import nx.game.App;
 
@@ -21,7 +25,7 @@ public class TestBoss extends MobEntity {
     protected static final Image shadow = new Image("/assets/textures/shadow.png");
     private static final double RADIUS = 10 * Game.tileSize;
 	protected boolean canDie = true;
-	protected double mobHealth = 150;
+	protected double mobHealth = 10;
 
     private BossAttack currentAttack;
     private final List<BossAttack> attackList;
@@ -86,6 +90,15 @@ public class TestBoss extends MobEntity {
     public void update(double deltaTime) {
         if (mobHealth <= 0) {
             getWorld().removeEntity(this);
+            try {
+                TextScene textScene = new TextScene("/assets/levels/endScene/ending.csv");
+                textScene.setOnEndingAction(() -> {
+                    App.mainStage.setScene(App.menuScene);
+                });
+                Game.changeScene(textScene);
+            } catch (Exception e) {
+
+            }
             return;
         }
 

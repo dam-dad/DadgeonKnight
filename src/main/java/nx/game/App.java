@@ -14,6 +14,8 @@ public class App extends Application {
 
 	public static SoundMixer mixer = new SoundMixer();
 
+	public static Scene menuScene;
+
 	@Override
 	public void start(Stage stage) throws Exception {
 
@@ -24,7 +26,8 @@ public class App extends Application {
 		stage.setResizable(false);
 		stage.setTitle("Dadgeon Knight");
 		stage.getIcons().addAll(new Image("/assets/icons/helmet-16x16.png"),new Image("/assets/icons/helmet-32x32.png"),new Image("/assets/icons/helmet-64x64.png"));
-		stage.setScene(new Scene(menuController.getView()));
+		menuScene = new Scene(menuController.getView());
+		stage.setScene(menuScene);
 		stage.show();
 
 	}
