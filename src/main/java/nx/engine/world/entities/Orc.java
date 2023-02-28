@@ -91,14 +91,11 @@ public class Orc extends MobEntity implements SmartMovement {
 		direction = Direction.values()[new Random().nextInt(4)];
 		this.animation = walk.get(direction);
 		
-		
 		Vector2D nextPosition = getPosition().add(getVectorFromDirection(direction));
 		if(getWorld().getLevel().isSolid((int)Math.round(nextPosition.getX()/Game.tileSize),(int)Math.round(nextPosition.getY()/Game.tileSize))) {
 			direction = Direction.values()[new Random().nextInt(4)];
 			this.animation = walk.get(direction);
 		}
-		System.out.println(nextPosition);	
-
 	}
 
 	@Override
@@ -149,7 +146,7 @@ public class Orc extends MobEntity implements SmartMovement {
 					changeDirection();
 					time = 0;
 				}
-
+				
 				if (this.direction == Direction.EAST) {
 					this.setPosX(this.getPosX() + realSpeed);
 				} else if (this.direction == Direction.WEST) {
@@ -173,20 +170,14 @@ public class Orc extends MobEntity implements SmartMovement {
 				if(Player.get().isWalking())
 					find(this, Player.get());
 
-
 				if(!taskExecuting && movementToPlayer != null && movementToPlayer.size() > 0)
 					follow(movementToPlayer,realSpeed);
-
 				break;
 			case "follow":
-				
-				
 				this.direction = getDirectionFromVector2D(directionToPlayer);
 				animation = walk.get(this.direction);
 
 				move(directionToPlayer.scalarMultiply(speed));
-
-
 				break;
 			default:
 				break;

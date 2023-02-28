@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class ParticleManager {
+	
+	public static Image smoke = new Image("/assets/textures/items/smoke.gif"); 
 
     private static final double MAX_TIME_ALIVE = 0.5;
     private static final float PARTICLE_SPEED = 2.5f * Game.tileSize;
