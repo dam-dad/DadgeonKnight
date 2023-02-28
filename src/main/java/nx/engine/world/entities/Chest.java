@@ -26,6 +26,8 @@ public class Chest extends StaticEntity {
 		open = TileSetManager.loadImageFromTileSet(TileSet.DANGEON_TILES, 53, Game.tileSize, Game.tileSize);
 		
 		this.inventory = Arrays.asList(new Sword(TileSet.ITEMS_TILES, getPosX()/Game.tileSize, getPosY()/Game.tileSize, Game.tileSize, Game.tileSize));
+	
+		
 		
 	}
 	@Override
