@@ -124,6 +124,34 @@ public abstract class Entity {
 		}
 		return null;
 	}
+	public static Entity getByName(String str,double posX,double posY) {
+		
+		switch (str.toLowerCase()) {
+		case "orc":
+			return new Orc(posX,posY,0.1,2);
+		case "wizard":
+			return new Wizard(posX,posY);
+		case "armor":
+			return new Armor(TileSet.ITEMS_TILES,posX,posY);
+		case "sword":
+			return new Sword(TileSet.ITEMS_TILES,posX,posY, Game.tileSize, Game.tileSize);
+		case "bow":
+			return new Bow(TileSet.ITEMS_TILES,posX,posY, Game.tileSize, Game.tileSize);
+		case "pillar":
+			return new Pillar(TileSet.DANGEON_TILES,posX,posY);
+		case "magicalman":
+			return new MagicalEntity(posX,posY);
+		case "testboss":
+			return new TestBoss(posX, posY);
+		case "enchantedring":
+			return new EnchantedRing(posX,posY);
+		case "villager":
+			return new Villager(posX,posY);
+		default:
+			break;
+		}
+		return null;
+	}
 	
 	public boolean checkCollision(Entity entity) {
 		if (entity.getCollisionShape() == null)

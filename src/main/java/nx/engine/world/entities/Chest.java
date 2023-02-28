@@ -20,14 +20,18 @@ public class Chest extends StaticEntity {
 	
 	private final Image open,close;
 
-	public Chest(double x, double y) {
+	public Chest(double x, double y,Entity e) {
 		super(TileSetManager.loadImageFromTileSet(TileSet.DANGEON_TILES, 54, Game.tileSize, Game.tileSize), x, y,Game.tileSize,Game.tileSize);
 		close = TileSetManager.loadImageFromTileSet(TileSet.DANGEON_TILES, 54, Game.tileSize, Game.tileSize);
 		open = TileSetManager.loadImageFromTileSet(TileSet.DANGEON_TILES, 53, Game.tileSize, Game.tileSize);
 		
-		this.inventory = Arrays.asList(new Sword(TileSet.ITEMS_TILES, getPosX()/Game.tileSize, getPosY()/Game.tileSize, Game.tileSize, Game.tileSize));
+		this.inventory = Arrays.asList(e);
 	
 		
+		
+	}
+	public Chest(double x, double y,String inventory) {
+		this(x,y,Entity.getByName(inventory, x, y));
 		
 	}
 	@Override
