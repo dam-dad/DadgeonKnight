@@ -2,9 +2,16 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import nx.game.SettingsComponent?>
 
-<BorderPane fx:id="view" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="view" prefHeight="576.0" prefWidth="768.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <Canvas fx:id="canvas" BorderPane.alignment="CENTER" />
+      <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+         <children>
+            <Canvas fx:id="canvas" />
+            <SettingsComponent fx:id="settingsPane" alignment="CENTER" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #1f1f1ef2; -fx-background-radius: 10;" visible="false" StackPane.alignment="CENTER" />
+         </children>
+      </StackPane>
    </center>
 </BorderPane>

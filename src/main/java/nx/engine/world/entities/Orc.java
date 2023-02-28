@@ -91,14 +91,11 @@ public class Orc extends MobEntity implements SmartMovement {
 		direction = Direction.values()[new Random().nextInt(4)];
 		this.animation = walk.get(direction);
 		
-		
 		Vector2D nextPosition = getPosition().add(getVectorFromDirection(direction));
 		if(getWorld().getLevel().isSolid((int)Math.round(nextPosition.getX()/Game.tileSize),(int)Math.round(nextPosition.getY()/Game.tileSize))) {
 			direction = Direction.values()[new Random().nextInt(4)];
 			this.animation = walk.get(direction);
 		}
-		System.out.println(nextPosition);	
-
 	}
 
 	@Override
@@ -115,11 +112,11 @@ public class Orc extends MobEntity implements SmartMovement {
 
 			double distance = getDistanceToEntity(Player.get());
 			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
-			Vector2D direction = getVector2DToEntity(Player.get());
+			Vector2D directionToPlayer = getVector2DToEntity(Player.get());
 
 			if (distance < this.sizePlayerDetection) {
 				if (!state.equals("follow") && timeSinceLastAttack > attackDelay) {
-					follow();
+					smartFollow();
 				}
 			} else {
 				if (!state.equals("walk")) {
@@ -149,7 +146,7 @@ public class Orc extends MobEntity implements SmartMovement {
 					changeDirection();
 					time = 0;
 				}
-
+				
 				if (this.direction == Direction.EAST) {
 					this.setPosX(this.getPosX() + realSpeed);
 				} else if (this.direction == Direction.WEST) {
@@ -160,42 +157,27 @@ public class Orc extends MobEntity implements SmartMovement {
 					this.setPosY(this.getPosY() + realSpeed);
 				}
 				break;
-			case "follow":
-				
-				this.direction = getDirectionFromVector2D(direction);
-				animation = walk.get(this.direction);
-				
-				if(distance < Game.tileSize * 2) {
-					direction = direction.scalarMultiply(realSpeed);
-					move(direction);
-					break;
-				}
-				if(Player.get().isWalking())
-					find(this, Player.get());
-
-
-				if(!taskExecuting && movementToPlayer != null && movementToPlayer.size() > 0)
-					follow(movementToPlayer,realSpeed);
-
-				break;
 			case "smartfollow":
 				
-				
-				this.direction = getDirectionFromVector2D(direction);
+				this.direction = getDirectionFromVector2D(directionToPlayer);
 				animation = walk.get(this.direction);
 				
 				if(distance < Game.tileSize * 2) {
-					direction = direction.scalarMultiply(realSpeed);
-					move(direction);
+					directionToPlayer = directionToPlayer.scalarMultiply(realSpeed);
+					move(directionToPlayer);
 					break;
 				}
 				if(Player.get().isWalking())
 					find(this, Player.get());
 
-
 				if(!taskExecuting && movementToPlayer != null && movementToPlayer.size() > 0)
 					follow(movementToPlayer,realSpeed);
+				break;
+			case "follow":
+				this.direction = getDirectionFromVector2D(directionToPlayer);
+				animation = walk.get(this.direction);
 
+				move(directionToPlayer.scalarMultiply(speed));
 				break;
 			default:
 				break;

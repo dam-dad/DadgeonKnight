@@ -100,6 +100,17 @@ public abstract class Entity {
 					case "magicalman":
 						toReturn.add(new MagicalEntity(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;	
+					case "testboss":
+						toReturn.add(new TestBoss(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
+						break;
+					case "enchantedring":
+						toReturn.add(new EnchantedRing(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
+						break;
+					case "villager":
+						toReturn.add(new Villager(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
+						break;
+					default:
+						break;
 					case "portal":
 						toReturn.add(
 								new Portal(
@@ -107,11 +118,6 @@ public abstract class Entity {
 								Double.parseDouble(e[2]),
 								e[3]
 								));
-						break;
-					case "testboss":
-						toReturn.add(new TestBoss(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
-						break;
-					default:
 						break;
 				}
 			});

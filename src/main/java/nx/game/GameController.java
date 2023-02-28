@@ -21,11 +21,15 @@ public class GameController implements Initializable {
 	//Model
 	
 	private Game game;
+	
+	public boolean onSettings = false;
 
 	//View
 	
 	@FXML
 	private BorderPane view;
+    @FXML
+    private SettingsComponent settingsPane;
 	@FXML
 	private Canvas canvas;
 
@@ -55,6 +59,19 @@ public class GameController implements Initializable {
 
 	public Game getGame() {
 		return game;
+	}
+	public void onOpenSettings() {
+		if(settingsPane.isVisible()) {
+			settingsPane.setVisible(false);
+			settingsPane.setDisable(true);
+			onSettings = false;
+		}else {
+			settingsPane.setVisible(true);
+			settingsPane.setDisable(false);
+			settingsPane.lastGameVolume = settingsPane.inSettingsGameVolume.get();
+			settingsPane.lastMusicVolume = settingsPane.inSettingsMusicVolume.get();
+			onSettings = true;
+		}
 	}
 
 }

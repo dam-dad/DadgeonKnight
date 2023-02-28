@@ -24,6 +24,19 @@ public class TileSetManager {
 		}
 		return null;
 	}
+	public static Image cropImage(Image tileSet,int id,int width,int height) {
+		int n = 0;
+		for(int i = 0; i < tileSet.getHeight() ; i+= height) {
+			for(int j = 0; j < tileSet.getWidth() ; j+= width) {
+				if(n == id) {
+					return new WritableImage(tileSet.getPixelReader(), j, i, width, height);
+				}
+				n++;
+				
+			}
+		}
+		return null;
+	}
 
 	public static Image[] loadTiles(Image tileSet,int spacing) {
 		

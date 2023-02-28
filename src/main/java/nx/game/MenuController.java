@@ -12,11 +12,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import nx.util.SoundMixer;
 
 public class MenuController implements Initializable {
-
-	// view
-	private SettingsComponent settingsComponent;
+	
+	private static MenuController instance;
+	
+	//view
 
 	@FXML
 	private Button exitButton, fameButton, playButton, settingsButton;
@@ -26,8 +29,12 @@ public class MenuController implements Initializable {
 
 	@FXML
 	private GridPane view;
+	
 
-	public MenuController() {
+    @FXML
+    private SettingsComponent settingsPane;
+
+	private MenuController() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MenuView.fxml"));
 			loader.setController(this);
@@ -36,10 +43,13 @@ public class MenuController implements Initializable {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static MenuController getInstance() {
+		return instance == null ? instance = new MenuController() : instance;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		settingsComponent = new SettingsComponent();
 		
 		
 		exitButton.setOnMouseEntered(e -> {
@@ -69,12 +79,22 @@ public class MenuController implements Initializable {
 	@FXML
 	void onPlayAction(ActionEvent event) {
 		App.mainStage.setScene(new Scene(GameController.getInstance().getView()));
-		App.mixer.setMusic("xDeviruchi - Title Theme .wav").setLoop(true).fadeIn(0, 0.05, 2);
+		App.mixer.setMusic("xDeviruchi - Title Theme .wav").setLoop(true).fadeIn(0,SoundMixer.MUSIC_VOLUME, 2);
+		
+		App.onMenu = false;
 	}
 
 	@FXML
 	void onSettingsAction(ActionEvent event) throws IOException {
-//		App.mainStage.getScene().setRoot(settingsComponent);
+		if(settingsPane.isVisible()) {
+			settingsPane.setVisible(false);
+			settingsPane.setDisable(true);
+		}else {
+			settingsPane.setVisible(true);
+			settingsPane.setDisable(false);
+			settingsPane.lastGameVolume = settingsPane.inSettingsGameVolume.get();
+			settingsPane.lastMusicVolume = settingsPane.inSettingsMusicVolume.get();
+		}
 	}
 
 	public GridPane getView() {

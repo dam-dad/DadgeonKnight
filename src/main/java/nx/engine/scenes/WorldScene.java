@@ -26,13 +26,10 @@ public class WorldScene implements Scene {
 	
 	private final Camera camera;
 	
-	public static Dialog dialog;
-	public static Image smoke = new Image("/assets/textures/items/smoke.gif"); 
-	public static Image exclamation = new Image("/assets/textures/items/exclamation.png");
-	
 	private RadialGradient radialGradient;
 	
 	private HealthUI healthUI;
+	public static Dialog dialog;
 
 	public WorldScene(WorldData worldData) {
 		this.camera = Player.get().getCamera();
@@ -68,9 +65,9 @@ public class WorldScene implements Scene {
 		gc.setFill(radialGradient);
 		gc.fillRect(Game.screenWidth/2 - 500, Game.screenheigth/2 - 500, 1000, 1000);
 
-		PickableEntity e = (PickableEntity) Player.get().getItemSelected();
+		
 		if(!Player.get().getInventory().isEmpty())
-			e.drawUI(gc);
+			Player.get().getInventory().draw(gc);
 		
 		if(dialog != null)
 			dialog.draw(gc);

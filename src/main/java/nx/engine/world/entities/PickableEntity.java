@@ -7,10 +7,13 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import nx.engine.Camera;
 import nx.engine.Game;
+import nx.engine.world.Effect;
 
 public class PickableEntity extends Entity {
 	
-	private boolean canBeSelected = true;
+	protected boolean canBeSelected = true;
+	
+	private Effect effect;
 
 	public PickableEntity(Image image, double x, double y,double width,double height) {
 		super(image,x * Game.tileSize,y * Game.tileSize,width,height);
@@ -25,7 +28,7 @@ public class PickableEntity extends Entity {
 		.map(entity -> (Player) entity).findAny();
 		
 		if(playerOptional.isPresent() && this.checkCollision(playerOptional.get())) {
-			playerOptional.get().getInventory().add(this);
+			playerOptional.get().getInventory().addEntityToInventory(this);
 			getWorld().removeEntity(this);
 			return;
 		}
@@ -61,6 +64,17 @@ public class PickableEntity extends Entity {
 	public void setCanBeSelected(boolean canBeSelected) {
 		this.canBeSelected = canBeSelected;
 	}
+	public Effect getEffect() {
+		return effect;
+	}
+	public void setEffect(Effect efect) {
+		this.effect = efect;
+	}
+	public boolean hasEffect() {
+		return this.effect != null;
+	}
+	
+	
 	
 	
 	

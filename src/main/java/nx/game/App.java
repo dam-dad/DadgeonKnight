@@ -13,13 +13,15 @@ public class App extends Application {
 	public static MenuController menuController;
 
 	public static SoundMixer mixer = new SoundMixer();
+	
+	public static boolean onMenu = true;
 
 	@Override
 	public void start(Stage stage) throws Exception {
 
 		App.mainStage = stage;
 
-		menuController = new MenuController();
+		menuController = MenuController.getInstance();
 
 		stage.setResizable(false);
 		stage.setTitle("Dadgeon Knight");

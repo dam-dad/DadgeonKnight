@@ -15,6 +15,7 @@ import nx.engine.world.World;
 import nx.engine.world.WorldData;
 import nx.engine.world.entities.Player;
 import nx.game.App;
+import nx.game.GameController;
 
 public class Game extends AnimationTimer {
 	
@@ -158,8 +159,15 @@ public class Game extends AnimationTimer {
 				changeScene(new WorldScene(WorldData.START_LEVEL));
 			}
 		}
+		else if(mainScene instanceof WorldScene) {
+			if(inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
+				inputHandler.ClearActiveKeys();
+				GameController.getInstance().onOpenSettings();
+			}
+		}
 		
-		mainScene.update(deltaTime);
+		if(!GameController.getInstance().onSettings)
+			mainScene.update(deltaTime);
 	}
 	
 	public void draw(GraphicsContext gc) {
@@ -174,6 +182,10 @@ public class Game extends AnimationTimer {
 		alpha = 0.1f;
 		transitionDirection = 1;
 		transitioning = true;
+	}
+	
+	public static Scene getMainScene() {
+		return Game.mainScene;
 	}
 
 }

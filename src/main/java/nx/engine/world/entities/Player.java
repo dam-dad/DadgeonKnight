@@ -17,6 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import nx.engine.Animation;
 import nx.engine.Game;
+import nx.engine.UI.Inventory;
 import nx.engine.tile.Tile;
 import nx.engine.world.Level;
 import nx.engine.world.World;
@@ -29,7 +30,8 @@ public class Player extends Entity {
 	private static final int MAX_PLAYER_HEALTH = 10;
 	private static final double TIME_SHOWING_ATTACK = 0.5;
 	public static final double PLAYER_FORCE = 0.1;
-	public static final double SPEED = 10;
+	public static double SPEED = 5;
+	public static final double INITIAL_SPEED = SPEED;
 
 	public static final String walkTileSet = "/assets/textures/player/CharacterMovementSet.png";
 	public static final String swordSet = "/assets/textures/player/player_Sword.png";
@@ -60,9 +62,6 @@ public class Player extends Entity {
 	private KeyCode[] wasdKeys = new KeyCode[] {KeyCode.A,KeyCode.D,KeyCode.W,KeyCode.S};
 	private KeyCode[] arrowsKeys = new KeyCode[] {KeyCode.LEFT,KeyCode.RIGHT,KeyCode.UP,KeyCode.DOWN};
 	
-	private int selectionInventory = 0;
-	private List<Entity> inventory = new ArrayList<>();
-	
 	public int screenX;
 	public int screenY;
 
@@ -76,6 +75,8 @@ public class Player extends Entity {
 	private double timeSinceLastHit;
 	
 	private Vector2D movement;
+	
+	private Inventory inventory;
 	
 	private Player(double posX, double posY, Camera camera) {
 		this.setPosX(posX * Game.tileSize);
@@ -92,6 +93,8 @@ public class Player extends Entity {
 		
 		this.direction = Direction.SOUTH;
 		this.camera = camera;
+		
+		this.inventory = new Inventory();
 
 	}
 	public static Player get(double posX,double posY,Camera camera) {
@@ -148,17 +151,16 @@ public class Player extends Entity {
 		}
 		
 		if (activeKeys.contains(KeyCode.E)){
-			nextItem();
+			inventory.nextItem();
 		}
 		else if (activeKeys.contains(KeyCode.Q)){
-			previousItem();
+			inventory.previousItem();
 		}
 		
 		if(activeButtons.contains(MouseButton.PRIMARY) || activeKeys.contains(KeyCode.SPACE)) {
 			Game.inputHandler.ClearActiveButtons();
 			
-			PickableEntity p = (PickableEntity) getItemSelected();
-			p.useItem();
+			inventory.useSelectedItem();
 		}
 
 		if (movement.getNorm() != 0) {
@@ -194,6 +196,8 @@ public class Player extends Entity {
 				
 			}
 		}
+		
+		inventory.update(deltaTime);
 		animation.update(deltaTime);
 		if(timeSinceLastHit < Player.TIME_SHOWING_ATTACK)
 			timeSinceLastHit += deltaTime;
@@ -270,33 +274,17 @@ public class Player extends Entity {
 	public Camera getCamera() {
 		return camera;
 	}
-	public List<Entity> getInventory() {
+	public Inventory getInventory() {
 		return inventory;
 	}
 	public void setAttacking(boolean a) {
 		this.isAttacking = a;
-	}
-	public void addEntityToInventory(PickableEntity e) {
-		getInventory().add(e);
 	}
 	public Direction getDirection() {
 		return direction;
 	}
 	public void setAnimation(Animation a) {
 		this.animation = a;
-	}
-	public Entity getItemSelected() {
-		return getInventory().size() > 0 ? this.getInventory().get(selectionInventory) : new PickableEntity();
-	}
-	public void nextItem() {
-		if((selectionInventory + 1) >= getInventory().size())
-			return;
-		selectionInventory++;
-	}
-	public void previousItem() {
-		if(selectionInventory <=  0)
-			return;
-		selectionInventory--;
 	}
 	
 	public Vector2D getVectorMovement() {
