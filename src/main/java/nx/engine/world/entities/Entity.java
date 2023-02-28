@@ -79,9 +79,6 @@ public abstract class Entity {
 					case "orc":
 						toReturn.add(new Orc(Double.parseDouble(e[1]), Double.parseDouble(e[2]), Double.parseDouble(e[3]), Double.parseDouble(e[4])));
 						break;
-					case "goblin":
-						toReturn.add(new Goblin(Double.parseDouble(e[1]), Double.parseDouble(e[2]), Double.parseDouble(e[3]), Double.parseDouble(e[4])));
-						break;
 					case "wizard":
 						toReturn.add(new Wizard(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;
@@ -109,8 +106,8 @@ public abstract class Entity {
 					case "villager":
 						toReturn.add(new Villager(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;
-					case "wolf":
-						toReturn.add(new Wolf(Double.parseDouble(e[1]), Double.parseDouble(e[2]), Double.parseDouble(e[3]), Double.parseDouble(e[4])));
+					case "chest":
+						toReturn.add(new Chest(Double.parseDouble(e[1]), Double.parseDouble(e[2]),e[3]));
 						break;
 					default:
 						break;
@@ -360,7 +357,7 @@ public abstract class Entity {
 
 		return distance;
 	}
-	public static void knockback(Entity player,Entity collition, double knockbackForce, double knockbackDuration) {
+	public static void knockback(Entity player,Entity collition) {
 		
 		Task<Void> t = new Knockback(player, collition, 4, 0.2);
 		
