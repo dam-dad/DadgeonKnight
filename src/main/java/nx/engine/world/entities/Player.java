@@ -27,11 +27,13 @@ public class Player extends Entity {
 	
 	private static Player instance;
 
-	private static final int MAX_PLAYER_HEALTH = 10;
 	private static final double TIME_SHOWING_ATTACK = 0.5;
 	public static final double PLAYER_FORCE = 0.1;
 	public static double SPEED = 5;
 	public static final double INITIAL_SPEED = SPEED;
+	public static int HEALTH = 10;
+	public static final int INITIAL_MAX_HEALTH = HEALTH;
+	public static int TOTAL_PLAYER_HEALTH = HEALTH;
 
 	public static final String walkTileSet = "/assets/textures/player/CharacterMovementSet.png";
 	public static final String swordSet = "/assets/textures/player/player_Sword.png";
@@ -71,7 +73,7 @@ public class Player extends Entity {
 	private Animation animation;
 	private final Camera camera;
 
-	private int health;
+	
 	private double timeSinceLastHit;
 	
 	private Vector2D movement;
@@ -88,7 +90,7 @@ public class Player extends Entity {
 		this.width = Game.tileSize;
 		this.height = Game.tileSize;
 
-		this.health = MAX_PLAYER_HEALTH;
+		HEALTH = TOTAL_PLAYER_HEALTH;
 		this.timeSinceLastHit = TIME_SHOWING_ATTACK;
 		
 		this.direction = Direction.SOUTH;
@@ -113,10 +115,10 @@ public class Player extends Entity {
 	@Override
 	public void update(double deltaTime) {
 
-		if (health <= 0) {
+		if (Player.HEALTH <= 0) {
 			posX = World.spawn.getX() * Game.tileSize;
 			posY = World.spawn.getY() * Game.tileSize;
-			health = 10;
+			Player.HEALTH = Player.TOTAL_PLAYER_HEALTH;
 		}
 
 		Set<KeyCode> activeKeys = Game.inputHandler.getActiveKeys();
@@ -256,7 +258,8 @@ public class Player extends Entity {
 	
 	// TODO
 	public void getAttacked(int damage) {
-		health -= damage;
+		System.out.println(damage);
+		Player.HEALTH -= damage;
 		timeSinceLastHit = 0;
 	}
 	
@@ -268,7 +271,7 @@ public class Player extends Entity {
 	}
 
 	public int getHealth() {
-		return health;
+		return Player.HEALTH;
 	}
 	
 	public Camera getCamera() {

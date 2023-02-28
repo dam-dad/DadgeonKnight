@@ -22,9 +22,14 @@ public class Inventory implements UI {
 		items.stream().filter(item -> ((PickableEntity) item).hasEffect()).forEach(e -> {
 			switch (((PickableEntity) e).getEffect()) {
 			case SPEED:
-				Player.SPEED = Player.INITIAL_SPEED * 2;
+				if(Player.SPEED != Player.INITIAL_SPEED * 2)
+					Player.SPEED = Player.INITIAL_SPEED * 2;
 				break;
-
+			case ARMOR:
+				if(Player.TOTAL_PLAYER_HEALTH < 20) {
+					Player.TOTAL_PLAYER_HEALTH = Player.INITIAL_MAX_HEALTH * 2;
+					Player.HEALTH = Player.TOTAL_PLAYER_HEALTH;
+				}
 			default:
 				Player.SPEED = Player.INITIAL_SPEED;
 				break;
