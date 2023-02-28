@@ -106,6 +106,9 @@ public abstract class Entity {
 					case "villager":
 						toReturn.add(new Villager(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;
+					case "chest":
+						toReturn.add(new Chest(Double.parseDouble(e[1]), Double.parseDouble(e[2]),e[3]));
+						break;
 					default:
 						break;
 					case "portal":
