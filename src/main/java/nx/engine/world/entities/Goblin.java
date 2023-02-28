@@ -149,7 +149,7 @@ public class Goblin extends MobEntity {
 				if (!state.equals("follow")) {
 					follow();
 					if (!this.inventory.isEmpty()) {
-						createExclamationEffect(posX, posY); // *** NO VA AQUI ***
+//						createExclamationEffect(posX, posY); // *** NO VA AQUI ***
 //						System.out.println("HOLAAAA");
 						run();
 					}
@@ -160,17 +160,17 @@ public class Goblin extends MobEntity {
 				}
 			}
 
-			if (this.checkCollision(p)) {
-				if ((this.inventory.size() == 1) || (p.getInventory().size() <= 1)) {
-//					Entity.knockback(p, this, 0.07, 1.0);
-//					p.getAttacked(1);
-				} else if ((p.getInventory().size() > 1) || (this.inventory.size() < 1)) {
-					this.getInventory().add(p.getItemSelected());
-					p.getInventory().remove(getItemSelected());
-					pickedItem = this.getItemSelected();
-					run();
-				}
-			}
+//			if (this.checkCollision(p)) {
+//				if ((this.inventory.size() == 1) || (p.getInventory().size() <= 1)) {
+////					Entity.knockback(p, this, 0.07, 1.0);
+////					p.getAttacked(1);
+//				} else if ((p.getInventory().size() > 1) || (this.inventory.size() < 1)) {
+//					this.getInventory().add(p.getItemSelected());
+//					p.getInventory().remove(getItemSelected());
+//					pickedItem = this.getItemSelected();
+//					run();
+//				}
+//			}
 
 			switch (state) {
 			case "stop":
@@ -225,12 +225,12 @@ public class Goblin extends MobEntity {
 		}
 	}
 
-	private void createExclamationEffect(double posX, double posY) {
-		for (int i = 0; i < 20; i++) {
-			float directionX = randomFromInterval(-1.0f, 1.0f);
-			float directionY = randomFromInterval(-1.0f, 1.0f);
-			getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(0.0f, 1.0f),
-					WorldScene.exclamation, randomFromInterval(1.0f, 200.0f) + 100.0f));
-		}
-	}
+//	private void createExclamationEffect(double posX, double posY) {
+//		for (int i = 0; i < 20; i++) {
+//			float directionX = randomFromInterval(-1.0f, 1.0f);
+//			float directionY = randomFromInterval(-1.0f, 1.0f);
+//			getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(0.0f, 1.0f),
+//					WorldScene.exclamation, randomFromInterval(1.0f, 200.0f) + 100.0f));
+//		}
+//	}
 }

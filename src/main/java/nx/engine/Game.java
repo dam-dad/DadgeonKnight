@@ -156,7 +156,7 @@ public class Game extends AnimationTimer {
 		if(mainScene instanceof TextScene) {
 			if(((TextScene) mainScene).hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
 				App.mixer.getMusic().fadeOut(20);
-				changeScene(new WorldScene(WorldData.START_LEVEL));
+				changeScene(new WorldScene(WorldData.LEVEL_2));
 			}
 		}
 		else if(mainScene instanceof WorldScene) {
