@@ -22,6 +22,16 @@ public enum WorldData {
 					"/assets/levels/startedMap/StartMap_collitions.csv"
 					)
 			),
+//	LEVEL_1("level_1",
+//			new Vector2D(0, 0),
+//			TileSet.WORLD_BRIDGE_TILES,
+//			"/assets/levels/level3/DungeonBridgeLevel_entities.csv",
+//			Layer.loadLayersFromFiles(
+//					"/assets/levels/level3/map.csv",
+//					"/assets/levels/level3/DungeonBridgeLevel_details.csv",
+//					"/assets/levels/secret/Secret_collitions.csv"
+//					)
+//			),
 	LEVEL_2("level_2",
 			new Vector2D(22, 22),
 			TileSet.DANGEON_TILES,
@@ -32,7 +42,7 @@ public enum WorldData {
 					"/assets/levels/level2/level-2_colisiones.csv"
 					)
 			),
-	LEVEL_4("level_4",
+	LEVEL_3("level_3",
 			new Vector2D(55, 13),
 			TileSet.LAVA_TILES,
 			"/assets/levels/level4/nivel-4_entidades.csv",
@@ -43,16 +53,7 @@ public enum WorldData {
 					"/assets/levels/level4/nivel-4_colisiones.csv"
 					)
 			);
-//	BRIDGE("bridge",
-//			new Vector2D(0, 0),
-//			TileSet.WORLD_BRIDGE_TILES,
-//			"/assets/levels/level3/DungeonBridgeLevel_entities.csv",
-//			Layer.loadLayersFromFiles(
-//					"/assets/levels/level3/map.csv",
-//					"/assets/levels/level3/DungeonBridgeLevel_details.csv",
-//					"/assets/levels/secret/Secret_collitions.csv"
-//					)
-//			);
+
 
 	private final String name;
 	private Vector2D spawn;

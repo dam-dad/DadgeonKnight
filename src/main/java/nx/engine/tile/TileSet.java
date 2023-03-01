@@ -13,13 +13,14 @@ public class TileSet {
 	public static final TileSet ITEMS_TILES = new TileSet("/assets/textures/items/roguelikeitems.png", 16, 16);
 	public static final TileSet SECRET_TILES = new TileSet("/assets/textures/levels/Dungeon_Tileset_at.png", 8, 8);
 	public static final TileSet LAVA_TILES = new TileSet("/assets/textures/levels/Tile level 4.png", 16, 16);
+	public static final TileSet WORLD_BRIDGE_TILES = new TileSet("/assets/textures/levels/floatingDungeon.png",16,16);
 
+	
 	private final Image set;
 	private final Image[] tiles;
 	private final int with,heigh;
 	
 	
-//	public static final TileSet WORLD_BRIDGE_TILES = new TileSet("/assets/textures/levels/dungeon_tiles.png",Game.tileSize, Game.tileSize);
 
 	/**
 	 * Constructor
