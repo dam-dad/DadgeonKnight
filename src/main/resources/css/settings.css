@@ -10,20 +10,22 @@
 }
 
 .settings {
-	-fx-font-family: 'Press Start 2P';
 	-fx-font-size: 36.0px;
 	-fx-effect: dropshadow(gaussian, black, 10.0, 0.1, 2.0,2.0);
 	-fx-text-fill: linear-gradient(from 0.0% 0.0% to 100.0% 100.0%, #DC7633 0.0%,#C0392B 50.0%, #DC7633 100.0%);
 }
 
 .text {
-	-fx-font-family: 'Press Start 2P';
 	-fx-text-fill: white;
 	-fx-font-size: 16.0px;
 }
 
 .button{
 	-fx-background-color: #DC763300;
+}
+
+.button:hover{
+	-fx-effect: dropshadow(gaussian, black, 10.0, 0.1, 2.0,2.0);
 }
 
 .slider{
