@@ -31,6 +31,7 @@ public class TileSet {
 		set = new Image(s);
 
 		tiles = TileSetManager.loadTiles(set, with, heigh);
+		System.out.println(s + " " + tiles.length);
 		this.with = with;
 		this.heigh = heigh;
 	}

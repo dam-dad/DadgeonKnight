@@ -51,24 +51,28 @@ public class TileSetManager {
 	/**
 	 * Loads images from a tileset
 	 * @param tileSet Tileset to load the images from
-	 * @param witdh Width of the images
-	 * @param heigh Height of the images
+	 * @param width Width of the tiles
+	 * @param height Height of the tiles
 	 * @return Array of images loaded
 	 */
-	public static Image[] loadTiles(Image tileSet,int witdh,int heigh) {
-		
-		ArrayList<Image> tiles = new ArrayList<>();
-		
-		for(int i = 0; i < tileSet.getHeight() ; i+= heigh) {
-			for(int j = 0; j < tileSet.getWidth() ; j+= witdh) {
-				WritableImage croppedImage = new WritableImage(tileSet.getPixelReader(), j, i, witdh, heigh);
-				tiles.add(croppedImage);
-			}
-		}
-		
-		return tiles.toArray(new Image[0]);
-	}
+	public static Image[] loadTiles(Image tileSet, int width, int height) {
 
+	    ArrayList<Image> tiles = new ArrayList<>();
+
+	    int tileSetWidth = (int) tileSet.getWidth();
+	    int tileSetHeight = (int) tileSet.getHeight();
+
+	    for (int y = 0; y < tileSetHeight; y += height) {
+	        for (int x = 0; x < tileSetWidth; x += width) {
+	            int tileWidth = Math.min(width, tileSetWidth - x);
+	            int tileHeight = Math.min(height, tileSetHeight - y);
+	            WritableImage croppedImage = new WritableImage(tileSet.getPixelReader(), x, y, tileWidth, tileHeight);
+	            tiles.add(croppedImage);
+	        }
+	    }
+
+	    return tiles.toArray(new Image[0]);
+	}
 	/**
 	 * Load a line of tiles from a tileset
 	 * @param tileSet Tileset to load from

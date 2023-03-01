@@ -22,36 +22,6 @@ public enum WorldData {
 					"/assets/levels/startedMap/StartMap_collitions.csv"
 					)
 			),
-	
-	DUNGEON("dungeon",
-			new Vector2D(10, 10),
-			TileSet.DANGEON_TILES,
-			"/assets/levels/level1/DungeonLevel_Entities.csv",
-			Layer.loadLayersFromFiles(
-					"/assets/levels/level1/DungeonLevel_Mapa.csv",
-					"/assets/levels/level1/DungeonLevel_Collitions.csv"
-					)
-			),
-	SECRET("secret",
-			new Vector2D(5, 5),
-			TileSet.SECRET_TILES,
-			"/assets/levels/secret/entities.csv",
-			Layer.loadLayersFromFiles(
-					"/assets/levels/secret/Secret_Floor.csv",
-					"/assets/levels/secret/Secret_Collisions.csv"
-					)
-			),
-	LEVEL_4("level-4",
-			new Vector2D(55, 13),
-			TileSet.DANGEON_TILES,
-			"/assets/levels/level1/nivel-4_entidades.csv",
-			Layer.loadLayersFromFiles(
-					"/assets/levels/level1/nivel-4_base.csv",
-					"/assets/levels/level1/nivel-4_detalles.csv",
-					"/assets/levels/level1/nivel-4_escaleras.csv",
-					"/assets/levels/level1/nivel-4_colisiones.csv"
-					)
-			),
 	LEVEL_2("level_2",
 			new Vector2D(22, 22),
 			TileSet.DANGEON_TILES,
@@ -60,6 +30,17 @@ public enum WorldData {
 					"/assets/levels/level2/level-2_base.csv",
 					"/assets/levels/level2/level-2_detalles.csv",
 					"/assets/levels/level2/level-2_colisiones.csv"
+					)
+			),
+	LEVEL_4("level_4",
+			new Vector2D(55, 13),
+			TileSet.LAVA_TILES,
+			"/assets/levels/level4/nivel-4_entidades.csv",
+			Layer.loadLayersFromFiles(
+					"/assets/levels/level4/nivel-4_base.csv",
+					"/assets/levels/level4/nivel-4_detalles.csv",
+					"/assets/levels/level4/nivel-4_escaleras.csv",
+					"/assets/levels/level4/nivel-4_colisiones.csv"
 					)
 			);
 //	BRIDGE("bridge",
