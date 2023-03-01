@@ -150,6 +150,7 @@ public class Game extends AnimationTimer {
 
 			if (alpha > 1) {
 				mainScene = sceneToChangeTo;
+				Player.get().setPosition(World.spawn);
 				sceneToChangeTo = null;
 				if(mainScene instanceof WorldScene) {
 					Player.get().setPosition(World.spawn);
@@ -188,7 +189,7 @@ public class Game extends AnimationTimer {
 	public void update() {
 		if(mainScene instanceof TextScene textScene) {
 			if(textScene.hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
-				//mainScene = new FinalScene("You Win.Now place your name below");
+//				mainScene = new FinalScene("You Win.Now place your name below");
 				textScene.getOnEndingAction().run();
 			}
 		}
