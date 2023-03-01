@@ -11,8 +11,17 @@ import com.opencsv.CSVReader;
 import nx.engine.Game;
 import nx.engine.world.Level;
 
+/**
+ * Utility class to deal with CSV files
+ */
 public class CSV {
-	
+
+	/**
+	 * Parses a CSV file to a list of strings
+	 * @param filePath
+	 * @return
+	 * @throws Exception
+	 */
 	public static List<String[]> readAllLines(Path filePath) throws Exception {
 
 	    try (Reader reader = Files.newBufferedReader(filePath)) {
@@ -21,6 +30,13 @@ public class CSV {
 	        }
 	    }
 	}
+
+	/**
+	 * Parses a CSV file to a list of strings
+	 * @param filePath
+	 * @return
+	 * @throws Exception
+	 */
 	public static List<String> readAllLinesTogether(Path filePath) throws Exception {
 	    List<String> lines = new ArrayList<>();	
 	    try (Reader reader = Files.newBufferedReader(filePath)) {
@@ -34,6 +50,11 @@ public class CSV {
 	    return lines;
 	}
 
+	/**
+	 * Loads a map from a CSV file
+	 * @param url File to load from
+	 * @return Tile data
+	 */
 	public static int[][] loadMapValues(String url) {
 		try {
 			List<String[]> mapCSV =  CSV.readAllLines(Paths.get(CSV.class.getResource(url).toURI()));
@@ -54,4 +75,6 @@ public class CSV {
 		} catch (Exception e) {
 			return null;
 		}
-	}}
+	}
+
+}

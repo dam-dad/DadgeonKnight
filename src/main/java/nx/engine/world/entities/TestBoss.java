@@ -25,7 +25,7 @@ public class TestBoss extends MobEntity {
     protected static final Image shadow = new Image("/assets/textures/shadow.png");
     private static final double RADIUS = 10 * Game.tileSize;
 	protected boolean canDie = true;
-	protected double mobHealth = 10;
+	protected double mobHealth = 150;
 
     private BossAttack currentAttack;
     private final List<BossAttack> attackList;

@@ -3,8 +3,16 @@ package nx.engine.world;
 import com.github.czyzby.noise4j.map.Grid;
 import com.github.czyzby.noise4j.map.generator.room.dungeon.DungeonGenerator;
 
+/**
+ * Generates a dungeons procedurally
+ */
 public class WorldGenerator {
 
+    /**
+     * Generates the tile data for a specified size
+     * @param size Size of the level side
+     * @return Tile data of the level generated
+     */
     public static int[][] generateDungeonWorldData(int size) {
         final Grid grid = new Grid(size);
 
@@ -33,6 +41,11 @@ public class WorldGenerator {
         return tileData;
     }
 
+    /**
+     * Populates the data fed
+     * @param data Data to populate
+     * @return Data populated
+     */
     private static int[][] populateWorldData(int[][] data) {
         for (int i = 1; i < data.length - 1; i++) {
             for (int j = 1; j < data[0].length - 1; j++) {
@@ -47,6 +60,11 @@ public class WorldGenerator {
         return data;
     }
 
+    /**
+     * Generates empty collision data
+     * @param size Level side size
+     * @return Empty tile data
+     */
     private static int[][] generateEmptyData(int size) {
         int[][] newData = new int[size][size];
         for (int i = 0; i < size; i++) {
@@ -58,6 +76,11 @@ public class WorldGenerator {
         return newData;
     }
 
+    /**
+     * Generates a dungeon for the specified size
+     * @param size Dungeon size
+     * @return Layer array of the generated level
+     */
     public static Layer[] generateDungeon(int size) {
         Layer[] layers = new Layer[2];
         int[][] worldData = generateDungeonWorldData(size);

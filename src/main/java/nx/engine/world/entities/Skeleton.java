@@ -17,6 +17,9 @@ import nx.engine.Game;
 import nx.engine.world.MobEntity;
 import nx.util.*;
 
+/**
+ * Represents a skeleton entity
+ */
 public class Skeleton extends MobEntity {
 
 	String walkSet = "/assets/textures/skeleton/skeleton-walk.png";
@@ -49,7 +52,14 @@ public class Skeleton extends MobEntity {
 		put(Direction.WEST, new Animation(ANIMATION_SPEED,walkSet,0,tileSizeX,tileSizeY));
 		put(Direction.NORTH, new Animation(ANIMATION_SPEED,walkSet,0,tileSizeX,tileSizeY));
 	}};
-	
+
+	/**
+	 * Constructor
+	 * @param posX Spawn position X
+	 * @param posY Spawn position Y
+	 * @param speed Entity speed
+	 * @param player Player to attack
+	 */
 	public Skeleton(double posX, double posY, double speed, Player player) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 		
@@ -68,6 +78,11 @@ public class Skeleton extends MobEntity {
 		this.animation = walk.get(direction);
 		
 	}
+
+	/**
+	 * Updates the skeleton
+	 * @param deltaTime Frame delta
+	 */
 	@Override
 	public void update(double deltaTime) {
 		

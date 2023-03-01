@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+/**
+ * Represents the data to load a world
+ */
 public enum WorldData {
 
     START_LEVEL(
@@ -63,6 +66,14 @@ public enum WorldData {
     private final String entities;
     private final Layer[] mapLayers;
 
+    /**
+     * Constructor
+     * @param name Name of the level
+     * @param spawn Player spawn position
+     * @param tileSet Tileset of the level
+     * @param entities String to load the entities from
+     * @param mapLayers Layers of the map
+     */
     WorldData(String name,Vector2D spawn, TileSet tileSet, String entities, Layer... mapLayers) {
     	this.spawn = spawn;
         this.name = name;
@@ -91,6 +102,11 @@ public enum WorldData {
         return tileSet;
     }
 
+    /**
+     * Returns a world data by its name
+     * @param name Name of the world
+     * @return WorldData of the world specified
+     */
     public static WorldData getByName(String name) {
         return Arrays.stream(values()).filter(worldData -> worldData.getName().equals(name)).collect(Collectors.toList()).get(0);
     }

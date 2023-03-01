@@ -60,7 +60,7 @@ public class Arrow extends Entity {
 
         List<MobEntity> entities = getWorld().getEntities().stream()
                 .filter(entity -> entity instanceof MobEntity)
-                .filter(entity -> getDistanceToEntity(entity) < 1 * Game.tileSize)
+                .filter(entity -> getDistanceToEntity(entity) < 1.5 * Game.tileSize)
                 .map(MobEntity.class::cast)
                 .collect(Collectors.toList());
 
