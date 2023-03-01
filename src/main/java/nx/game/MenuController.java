@@ -12,11 +12,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import nx.util.SoundMixer;
 
 public class MenuController implements Initializable {
-
-	// view
-	private SettingsComponent settingsComponent;
+	
+	private static MenuController instance;
+	
+	//view
 
 	@FXML
 	private Button exitButton, fameButton, playButton, settingsButton;
@@ -27,9 +30,12 @@ public class MenuController implements Initializable {
 	@FXML
 	private GridPane view;
 
-	private Scene gameScene;
+    @FXML
+    private SettingsComponent settingsPane;
+    @FXML
+    private LeaderBoardComponent leaderBoardPane;
 
-	public MenuController() {
+	private MenuController() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MenuView.fxml"));
 			loader.setController(this);
@@ -38,10 +44,18 @@ public class MenuController implements Initializable {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static MenuController getInstance() {
+		return instance == null ? instance = new MenuController() : instance;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		settingsComponent = new SettingsComponent();
+		
+		view.setOnMouseClicked(event -> {
+			onHallOfFameAction(null);
+				
+		});
 		
 		
 		exitButton.setOnMouseEntered(e -> {
@@ -65,22 +79,34 @@ public class MenuController implements Initializable {
 
 	@FXML
 	void onHallOfFameAction(ActionEvent event) {
-
+		if(leaderBoardPane.isVisible()) {
+			leaderBoardPane.setVisible(false);
+			leaderBoardPane.setDisable(true);
+		}else {
+			leaderBoardPane.setVisible(true);
+			leaderBoardPane.setDisable(false);
+		}
 	}
 
 	@FXML
 	void onPlayAction(ActionEvent event) {
-		if (gameScene == null) {
-			gameScene = new Scene(GameController.getInstance().getView());
-		}
-
-		App.mainStage.setScene(gameScene);
-		App.mixer.setMusic("xDeviruchi - Title Theme .wav").setLoop(true).fadeIn(0, 0.05, 2);
+		App.mainStage.setScene(new Scene(GameController.getInstance().getView()));
+		App.mixer.setMusic("xDeviruchi - Title Theme .wav").setLoop(true).fadeIn(0,SoundMixer.MUSIC_VOLUME, 2);
+		
+		App.onMenu = false;
 	}
 
 	@FXML
 	void onSettingsAction(ActionEvent event) throws IOException {
-//		App.mainStage.getScene().setRoot(settingsComponent);
+		if(settingsPane.isVisible()) {
+			settingsPane.setVisible(false);
+			settingsPane.setDisable(true);
+		}else {
+			settingsPane.setVisible(true);
+			settingsPane.setDisable(false);
+			settingsPane.lastGameVolume = settingsPane.inSettingsGameVolume.get();
+			settingsPane.lastMusicVolume = settingsPane.inSettingsMusicVolume.get();
+		}
 	}
 
 	public GridPane getView() {

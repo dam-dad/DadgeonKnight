@@ -29,7 +29,7 @@ public class HealthUI implements UI {
      */
     @Override
     public void update(double delta) {
-
+    	
     }
 
     /**

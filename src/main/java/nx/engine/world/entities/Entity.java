@@ -138,7 +138,7 @@ public abstract class Entity {
 						toReturn.add(new Wizard(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;
 					case "armor":
-						toReturn.add(new Armor(TileSet.ITEMS_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2])));
+						toReturn.add(new Armor(TileSet.ITEMS_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2]),e[3]));
 						break;
 					case "sword":
 						toReturn.add(new Sword(TileSet.ITEMS_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2]), Game.tileSize, Game.tileSize));
@@ -152,6 +152,20 @@ public abstract class Entity {
 					case "magicalman":
 						toReturn.add(new MagicalEntity(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;	
+					case "testboss":
+						toReturn.add(new TestBoss(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
+						break;
+					case "enchantedring":
+						toReturn.add(new EnchantedRing(Double.parseDouble(e[1]), Double.parseDouble(e[2]),e[3]));
+						break;
+					case "villager":
+						toReturn.add(new Villager(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
+						break;
+					case "chest":
+						toReturn.add(new Chest(Double.parseDouble(e[1]), Double.parseDouble(e[2]),e[3]));
+						break;
+					default:
+						break;
 					case "portal":
 						toReturn.add(
 								new Portal(
@@ -159,11 +173,6 @@ public abstract class Entity {
 								Double.parseDouble(e[2]),
 								e[3]
 								));
-						break;
-					case "testboss":
-						toReturn.add(new TestBoss(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
-						break;
-					default:
 						break;
 				}
 			});
@@ -176,9 +185,47 @@ public abstract class Entity {
 
 	/**
 	 * Check collision with another entity
-	 * @param entity Entity to check collision with
+	 * @param str Entity to check collision with
 	 * @return True if it collides, false if not
 	 */
+	public static Entity getByName(String str,double posX,double posY) {
+		
+		switch (str.toLowerCase()) {
+		case "orc":
+			return new Orc(posX,posY,0.1,2);
+		case "wizard":
+			return new Wizard(posX,posY);
+		case "sword":
+			return new Sword(TileSet.ITEMS_TILES,posX,posY, Game.tileSize, Game.tileSize);
+		case "bow":
+			return new Bow(TileSet.ITEMS_TILES,posX,posY, Game.tileSize, Game.tileSize);
+		case "pillar":
+			return new Pillar(TileSet.DANGEON_TILES,posX,posY);
+		case "magicalman":
+			return new MagicalEntity(posX,posY);
+		case "testboss":
+			return new TestBoss(posX, posY);
+		case "villager":
+			return new Villager(posX,posY);
+		default:
+			break;
+		}
+		return null;
+	}
+	
+	public static Entity getPickableByName(String str,double posX,double posY,String effect) {
+		
+		switch (str.toLowerCase()) {
+		case "enchantedring":
+			return new EnchantedRing(posX, posY, effect);
+		case "armor":
+			return new Armor(TileSet.ITEMS_TILES,posX,posY,effect);
+		default:
+			break;
+		}
+		return null;
+	}
+
 	public boolean checkCollision(Entity entity) {
 		if (entity.getCollisionShape() == null)
 			return false;

@@ -1,5 +1,6 @@
 package nx.engine.particles;
 
+import javafx.scene.image.Image;
 import nx.engine.world.entities.Entity;
 import nx.engine.world.World;
 
@@ -9,6 +10,8 @@ import java.util.Iterator;
  * Manages the particles on a world
  */
 public class ParticleManager {
+	
+	public static Image smoke = new Image("/assets/textures/items/smoke.gif");
 
     private static final double MAX_TIME_ALIVE = 0.5;
 

@@ -13,6 +13,8 @@ public class App extends Application {
 	public static MenuController menuController;
 
 	public static SoundMixer mixer = new SoundMixer();
+	
+	public static boolean onMenu = true;
 
 	public static Scene menuScene;
 
@@ -21,7 +23,7 @@ public class App extends Application {
 
 		App.mainStage = stage;
 
-		menuController = new MenuController();
+		menuController = MenuController.getInstance();
 
 		stage.setResizable(false);
 		stage.setTitle("Dadgeon Knight");

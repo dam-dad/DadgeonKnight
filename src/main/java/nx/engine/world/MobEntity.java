@@ -28,9 +28,10 @@ public class MobEntity extends Entity {
 	
 	public int sizeTextureX = Game.tileSize;
 	public int sizeTextureY = Game.tileSize;
-	public int scale = 1;
+	public double scale = 1;
 	
 	protected int sizePlayerDetection;
+	protected int sizeMobDetection;
 
 	/**
 	 * Constructor

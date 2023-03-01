@@ -49,7 +49,8 @@ public class Bow extends PickableEntity {
 
 		lastShot = System.currentTimeMillis();
 
-		Vector2D direction = getVectorFromDirection(Player.get().getDirection());
+		Vector2D direction = new Vector2D(InputHandler.posX - Game.screenWidth/2, InputHandler.posY - Game.screenheigth/2);
+		direction = direction.normalize();
 		
 		
 		Player.get().getWorld().addEntity(new Arrow(Player.get().getPosX(), Player.get().getPosY(), new Vector2f((float) direction.getX(), (float) direction.getY())));

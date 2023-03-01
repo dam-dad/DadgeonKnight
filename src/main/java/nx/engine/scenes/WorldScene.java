@@ -31,7 +31,7 @@ public class WorldScene implements Scene {
 	private final ParticleManager particleManager;
 	
 	private final Camera camera;
-	
+
 	public static Dialog dialog;
 	public static Image smoke = new Image("/assets/textures/items/smoke.gif");
 
@@ -88,9 +88,9 @@ public class WorldScene implements Scene {
 
 		gc.fillRect(Game.screenWidth/2 - 500, Game.screenheigth/2 - 500, 1000, 1000);
 
-		PickableEntity e = (PickableEntity) Player.get().getItemSelected();
+		
 		if(!Player.get().getInventory().isEmpty())
-			e.drawUI(gc);
+			Player.get().getInventory().draw(gc);
 		
 		if(dialog != null)
 			dialog.draw(gc);

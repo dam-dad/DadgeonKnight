@@ -17,6 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import nx.engine.Animation;
 import nx.engine.Game;
+import nx.engine.UI.Inventory;
 import nx.engine.tile.Tile;
 import nx.engine.world.Level;
 import nx.engine.world.World;
@@ -32,7 +33,11 @@ public class Player extends Entity {
 	private static final int MAX_PLAYER_HEALTH = 20;
 	private static final double TIME_SHOWING_ATTACK = 0.5;
 	public static final double PLAYER_FORCE = 0.1;
-	public static final double SPEED = 10;
+	public static double SPEED = 5;
+	public static final double INITIAL_SPEED = SPEED;
+	public static int HEALTH = 10;
+	public static final int INITIAL_MAX_HEALTH = HEALTH;
+	public static int TOTAL_PLAYER_HEALTH = HEALTH;
 
 	public static final String walkTileSet = "/assets/textures/player/CharacterMovementSet.png";
 	public static final String swordSet = "/assets/textures/player/player_Sword.png";
@@ -63,9 +68,6 @@ public class Player extends Entity {
 	private KeyCode[] wasdKeys = new KeyCode[] {KeyCode.A,KeyCode.D,KeyCode.W,KeyCode.S};
 	private KeyCode[] arrowsKeys = new KeyCode[] {KeyCode.LEFT,KeyCode.RIGHT,KeyCode.UP,KeyCode.DOWN};
 	
-	private int selectionInventory = 0;
-	private List<Entity> inventory = new ArrayList<>();
-	
 	public int screenX;
 	public int screenY;
 
@@ -74,14 +76,12 @@ public class Player extends Entity {
 	private Direction direction;
 	private Animation animation;
 	private final Camera camera;
-
-	private int health;
+	
 	private double timeSinceLastHit;
-
-	private double initialX;
-	private double initialY;
 	
 	private Vector2D movement;
+
+	private Inventory inventory;
 
 	/**
 	 * Constructor
@@ -92,9 +92,6 @@ public class Player extends Entity {
 	private Player(double posX, double posY, Camera camera) {
 		this.setPosX(posX * Game.tileSize);
 		this.setPosY(posY * Game.tileSize);
-
-		this.initialX = getPosX();
-		this.initialY = getPosY();
 		
 		screenX = Game.screenWidth / 2 - (Game.tileSize/2);
 		screenY = Game.screenheigth / 2 - (Game.tileSize/2);
@@ -102,12 +99,13 @@ public class Player extends Entity {
 		this.width = Game.tileSize;
 		this.height = Game.tileSize;
 
-		this.health = MAX_PLAYER_HEALTH;
+		HEALTH = TOTAL_PLAYER_HEALTH;
 		this.timeSinceLastHit = TIME_SHOWING_ATTACK;
 		
 		this.direction = Direction.SOUTH;
 		this.camera = camera;
-
+		
+		this.inventory = new Inventory();
 	}
 
 	/**
@@ -145,10 +143,10 @@ public class Player extends Entity {
 	 */
 	@Override
 	public void update(double deltaTime) {
-		if (health <= 0) {
-			setPosX(initialX);
-			setPosY(initialY);
-			health = 10;
+		if (HEALTH <= 0) {
+			setPosX(World.spawn.getX());
+			setPosY(World.spawn.getY());
+			HEALTH = 10;
 			getWorld().onPlayerDeath();
 			return;
 		}
@@ -185,17 +183,16 @@ public class Player extends Entity {
 		}
 		
 		if (activeKeys.contains(KeyCode.E)){
-			nextItem();
+			inventory.nextItem();
 		}
 		else if (activeKeys.contains(KeyCode.Q)){
-			previousItem();
+			inventory.previousItem();
 		}
 		
 		if(activeButtons.contains(MouseButton.PRIMARY) || activeKeys.contains(KeyCode.SPACE)) {
 			Game.inputHandler.ClearActiveButtons();
 			
-			PickableEntity p = (PickableEntity) getItemSelected();
-			p.useItem();
+			inventory.useSelectedItem();
 		}
 
 		if (movement.getNorm() != 0) {
@@ -226,9 +223,10 @@ public class Player extends Entity {
 			else if(animation.isFinish()) {
 				sword.get(direction).stop().reset();
 				setAttacking(false);
-				
 			}
 		}
+		
+		inventory.update(deltaTime);
 		animation.update(deltaTime);
 		if(timeSinceLastHit < Player.TIME_SHOWING_ATTACK)
 			timeSinceLastHit += deltaTime;
@@ -239,8 +237,8 @@ public class Player extends Entity {
 	 * @param v New position vector
 	 */
 	public void setPosition(Vector2D v) {
-		super.setPosition(v.getX() * Game.tileSize,v.getY() * Game.tileSize);
-		camera.setPosition(v.getX() * Game.tileSize, v.getY() * Game.tileSize);
+		super.setPosition(v.getX(),v.getY());
+		camera.setPosition(v.getX(), v.getY());
 	}
 
 	/**
@@ -248,8 +246,12 @@ public class Player extends Entity {
 	 * @param v New spawn position vector
 	 */
 	public void setSpawn(Vector2D v) {
-		this.initialX = v.getX() * Game.tileSize;
-		this.initialY = v.getY() * Game.tileSize;
+		World.spawn = new Vector2D(v.getX() * Game.tileSize, v.getY() * Game.tileSize);
+	}
+
+	@Override
+	public Vector2D getPosition() {
+		return new Vector2D(getPosX() + (Game.tileSize/2),getPosY() + (Game.tileSize/2));
 	}
 
 	/**
@@ -320,41 +322,9 @@ public class Player extends Entity {
 		if (timeSinceLastHit < TIME_SHOWING_ATTACK)
 			return;
 
-		health -= damage;
+		HEALTH -= damage;
+		Player.HEALTH -= damage;
 		timeSinceLastHit = 0;
-	}
-
-	/**
-	 * Adds an item to the inventory of the player
-	 * @param e Item to add
-	 */
-	public void addEntityToInventory(PickableEntity e) {
-		getInventory().add(e);
-	}
-
-	/**
-	 * @return Current selected item, and creates an empty one if it does not exist
-	 */
-	public Entity getItemSelected() {
-		return getInventory().size() > 0 ? this.getInventory().get(selectionInventory) : new PickableEntity();
-	}
-
-	/**
-	 * Switches to the next item on the inventory
-	 */
-	public void nextItem() {
-		if((selectionInventory + 1) >= getInventory().size())
-			return;
-		selectionInventory++;
-	}
-
-	/**
-	 * Switches to the previous item on the inventory
-	 */
-	public void previousItem() {
-		if(selectionInventory <=  0)
-			return;
-		selectionInventory--;
 	}
 	
 	public boolean isWalking() {
@@ -362,14 +332,14 @@ public class Player extends Entity {
 	}
 
 	public int getHealth() {
-		return health;
+		return Player.HEALTH;
 	}
 	
 	public Camera getCamera() {
 		return camera;
 	}
 
-	public List<Entity> getInventory() {
+	public Inventory getInventory() {
 		return inventory;
 	}
 
@@ -383,6 +353,10 @@ public class Player extends Entity {
 
 	public void setAnimation(Animation a) {
 		this.animation = a;
+	}
+	
+	public Vector2D getVectorMovement() {
+		return this.movement;
 	}
 
 	public void setVectorMovement(Vector2D d) {
