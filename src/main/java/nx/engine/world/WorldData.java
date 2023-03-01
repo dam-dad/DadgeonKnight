@@ -38,14 +38,25 @@ public enum WorldData {
 					"/assets/levels/secret/Secret_Collisions.csv"
 					)
 			),
+	LEVEL_4("level-4",
+			new Vector2D(55, 13),
+			TileSet.DANGEON_TILES,
+			"/assets/levels/level1/nivel-4_entidades.csv",
+			Layer.loadLayersFromFiles(
+					"/assets/levels/level1/nivel-4_base.csv",
+					"/assets/levels/level1/nivel-4_detalles.csv",
+					"/assets/levels/level1/nivel-4_escaleras.csv",
+					"/assets/levels/level1/nivel-4_colisiones.csv"
+					)
+			),
 	LEVEL_2("level_2",
-			new Vector2D(2, 5),
+			new Vector2D(22, 22),
 			TileSet.DANGEON_TILES,
 			"/assets/levels/level2/nivel-2_entidades.csv",
 			Layer.loadLayersFromFiles(
-					"/assets/levels/level2/nivel-2_base.csv",
-					"/assets/levels/level2/nivel-2_detalles.csv",
-					"/assets/levels/level2/nivel-2_colisiones.csv"
+					"/assets/levels/level2/level-2_base.csv",
+					"/assets/levels/level2/level-2_detalles.csv",
+					"/assets/levels/level2/level-2_colisiones.csv"
 					)
 			);
 //	BRIDGE("bridge",

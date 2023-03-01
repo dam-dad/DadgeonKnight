@@ -79,6 +79,9 @@ public abstract class Entity {
 					case "orc":
 						toReturn.add(new Orc(Double.parseDouble(e[1]), Double.parseDouble(e[2]), Double.parseDouble(e[3]), Double.parseDouble(e[4])));
 						break;
+					case "skeleton":
+						toReturn.add(new Skeleton(Double.parseDouble(e[1]), Double.parseDouble(e[2]), Double.parseDouble(e[3]), Double.parseDouble(e[4])));
+						break;
 					case "goblin":
 						toReturn.add(new Goblin(Double.parseDouble(e[1]), Double.parseDouble(e[2]), Double.parseDouble(e[3]), Double.parseDouble(e[4])));
 						break;
@@ -135,6 +138,8 @@ public abstract class Entity {
 		switch (str.toLowerCase()) {
 		case "orc":
 			return new Orc(posX,posY,0.1,2);
+		case "skeleton":
+			return new Skeleton(posX,posY,0.1,2);
 		case "wizard":
 			return new Wizard(posX,posY);
 		case "armor":
