@@ -66,9 +66,11 @@ public class Game extends AnimationTimer {
 	
 	public static Font font = Font.loadFont(TextScene.class.getResourceAsStream("/assets/fonts/PressStart2P-Regular.ttf"), 10);
 	public static Font fontBIG = Font.loadFont(TextScene.class.getResourceAsStream("/assets/fonts/PressStart2P-Regular.ttf"), 20);
-
 	public StopWatch stopWatch = new StopWatch();
-	
+	/**
+	 * Constructor
+	 * @param canvas Canvas to draw the game on
+	 */
 	private Game(Canvas canvas) {
 		
 		Game.logger.setLevel(Level.OFF);
@@ -90,30 +92,53 @@ public class Game extends AnimationTimer {
 
 		init();
 	}
-	
+
+	/**
+	 * Returns the game instance, creating it before if it does not exist
+	 * @param canvas Canvas to draw the game on
+	 * @return Game instance if it does exist, null if not
+	 */
 	public static Game get(Canvas canvas) {
 		return instance == null ? instance = new Game(canvas) : instance;
 	}
+
+	/**
+	 * Returns the game instance
+	 * @return Game instance if it does exist, null if not
+	 */
 	public static Game get() {
-		if(instance != null)
-			return instance;
-		return null;
+		return instance;
 	}
-	
+
+	/**
+	 * Loads the game
+	 */
 	public void init() {
 		try {
-			mainScene = new TextScene("/assets/levels/intro/introEN.csv");
+			TextScene textScene = new TextScene("/assets/levels/intro/introEN.csv");
+			textScene.setOnEndingAction(() -> {
+				App.mixer.getMusic().fadeOut(20);
+				changeScene(new WorldScene(WorldData.START_LEVEL));
+			});
+			mainScene = textScene;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Starts the game and AnimationTimer component
+	 */
 	@Override
 	public void start() {
 		this.lastTime = System.nanoTime();
 		super.start();
 	}
-	
+
+	/**
+	 * Called each frame to draw the game
+	 * @param currentNanoTime Current system nano time
+	 */
 	@Override
 	public void handle(long currentNanoTime) {
 		deltaTime = (currentNanoTime - lastTime) / 1000000000.0;
@@ -157,13 +182,14 @@ public class Game extends AnimationTimer {
 		
 		lastTime = currentNanoTime;
 	}
+	/**
+	 * Updates the current scene
+	 */
 	public void update() {
-
-		if(mainScene instanceof TextScene) {
-			if(((TextScene) mainScene).hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
-				App.mixer.getMusic().fadeOut(20);
-//				mainScene = new FinalScene("You Win.Now place your name below");
-				changeScene(new WorldScene(WorldData.START_LEVEL));
+		if(mainScene instanceof TextScene textScene) {
+			if(textScene.hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
+				//mainScene = new FinalScene("You Win.Now place your name below");
+				textScene.getOnEndingAction().run();
 			}
 		}
 		else if(mainScene instanceof WorldScene) {
@@ -176,7 +202,11 @@ public class Game extends AnimationTimer {
 		if(!GameController.getInstance().onSettings)
 			mainScene.update(deltaTime);
 	}
-	
+
+	/**
+	 * Clears the screen and draws the current scene
+	 * @param gc GraphicsContext to draw the scene on
+	 */
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, screenWidth, screenheigth);
@@ -184,6 +214,10 @@ public class Game extends AnimationTimer {
 		mainScene.draw(gc);
 	}
 
+	/**
+	 * Changes the scene
+	 * @param scene Scene to change to
+	 */
 	public static void changeScene(Scene scene) {
 		sceneToChangeTo = scene;
 		alpha = 0.1f;

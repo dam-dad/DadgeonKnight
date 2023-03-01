@@ -8,6 +8,9 @@ import nx.engine.world.Level;
 import nx.engine.world.entities.Entity;
 import nx.engine.world.entities.Player;
 
+/**
+ * Represents a knockback effect
+ */
 public class Knockback extends Task<Void> {
 	
 	private Entity player;
@@ -20,7 +23,14 @@ public class Knockback extends Task<Void> {
 	Level level;
 	int levelWidth;
 	int levelHeight;
-	
+
+	/**
+	 * Constructor
+	 * @param player Player to knock
+	 * @param collision Collision
+	 * @param knockbackForce Force of the effect
+	 * @param knockbackDuration Duration of the effect
+	 */
 	public Knockback(Entity player, Entity collision, double knockbackForce, double knockbackDuration) {
 		this.collision = collision;
 		this.player = player;
@@ -31,24 +41,48 @@ public class Knockback extends Task<Void> {
 		levelWidth = level.getLayers().get(0).getLayerWidth();
 		levelHeight = level.getLayers().get(0).getLayerHeight();
 	}
-	public double getDistanceBetweenEntity(Entity player,Entity e) {
-		return Math.sqrt(Math.pow((e.getPosX() + (e.getWidth()/2)) - (player.getPosX() + (player.getWidth()/2)), 2) + Math.pow((e.getPosY() + (e.getHeight()/2)) - (player.getPosY() + (player.getHeight()/1.5)), 2));
-	}
+
+	/**
+	 * Returns the direction between entities
+	 * @param player Player
+	 * @param e Entity
+	 * @return Direction vector between specified entities
+	 */
 	public Vector2D getVector2DeBetweenEntity(Entity player,Entity e) {
 		Vector2D direction = new Vector2D((e.getPosX() + (e.getWidth()/2)) - (player.getPosX() + (player.getWidth()/2)), (e.getPosY() + (e.getHeight()/2)) - (player.getPosY() + (player.getHeight()/1.5)));
 		direction = direction.normalize();
 
 		return direction;
 	}
+
+	/**
+	 * Moves the player
+	 * @param move Movement vector
+	 * @throws InterruptedException
+	 */
 	protected void move(Vector2D move) throws InterruptedException {
 		player.setPosX(player.getPosX() + move.getX());
 		player.setPosY(player.getPosY() + move.getY());
 		
 		Player.get().getCamera().setPosition(player.getPosX() + move.getX(), player.getPosY() + move.getY());
 	}
+
+	/**
+	 * Constraints a value between two values
+	 * @param a Value to constraint
+	 * @param b First value
+	 * @param t Second value
+	 * @return
+	 */
 	public static double lerp(double a, double b, double t) {
 	    return a + (b - a) * t;
 	}
+
+	/**
+	 * Executes the knockback effect
+	 * @return
+	 * @throws Exception
+	 */
 	@Override
 	protected Void call() throws Exception {
 		long lastTime = System.nanoTime();

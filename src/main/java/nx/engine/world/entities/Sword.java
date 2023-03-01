@@ -11,21 +11,39 @@ import nx.engine.tile.TileSet;
 import nx.engine.tile.TileSetManager;
 import nx.engine.world.MobEntity;
 
+/**
+ * Represents a sword entity
+ */
 public class Sword extends PickableEntity {
 	
 	private static final double ANIMATION_SPEED = 0.15;
 	
 	private static int SwordDamage = 4;
-	
+
+	/**
+	 * Constructor
+	 * @param tileset Tileset to load the texture from
+	 * @param x Spawn position X
+	 * @param y Spawn position Y
+	 * @param width Entity width
+	 * @param height Entity height
+	 */
 	public Sword(TileSet tileset, double x, double y, double width, double height) {
 		super(TileSetManager.loadImageFromTileSet(tileset, 91, 16, 16), x, y, width, height);
 	}
-	
+
+	/**
+	 * Returns the collision shape
+	 * @return Sword collision shape
+	 */
 	@Override
 	public Shape getCollisionShape() {
 		return new Rectangle(getPosX(),getPosY(),Game.tileSize,Game.tileSize);
 	}
-	
+
+	/**
+	 * Executes when the player uses this item
+	 */
 	@Override
 	public void useItem() {
 		

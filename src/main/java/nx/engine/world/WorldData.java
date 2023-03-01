@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+/**
+ * Represents the data to load a world
+ */
 public enum WorldData {
 
 	START_LEVEL("start",
@@ -37,6 +40,16 @@ public enum WorldData {
 					"/assets/levels/secret/Secret_Floor.csv",
 					"/assets/levels/secret/Secret_Collisions.csv"
 					)
+			),
+	LEVEL_2("level_2",
+			new Vector2D(2, 5),
+			TileSet.DANGEON_TILES,
+			"/assets/levels/level2/nivel-2_entidades.csv",
+			Layer.loadLayersFromFiles(
+					"/assets/levels/level2/nivel-2_base.csv",
+					"/assets/levels/level2/nivel-2_detalles.csv",
+					"/assets/levels/level2/nivel-2_colisiones.csv"
+					)
 			);
 //	BRIDGE("bridge",
 //			new Vector2D(0, 0),
@@ -55,6 +68,14 @@ public enum WorldData {
 	private final String entities;
 	private final Layer[] mapLayers;
 
+	/**
+	 * Constructor
+	 * @param name Name of the level
+	 * @param spawn Player spawn position
+	 * @param tileSet Tileset of the level
+	 * @param entities String to load the entities from
+	 * @param mapLayers Layers of the map
+	 */
 	WorldData(String name, Vector2D spawn, TileSet tileSet, String entities, Layer... mapLayers) {
 		this.spawn = spawn;
 		this.name = name;
@@ -79,13 +100,17 @@ public enum WorldData {
 		return mapLayers;
 	}
 
+    /**
+     * Returns a world data by its name
+     * @param name Name of the world
+     * @return WorldData of the world specified
+     */
+    public static WorldData getByName(String name) {
+        return Arrays.stream(values()).filter(worldData -> worldData.getName().equals(name)).collect(Collectors.toList()).get(0);
+    }
+
 	public TileSet getTileSet() {
 		return tileSet;
-	}
-
-	public static WorldData getByName(String name) {
-		return Arrays.stream(values()).filter(worldData -> worldData.getName().equals(name))
-				.collect(Collectors.toList()).get(0);
 	}
 
 }

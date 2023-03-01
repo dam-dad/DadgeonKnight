@@ -19,6 +19,9 @@ import nx.engine.Game;
 import nx.engine.world.MobEntity;
 import nx.util.*;
 
+/**
+ * Represents a skeleton entity
+ */
 public class Skeleton extends MobEntity {
 
 	String walkSet = "/assets/textures/skeleton/skeleton_walk.png";
@@ -35,9 +38,12 @@ public class Skeleton extends MobEntity {
 
 	public String state = "walk";
 	private double initialSpeed;
+	private Player player;
+
 	private double runSpeed;
 
-	Optional<Player> playerOptional;
+	Player p = Player.get();
+
 	List<Optional<Skeleton>> sklOptional;
 
 	private final Map<Direction, Animation> walk = new HashMap<>() {
@@ -49,6 +55,13 @@ public class Skeleton extends MobEntity {
 		}
 	};
 
+	/**
+	 * Constructor
+	 * @param posX Spawn position X
+	 * @param posY Spawn position Y
+	 * @param speed Entity speed
+	 * @param runSpeed Entity run speed
+	 */
 	public Skeleton(double posX, double posY, double speed, double runSpeed) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 
@@ -65,7 +78,7 @@ public class Skeleton extends MobEntity {
 
 		this.walkAnimationSpeed = ANIMATION_SPEED;
 		this.runAnimationSpeed = 0.2;
-		
+
 		this.sizePlayerDetection = 250;
 		this.sizeMobDetection = 800;
 
@@ -97,16 +110,16 @@ public class Skeleton extends MobEntity {
 		this.speed = runSpeed;
 		ANIMATION_SPEED = runAnimationSpeed;
 	}
-	
+
 	public void alerted() {
 		timeAlerted = 0.0;
 		this.state = "alerted";
 		this.speed = runSpeed;
 		ANIMATION_SPEED = runAnimationSpeed;
 	}
-	
+
 	public void followPlayer(double realSpeed) {
-		Vector2D direction = getVector2DToEntity(playerOptional.get());
+		Vector2D direction = getVector2DToEntity(p);
 		this.direction = getDirectionFromVector2D(direction);
 		animation = walk.get(this.direction);
 		direction = direction.scalarMultiply(realSpeed);
@@ -117,48 +130,46 @@ public class Skeleton extends MobEntity {
 
 	@Override
 	public void update(double deltaTime) {
-		
-		playerOptional = getWorld().getEntities().stream().filter(entity -> entity instanceof Player)
-				.map(entity -> (Player) entity).findAny();
-		
-		sklOptional = getWorld().getEntities().stream()
-				.filter(entity -> entity instanceof Skeleton)
-				.filter(e -> e.getDistanceToEntity(this) < sizeMobDetection)
-				.map(e -> Optional.of((Skeleton) e))
+
+		sklOptional = getWorld().getEntities().stream().filter(entity -> entity instanceof Skeleton)
+				.filter(e -> e.getDistanceToEntity(this) < sizeMobDetection).map(e -> Optional.of((Skeleton) e))
 				.toList();
-		
-		
-		if (playerOptional.isPresent()) {
+
+		if (getPosX() + Game.tileSize > Player.get().getCamera().getX() - Game.screenWidth
+				&& getPosX() - Game.tileSize < Player.get().getCamera().getX() + Game.screenWidth
+				&& getPosY() + Game.tileSize > Player.get().getCamera().getY() - Game.screenheigth
+				&& getPosY() - Game.tileSize < Player.get().getCamera().getY() + Game.screenheigth) {
+
 			double lastAnimationSpeed = ANIMATION_SPEED;
-			double distancePlayer = getDistanceToEntity(playerOptional.get());
+			double distancePlayer = getDistanceToEntity(p);
 			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
 
 			if (!state.equals("alerted") && (distancePlayer < this.sizePlayerDetection)) {
 				if (!state.equals("follow")) {
 					follow();
-					if(!sklOptional.isEmpty()) {
-						for(Optional<Skeleton> s:sklOptional) {
-							if(s.get() != this)
-								s.get().alerted(); 
+					if (!sklOptional.isEmpty()) {
+						for (Optional<Skeleton> s : sklOptional) {
+							if (s.get() != this)
+								s.get().alerted();
 						}
 					}
 				}
-			} else if(!state.equals("alerted")) {
+			} else if (!state.equals("alerted")) {
 				if (!state.equals("walk")) {
 					walk();
 				}
 			}
 
-			if (this.checkCollision(playerOptional.get())) {
-				Entity.knockback(playerOptional.get(), this);
-				playerOptional.get().getAttacked(5);
+			if (this.checkCollision(p)) {
+				Entity.knockback(p, this, 0.07, 1.0);
+				p.getAttacked(5);
 			}
 
 			switch (state) {
 
 			case "stop":
 				break;
-				
+
 			case "walk":
 				time += deltaTime;
 
@@ -177,16 +188,16 @@ public class Skeleton extends MobEntity {
 					this.setPosY(this.getPosY() + realSpeed);
 				}
 				break;
-				
+
 			case "follow":
 				followPlayer(realSpeed);
 				break;
-				
+
 			case "alerted":
 				followPlayer(realSpeed);
-				if(timeAlerted > timeToFollow) {
+				if (timeAlerted > timeToFollow) {
 					walk();
-					
+
 				}
 				timeAlerted += deltaTime;
 				break;

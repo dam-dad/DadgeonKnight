@@ -1,27 +1,24 @@
 package nx.engine.world.entities;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Level;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import nx.engine.Camera;
+import nx.engine.tile.SmartMovement;
 import nx.engine.world.MobEntity;
+import nx.util.Direction;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import nx.engine.Animation;
 import nx.engine.Game;
 import nx.engine.tile.PathfindingManager;
-import nx.engine.tile.SmartMovement;
-import nx.engine.tile.Tile;
-import nx.util.Direction;
 
+/**
+ * Represents an orc entity
+ */
 public class Orc extends MobEntity implements SmartMovement {
 
 	private final String walkTileSet = "/assets/textures/orc/muscleman.png";
@@ -42,11 +39,10 @@ public class Orc extends MobEntity implements SmartMovement {
 	
 	private static final double attackDelay = 0.4;
 	private double timeSinceLastAttack = 0.0;
-	
+
 	private static List<Vector2D> movementToPlayer = new ArrayList<Vector2D>();
 	private Vector2D nextPosition;
 	private boolean taskExecuting = false;
-	
 
 	private final Map<Direction, Animation> walk = new HashMap<>() {
 		{
@@ -57,6 +53,13 @@ public class Orc extends MobEntity implements SmartMovement {
 		}
 	};
 
+	/**
+	 * Constructor
+	 * @param posX Spawn position X
+	 * @param posY Spawn position Y
+	 * @param speed Speed
+	 * @param runSpeed Run speed
+	 */
 	public Orc(double posX, double posY, double speed, double runSpeed) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 
@@ -84,18 +87,14 @@ public class Orc extends MobEntity implements SmartMovement {
 		this.animation = walk.get(direction);
 		
 		follow();
-
 	}
 
+	/**
+	 * Set a new random direction
+	 */
 	public void changeDirection() {
 		direction = Direction.values()[new Random().nextInt(4)];
 		this.animation = walk.get(direction);
-		
-		Vector2D nextPosition = getPosition().add(getVectorFromDirection(direction));
-		if(getWorld().getLevel().isSolid((int)Math.round(nextPosition.getX()/Game.tileSize),(int)Math.round(nextPosition.getY()/Game.tileSize))) {
-			direction = Direction.values()[new Random().nextInt(4)];
-			this.animation = walk.get(direction);
-		}
 	}
 
 	@Override

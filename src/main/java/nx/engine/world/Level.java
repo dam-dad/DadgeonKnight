@@ -11,6 +11,9 @@ import nx.engine.tile.TileSetManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a level
+ */
 public class Level {
 
     // Map settings
@@ -27,6 +30,11 @@ public class Level {
 
     private final TileSet tileSet;
 
+    /**
+     * Constructor
+     * @param tileSet Tileset the level has
+     * @param layers Layers of the level
+     */
     public Level(TileSet tileSet, Layer... layers) {
         this.tileSet = tileSet;
         this.layers = new ArrayList<>();
@@ -46,6 +54,11 @@ public class Level {
         setMapSize(levelWidth,levelHeight);
     }
 
+    /**
+     * Draws the level
+     * @param gc GraphicsContext to draw on
+     * @param camera World camera
+     */
     public void draw(GraphicsContext gc, Camera camera) {
         int worldCol = 0;
         int worldRow = 0;
@@ -80,7 +93,16 @@ public class Level {
             }
         }
     }
-    
+
+    /**
+     * Displays the collisions
+     * @param gc GraphicsContext to draw on
+     * @param camera World camera
+     * @param worldCol World width
+     * @param worldRow World height
+     * @param worldX World position X
+     * @param worldY World position Y
+     */
     private void displayCollisions(GraphicsContext gc, Camera camera,int worldCol,int worldRow,int worldX,int worldY) {
     	if(isSolid(worldCol, worldRow)) {
         	gc.setFill(Color.BLUE);
@@ -91,10 +113,17 @@ public class Level {
     public List<Layer> getLayers() {
         return layers;
     }
+
     public Layer getCollisionLayer() {
         return collisionLayer;
     }
 
+    /**
+     * Returns if a tile is solid
+     * @param x Tile position X
+     * @param y Tile position Y
+     * @return True if tile is solid or the position is invalid, false if not
+     */
     public boolean isSolid(int x, int y) {
         if (x < 0 || x >= levelWidth) return true;
         if (y < 0 || y >= levelHeight) return true;
