@@ -83,7 +83,7 @@ public abstract class Entity {
 						toReturn.add(new Wizard(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;
 					case "armor":
-						toReturn.add(new Armor(TileSet.ITEMS_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2])));
+						toReturn.add(new Armor(TileSet.ITEMS_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2]),e[3]));
 						break;
 					case "sword":
 						toReturn.add(new Sword(TileSet.ITEMS_TILES, Double.parseDouble(e[1]), Double.parseDouble(e[2]), Game.tileSize, Game.tileSize));
@@ -101,7 +101,7 @@ public abstract class Entity {
 						toReturn.add(new TestBoss(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
 						break;
 					case "enchantedring":
-						toReturn.add(new EnchantedRing(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
+						toReturn.add(new EnchantedRing(Double.parseDouble(e[1]), Double.parseDouble(e[2]),e[3]));
 						break;
 					case "villager":
 						toReturn.add(new Villager(Double.parseDouble(e[1]), Double.parseDouble(e[2])));
@@ -137,8 +137,6 @@ public abstract class Entity {
 			return new Orc(posX,posY,0.1,2);
 		case "wizard":
 			return new Wizard(posX,posY);
-		case "armor":
-			return new Armor(TileSet.ITEMS_TILES,posX,posY);
 		case "sword":
 			return new Sword(TileSet.ITEMS_TILES,posX,posY, Game.tileSize, Game.tileSize);
 		case "bow":
@@ -149,10 +147,21 @@ public abstract class Entity {
 			return new MagicalEntity(posX,posY);
 		case "testboss":
 			return new TestBoss(posX, posY);
-		case "enchantedring":
-			return new EnchantedRing(posX,posY);
 		case "villager":
 			return new Villager(posX,posY);
+		default:
+			break;
+		}
+		return null;
+	}
+	
+	public static Entity getPickableByName(String str,double posX,double posY,String effect) {
+		
+		switch (str.toLowerCase()) {
+		case "enchantedring":
+			return new EnchantedRing(posX, posY, effect);
+		case "armor":
+			return new Armor(TileSet.ITEMS_TILES,posX,posY,effect);
 		default:
 			break;
 		}

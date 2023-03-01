@@ -4,5 +4,6 @@ public enum Effect {
 	
 	SPEED,
 	DAMAGE,
+	ARMOR,
 	QUICKCHARGE;
 }
