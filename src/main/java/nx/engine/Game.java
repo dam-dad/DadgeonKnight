@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import nx.engine.scenes.FinalScene;
 import nx.engine.scenes.Scene;
 import nx.engine.scenes.TextScene;
 import nx.engine.scenes.WorldScene;
@@ -16,6 +17,7 @@ import nx.engine.world.WorldData;
 import nx.engine.world.entities.Player;
 import nx.game.App;
 import nx.game.GameController;
+import nx.util.StopWatch;
 
 public class Game extends AnimationTimer {
 	
@@ -62,6 +64,7 @@ public class Game extends AnimationTimer {
 	
 	public static Font font = Font.loadFont(TextScene.class.getResourceAsStream("/assets/fonts/PressStart2P-Regular.ttf"), 10);
 
+	public StopWatch stopWatch = new StopWatch();
 	
 	private Game(Canvas canvas) {
 		
@@ -156,7 +159,8 @@ public class Game extends AnimationTimer {
 		if(mainScene instanceof TextScene) {
 			if(((TextScene) mainScene).hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
 				App.mixer.getMusic().fadeOut(20);
-				changeScene(new WorldScene(WorldData.START_LEVEL));
+				mainScene = new FinalScene("You Win.Now place your name bellow");
+//				changeScene(new WorldScene(WorldData.START_LEVEL));
 			}
 		}
 		else if(mainScene instanceof WorldScene) {
@@ -187,5 +191,15 @@ public class Game extends AnimationTimer {
 	public static Scene getMainScene() {
 		return Game.mainScene;
 	}
+
+	public StopWatch getStopWatch() {
+		return stopWatch;
+	}
+
+	public void setStopWatch(StopWatch stopWatch) {
+		this.stopWatch = stopWatch;
+	}
+	
+	
 
 }
