@@ -63,6 +63,7 @@ public class Game extends AnimationTimer {
 	private static int transitionDirection = 1;
 	
 	public static Font font = Font.loadFont(TextScene.class.getResourceAsStream("/assets/fonts/PressStart2P-Regular.ttf"), 10);
+	public static Font fontBIG = Font.loadFont(TextScene.class.getResourceAsStream("/assets/fonts/PressStart2P-Regular.ttf"), 20);
 
 	public StopWatch stopWatch = new StopWatch();
 	

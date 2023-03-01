@@ -48,6 +48,10 @@ public class MenuController implements Initializable {
 	public static MenuController getInstance() {
 		return instance == null ? instance = new MenuController() : instance;
 	}
+	
+	public static void resetInstance() {
+		instance = new MenuController();
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
