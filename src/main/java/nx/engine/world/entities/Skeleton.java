@@ -19,6 +19,9 @@ import nx.engine.Game;
 import nx.engine.world.MobEntity;
 import nx.util.*;
 
+/**
+ * Represents a skeleton entity
+ */
 public class Skeleton extends MobEntity {
 
 	String walkSet = "/assets/textures/skeleton/skeleton_walk.png";
@@ -35,6 +38,8 @@ public class Skeleton extends MobEntity {
 
 	public String state = "walk";
 	private double initialSpeed;
+	private Player player;
+
 	private double runSpeed;
 
 	Player p = Player.get();
@@ -50,6 +55,13 @@ public class Skeleton extends MobEntity {
 		}
 	};
 
+	/**
+	 * Constructor
+	 * @param posX Spawn position X
+	 * @param posY Spawn position Y
+	 * @param speed Entity speed
+	 * @param runSpeed Entity run speed
+	 */
 	public Skeleton(double posX, double posY, double speed, double runSpeed) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 

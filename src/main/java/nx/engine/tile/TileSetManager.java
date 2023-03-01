@@ -8,9 +8,19 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import nx.engine.Game;
 
-
+/**
+ * Loads and manages the tilesets
+ */
 public class TileSetManager {
-	
+
+	/**
+	 * Loads an image from a {@link TileSet}
+	 * @param tileSet Tileset to load the image from
+	 * @param id Id of the tile
+	 * @param width Width of the tile
+	 * @param height Height of the tile
+	 * @return Image loaded from the tileset
+	 */
 	public static Image loadImageFromTileSet(TileSet tileSet,int id,int width,int height) {
 		int n = 0;
 		for(int i = 0; i < tileSet.getSet().getHeight() ; i+= tileSet.getHeigh()) {
@@ -38,20 +48,13 @@ public class TileSetManager {
 		return null;
 	}
 
-	public static Image[] loadTiles(Image tileSet,int spacing) {
-		
-		ArrayList<Image> tiles = new ArrayList<>();
-		
-		for(int i = 0; i < tileSet.getHeight() ; i+= Game.tileSize + spacing) {
-			for(int j = 0; j < tileSet.getWidth() ; j+= Game.tileSize + spacing) {
-				WritableImage croppedImage = new WritableImage(tileSet.getPixelReader(), j, i, Game.tileSize, Game.tileSize);
-				tiles.add(croppedImage);
-			}
-		}
-		
-		return tiles.toArray(new Image[tiles.size()]);
-	}
-	
+	/**
+	 * Loads images from a tileset
+	 * @param tileSet Tileset to load the images from
+	 * @param witdh Width of the images
+	 * @param heigh Height of the images
+	 * @return Array of images loaded
+	 */
 	public static Image[] loadTiles(Image tileSet,int witdh,int heigh) {
 		
 		ArrayList<Image> tiles = new ArrayList<>();
@@ -63,10 +66,18 @@ public class TileSetManager {
 			}
 		}
 		
-		return tiles.toArray(new Image[tiles.size()]);
+		return tiles.toArray(new Image[0]);
 	}
-	
-	public static Image[]  loadLineOfTiles(Image tileSet,int line,int tileSizeX,int tileSizeY) {
+
+	/**
+	 * Load a line of tiles from a tileset
+	 * @param tileSet Tileset to load from
+	 * @param line Line to load
+	 * @param tileSizeX Width of the tiles
+	 * @param tileSizeY Height of the tiles
+	 * @return Array of images loaded
+	 */
+	public static Image[] loadLineOfTiles(Image tileSet,int line,int tileSizeX,int tileSizeY) {
 		
 		ArrayList<Image> tiles = new ArrayList<Image>();
 		
@@ -75,10 +86,7 @@ public class TileSetManager {
 			tiles.add(croppedImage);
 		}
 		
-		return tiles.toArray(new Image[tiles.size()]);
+		return tiles.toArray(new Image[0]);
 	}
 
-	public static Image[] getTiles(TileSet n) {
-		return n.getTiles();
-	}
 }

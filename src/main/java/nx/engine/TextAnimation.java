@@ -8,6 +8,9 @@ import java.util.List;
 import nx.game.App;
 import nx.util.CSV;
 
+/**
+ * Represents a text animation
+ */
 public class TextAnimation {
 	
 	private final List<String> texts;
@@ -24,14 +27,24 @@ public class TextAnimation {
 	private final double timeBeetWeenTexts;
 	
 	private boolean play = false;
-	
+
+	/**
+	 * Constructor
+	 * @param texts List of texts
+	 */
 	public TextAnimation(List<String> texts) {
 		this.texts = texts;
 		timeBeetWeenLetters = 0.1;
 		timeBeetWeenTexts = 1;
 		actualText = texts.get(selectedText).substring(0,selectedLetter);
 	}
-	
+
+	/**
+	 * Constructor
+	 * @param texts Texts to load
+	 * @throws URISyntaxException
+	 * @throws Exception
+	 */
 	public TextAnimation(String texts) throws URISyntaxException, Exception {
 		this(CSV.readAllLinesTogether(Paths.get(CSV.class.getResource(texts).toURI())));
 		for(int i = 0; i < this.texts.size(); i++) {
@@ -44,7 +57,13 @@ public class TextAnimation {
 			}
 		}
 	}
-	
+
+	/**
+	 * Splits a text
+	 * @param text Text to split
+	 * @param numOfSplits Split count
+	 * @return List of split strings
+	 */
 	public List<String> splitText(String text, int numOfSplits) {
 	    List<String> toReturn = new ArrayList<String>();
 	    String[] words = text.split(" ");
@@ -66,7 +85,10 @@ public class TextAnimation {
 	    return toReturn;
 	}
 
-	
+	/**
+	 * Updates the animation
+	 * @param timeDifference Frame delta time
+	 */
 	public void update(double timeDifference) {
 		
 		if(play) {
@@ -97,9 +119,11 @@ public class TextAnimation {
 		}
 
 	}
+
 	public boolean hasEnded() {
 		return this.selectedText >= this.texts.size() - 1 && this.selectedLetter >= this.texts.get(selectedText).length() - 1;
 	}
+
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
@@ -107,6 +131,7 @@ public class TextAnimation {
 	public void play() {
 		this.play = true;
 	}
+
 	public void pause() {
 		this.play = false;
 	}

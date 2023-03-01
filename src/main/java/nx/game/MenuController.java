@@ -29,10 +29,11 @@ public class MenuController implements Initializable {
 
 	@FXML
 	private GridPane view;
-	
 
     @FXML
     private SettingsComponent settingsPane;
+    @FXML
+    private LeaderBoardComponent leaderBoardPane;
 
 	private MenuController() {
 		try {
@@ -50,6 +51,11 @@ public class MenuController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		view.setOnMouseClicked(event -> {
+			onHallOfFameAction(null);
+				
+		});
 		
 		
 		exitButton.setOnMouseEntered(e -> {
@@ -73,7 +79,13 @@ public class MenuController implements Initializable {
 
 	@FXML
 	void onHallOfFameAction(ActionEvent event) {
-
+		if(leaderBoardPane.isVisible()) {
+			leaderBoardPane.setVisible(false);
+			leaderBoardPane.setDisable(true);
+		}else {
+			leaderBoardPane.setVisible(true);
+			leaderBoardPane.setDisable(false);
+		}
 	}
 
 	@FXML

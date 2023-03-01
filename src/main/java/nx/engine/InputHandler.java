@@ -15,7 +15,11 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
+/**
+ * Represents the input handler for the application
+ */
 public class InputHandler {
+
     final private Set<KeyCode> activeKeys = new HashSet<>();
     final private Set<MouseButton> activeButtons = new HashSet<>();
     final private Queue<Double> scrollValues = new LinkedList<Double>();

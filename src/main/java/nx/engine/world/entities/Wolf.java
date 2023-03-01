@@ -11,6 +11,9 @@ import nx.engine.Game;
 import nx.engine.world.MobEntity;
 import nx.util.Direction;
 
+/**
+ * Represents the wolf entity
+ */
 public class Wolf extends MobEntity {
 
 	String walkTileSet = "/assets/textures/wolf/wolf.png";
@@ -37,6 +40,13 @@ public class Wolf extends MobEntity {
 		}
 	};
 
+	/**
+	 * Constructor
+	 * @param posX Spawn position X
+	 * @param posY Spawn position Y
+	 * @param speed Entity speed
+	 * @param player Player to attack
+	 */
 	public Wolf(double posX, double posY, double speed, Player player) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 
@@ -58,21 +68,34 @@ public class Wolf extends MobEntity {
 
 	}
 
+	/**
+	 * Changes the direction randomly
+	 */
 	public void changeDirection() {
 		direction = Direction.values()[new Random().nextInt(4)];
 		this.animation = walk.get(direction);
 	}
 
+	/**
+	 * Sets the state to stopped
+	 */
 	public void stop() {
 		this.state = "stop";
 		this.speed = 0.0;
 	}
 
+	/**
+	 * Resets the state to walking
+	 */
 	public void reset() {
 		this.state = "walk";
 		this.speed = initialSpeed;
 	}
 
+	/**
+	 * Updates the entity
+	 * @param deltaTime Frame delta
+	 */
 	@Override
 	public void update(double deltaTime) {
 		double distance = getDistanceToEntity(player);

@@ -23,15 +23,21 @@ import nx.engine.world.Level;
 import nx.engine.world.World;
 import nx.util.Direction;
 
+/**
+ * Represents the player
+ */
 public class Player extends Entity {
 	
 	private static Player instance;
 
-	private static final int MAX_PLAYER_HEALTH = 10;
+	private static final int MAX_PLAYER_HEALTH = 20;
 	private static final double TIME_SHOWING_ATTACK = 0.5;
 	public static final double PLAYER_FORCE = 0.1;
 	public static double SPEED = 5;
 	public static final double INITIAL_SPEED = SPEED;
+	public static int HEALTH = 10;
+	public static final int INITIAL_MAX_HEALTH = HEALTH;
+	public static int TOTAL_PLAYER_HEALTH = HEALTH;
 
 	public static final String walkTileSet = "/assets/textures/player/CharacterMovementSet.png";
 	public static final String swordSet = "/assets/textures/player/player_Sword.png";
@@ -70,14 +76,19 @@ public class Player extends Entity {
 	private Direction direction;
 	private Animation animation;
 	private final Camera camera;
-
-	private int health;
+	
 	private double timeSinceLastHit;
 	
 	private Vector2D movement;
-	
+
 	private Inventory inventory;
-	
+
+	/**
+	 * Constructor
+	 * @param posX Spawn position X
+	 * @param posY Spawn position Y
+	 * @param camera World camera
+	 */
 	private Player(double posX, double posY, Camera camera) {
 		this.setPosX(posX * Game.tileSize);
 		this.setPosY(posY * Game.tileSize);
@@ -88,35 +99,56 @@ public class Player extends Entity {
 		this.width = Game.tileSize;
 		this.height = Game.tileSize;
 
-		this.health = MAX_PLAYER_HEALTH;
+		HEALTH = TOTAL_PLAYER_HEALTH;
 		this.timeSinceLastHit = TIME_SHOWING_ATTACK;
 		
 		this.direction = Direction.SOUTH;
 		this.camera = camera;
 		
 		this.inventory = new Inventory();
-
 	}
+
+	/**
+	 * Returns the player instance. If it does not exist builds a player at the specified location
+	 * @param posX Spawn position X
+	 * @param posY Spawn position Y
+	 * @param camera World camera
+	 * @return Player instance
+	 */
 	public static Player get(double posX,double posY,Camera camera) {
 		return instance == null ? instance = new Player(posX,posY,camera) : instance;
 	}
-	
+
+	/**
+	 * Returns the player instance. If it does not exist builds a player at (0,0)
+	 * @param camera World camera
+	 * @return Player instance
+	 */
 	public static Player get(Camera camera) {
 		return instance == null ? instance = new Player(0,0,camera) : instance;
 	}
+
+	/**
+	 * @return Player instance if it exists, {@code null} if not
+	 */
 	public static Player get() {
 		if(instance != null)
 			return instance;
 		return null;
 	}
 
+	/**
+	 * Updates the player and its input
+	 * @param deltaTime Frame delta
+	 */
 	@Override
 	public void update(double deltaTime) {
-
-		if (health <= 0) {
-			posX = World.spawn.getX() * Game.tileSize;
-			posY = World.spawn.getY() * Game.tileSize;
-			health = 10;
+		if (HEALTH <= 0) {
+			setPosX(World.spawn.getX());
+			setPosY(World.spawn.getY());
+			HEALTH = 10;
+			getWorld().onPlayerDeath();
+			return;
 		}
 
 		Set<KeyCode> activeKeys = Game.inputHandler.getActiveKeys();
@@ -177,8 +209,6 @@ public class Player extends Entity {
 			move(movementX, movementY);
 			camera.setPosition(getPosX(), getPosY());
 		}
-
-
 		
 		animation = idle.get(direction);
 		
@@ -193,7 +223,6 @@ public class Player extends Entity {
 			else if(animation.isFinish()) {
 				sword.get(direction).stop().reset();
 				setAttacking(false);
-				
 			}
 		}
 		
@@ -202,16 +231,34 @@ public class Player extends Entity {
 		if(timeSinceLastHit < Player.TIME_SHOWING_ATTACK)
 			timeSinceLastHit += deltaTime;
 	}
-	
+
+	/**
+	 * Sets the player position
+	 * @param v New position vector
+	 */
 	public void setPosition(Vector2D v) {
-		super.setPosition(v.getX() * Game.tileSize,v.getY() * Game.tileSize);
-		camera.setPosition(v.getX() * Game.tileSize, v.getY() * Game.tileSize);
+		super.setPosition(v.getX(),v.getY());
+		camera.setPosition(v.getX(), v.getY());
 	}
+
+	/**
+	 * Sets the player spawn
+	 * @param v New spawn position vector
+	 */
+	public void setSpawn(Vector2D v) {
+		World.spawn = new Vector2D(v.getX() * Game.tileSize, v.getY() * Game.tileSize);
+	}
+
 	@Override
 	public Vector2D getPosition() {
 		return new Vector2D(getPosX() + (Game.tileSize/2),getPosY() + (Game.tileSize/2));
 	}
 
+	/**
+	 * Draws the player and an effect if it has been damaged recently
+	 * @param gc GraphicsContext to draw on
+	 * @param camera World camera
+	 */
 	@Override
 	public void draw(GraphicsContext gc, Camera camera) {
 		//debug collision
@@ -228,16 +275,21 @@ public class Player extends Entity {
 			gc.fillOval(screenX - ((Game.tileSize/2) * 0.5), screenY - Game.tileSize/3,Game.tileSize * 1.5,Game.tileSize * 1.5);
 		}
 	}
-	
-	private boolean checkCollisionsMap(Vector2D v) {
 
+	/**
+	 * Check collisions with level
+	 * @param v Movement vector
+	 * @return True if it collides with a tile, false if not
+	 */
+	private boolean checkCollisionsMap(Vector2D v) {
 		Level level = getWorld().getLevel();
-		int levelWidth = level.getLayers().get(0).getLayerWidth();
-		int levelHeight = level.getLayers().get(0).getLayerHeight();
-		
+
+		int currentX = (int) (getPosX() / Game.tileSize);
+		int currentY = (int) (getPosY() / Game.tileSize);
+
 		//collisions player with tiles
-		for (int i = 0; i < levelHeight; i++) {
-			for (int j = 0; j < levelWidth; j++) {
+		for (int i = currentX - 2; i < currentX + 2; i++) {
+			for (int j = currentY - 2; j < currentY + 2; j++) {
 				if (level.isSolid(i,j) && Tile.checkCollision(getNextCollisionShape(v), i, j)) {
 					return true;
 				}
@@ -246,43 +298,59 @@ public class Player extends Entity {
 		return false;
 	}
 
+	/**
+	 * @return Player collision shape
+	 */
 	@Override
 	public Shape getCollisionShape() {
 		return new Rectangle(getPosX() +  ((Game.tileSize/2) * 0.5), getPosY() + (Game.tileSize/2), Game.tileSize/2, Game.tileSize/2);
 	}
+
+	/**
+	 * @param v Movement vector
+	 * @return Collision shape after movement
+	 */
 	public Shape getNextCollisionShape(Vector2D v) {
 		return new Rectangle((getPosX() + v.getX()) +  ((Game.tileSize/2) * 0.5), (getPosY() + v.getY()) + (Game.tileSize/2), Game.tileSize/2, Game.tileSize/2);
 	}
-	
-	// TODO
+
+	/**
+	 * Deals damage to the player
+	 * @param damage Damage dealt
+	 */
 	public void getAttacked(int damage) {
-		health -= damage;
+		if (timeSinceLastHit < TIME_SHOWING_ATTACK)
+			return;
+
+		HEALTH -= damage;
+		Player.HEALTH -= damage;
 		timeSinceLastHit = 0;
 	}
 	
 	public boolean isWalking() {
 		return this.isWalking;
 	}
-	public boolean isAttacking() {
-		return this.isAttacking;
-	}
 
 	public int getHealth() {
-		return health;
+		return Player.HEALTH;
 	}
 	
 	public Camera getCamera() {
 		return camera;
 	}
+
 	public Inventory getInventory() {
 		return inventory;
 	}
+
 	public void setAttacking(boolean a) {
 		this.isAttacking = a;
 	}
+
 	public Direction getDirection() {
 		return direction;
 	}
+
 	public void setAnimation(Animation a) {
 		this.animation = a;
 	}
@@ -290,7 +358,9 @@ public class Player extends Entity {
 	public Vector2D getVectorMovement() {
 		return this.movement;
 	}
+
 	public void setVectorMovement(Vector2D d) {
 		this.movement = d;
 	}
+
 }
