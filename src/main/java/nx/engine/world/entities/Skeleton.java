@@ -19,13 +19,9 @@ import nx.engine.Game;
 import nx.engine.world.MobEntity;
 import nx.util.*;
 
-/**
- * Represents a skeleton entity
- */
 public class Skeleton extends MobEntity {
 
 	String walkSet = "/assets/textures/skeleton/skeleton_walk.png";
-	String idleSet = "/assets/textures/skeleton/skeleton-idle.png";
 
 	public double ANIMATION_SPEED = 0.2;
 	private double walkAnimationSpeed;
@@ -38,9 +34,10 @@ public class Skeleton extends MobEntity {
 
 	public String state = "walk";
 	private double initialSpeed;
-	private Player player;
-
 	private double runSpeed;
+	
+	private static final double attackDelay = 0.4;
+	private double timeSinceLastAttack = 0.0;
 
 	Player p = Player.get();
 
@@ -55,13 +52,6 @@ public class Skeleton extends MobEntity {
 		}
 	};
 
-	/**
-	 * Constructor
-	 * @param posX Spawn position X
-	 * @param posY Spawn position Y
-	 * @param speed Entity speed
-	 * @param runSpeed Entity run speed
-	 */
 	public Skeleton(double posX, double posY, double speed, double runSpeed) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 
@@ -160,10 +150,17 @@ public class Skeleton extends MobEntity {
 				}
 			}
 
-			if (this.checkCollision(p)) {
-//				Entity.knockback(p, this, 0.07, 1.0);
-				p.getAttacked(5);
+			if (timeSinceLastAttack > attackDelay && this.checkCollision(Game.player)) {
+				timeSinceLastAttack = 0;
+				Game.inputHandler.ClearActiveKeys();
+				Player.get().setVectorMovement(new Vector2D(0,0));
+				Player.get().pushOut(this,Player.PLAYER_FORCE * 5);
+				Game.player.getAttacked(1);
+				walk();
+				return;
+
 			}
+			timeSinceLastAttack += deltaTime;
 
 			switch (state) {
 
