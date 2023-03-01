@@ -1,0 +1,90 @@
+@font-face {
+	font-family: 'Press Start 2P';
+	src: url('../assets/fonts/PressStart2P-Regular.ttf');
+}
+
+
+.text {
+	-fx-font-family: 'Press Start 2P';
+	-fx-font-size: 16.0px;
+}
+
+
+.table-cell {     
+    -fx-padding: 0.5em 0.5em 0.1em 0.3em;
+    -fx-border-color: -fx-box-border -fx-box-border transparent transparent;  
+    -fx-font: 10.0px "Press Start 2P";    
+    -fx-border-insets: 0.0;
+    -fx-background-color: transparent;
+}
+
+/*color de fondo cuando el cursor esta sobre una celda */
+.table-cell:hover {
+    -fx-background-color: #FEB683;
+}
+
+/*color de fondo para las celdas vacías */
+.table-row-cell:empty, .table-cell:empty:hover {
+    -fx-background-color: #FFFFFFa0;
+}
+
+/*eliminar borde en las celdas vacías */
+.table-row-cell:empty .table-cell {
+    -fx-border-width: 0.0px;
+}
+
+/*color de la fila cuando el ratón está encima */
+.table-view:row-selection .table-row-cell:filled:hover { 
+    -fx-background-color: #FF6742;
+}
+
+/*color de la fila seleccionada cuando el ratón está encima */
+.table-view:row-selection .table-row-cell:filled:selected:hover { 
+    -fx-background-color: #FF6A14;
+}
+
+/*color de la fila seleccionada por el usuario */
+.table-view:row-selection .table-row-cell:filled:selected { 
+    -fx-background-color: #E34B2C;
+}
+
+/*no cambiar color cuando la tabla tiene el foco */
+.table-view, .table-view:focused {
+  -fx-background-insets: -1.4, 0.0, 1.0;
+  -fx-background-radius: 1.4, 0.0, 0.0;
+}
+ 
+ /*títulos de columnas */
+.table-view .column-header .label{
+    -fx-text-fill: linear-gradient(from 0.0% 0.0% to 100.0% 100.0%, #DC7633 0.0%,#C0392B 50.0%, #DC7633 100.0%);
+    -fx-alignment: CENTER;
+}
+
+.table-view .column-header:hover {
+    -fx-background-color: whitesmoke;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: #FFFFFFa0;    
+    -fx-size: 45.0;
+    -fx-border-color: -fx-box-border;
+    -fx-border-width: 0.0 1.0 3.0 0.0;
+    -fx-border-insets: 0.0;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+}
+
+
+.table-view .show-hide-columns-button {
+    -fx-background-color: #FFFFFFa0;
+    -fx-border-color: -fx-box-border;
+    -fx-border-insets: 0.0;
+}
+
+.table-view {
+	-fx-border-color: transparent;
+	-fx-background-color: #FFFFFFa0; /* OR  -fx-background-insets: 0.0; */
+}
+
