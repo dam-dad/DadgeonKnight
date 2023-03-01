@@ -2,6 +2,8 @@ package nx.engine;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -160,8 +162,8 @@ public class Game extends AnimationTimer {
 		if(mainScene instanceof TextScene) {
 			if(((TextScene) mainScene).hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
 				App.mixer.getMusic().fadeOut(20);
-				mainScene = new FinalScene("You Win.Now place your name bellow");
-//				changeScene(new WorldScene(WorldData.START_LEVEL));
+//				mainScene = new FinalScene("You Win.Now place your name below");
+				changeScene(new WorldScene(WorldData.START_LEVEL));
 			}
 		}
 		else if(mainScene instanceof WorldScene) {
