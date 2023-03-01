@@ -87,53 +87,18 @@ public class Wolf extends MobEntity implements SmartMovement {
 	public void changeDirection() {
 		direction = Direction.values()[new Random().nextInt(4)];
 		this.animation = walk.get(direction);
-	}
 
-	public void stop() {
-		this.state = "stop";
-		this.speed = 0.0;
+		Vector2D nextPosition = getPosition().add(getVectorFromDirection(direction));
+		if (getWorld().getLevel().isSolid((int) Math.round(nextPosition.getX() / Game.tileSize),
+				(int) Math.round(nextPosition.getY() / Game.tileSize))) {
+			direction = Direction.values()[new Random().nextInt(4)];
+			this.animation = walk.get(direction);
+		}
 	}
 
 	public void reset() {
 		this.state = "walk";
 		this.speed = initialSpeed;
-	}
-
-	public void walk() {
-		this.state = "walk";
-		this.speed = walkSpeed;
-		ANIMATION_SPEED = walkAnimationSpeed;
-		sizePlayerDetection = 250;
-	}
-
-	@Override
-	public boolean follow(List<Vector2D> v, double speed) {
-		move(movementToPlayer.get(movementToPlayer.size() - 1).scalarMultiply(-1).scalarMultiply(speed));
-		if (getPosition().distanceSq(nextPosition) < Game.tileSize) {
-			movementToPlayer.remove(movementToPlayer.size() - 1);
-			if (movementToPlayer.size() > 0) {
-				Game.logger.log(Level.INFO, movementToPlayer.toString());
-				nextPosition = getPosition().add(movementToPlayer.get(movementToPlayer.size() - 1).scalarMultiply(-1)
-						.scalarMultiply(Game.tileSize));
-			} else {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void follow() {
-		this.state = "follow";
-		this.speed = runSpeed;
-		ANIMATION_SPEED = runAnimationSpeed;
-		sizePlayerDetection = 500;
-	}
-
-	public void smartFollow() {
-		this.state = "smartfollow";
-		this.speed = runSpeed;
-		ANIMATION_SPEED = runAnimationSpeed;
-		sizePlayerDetection = 500;
 	}
 
 	@Override
@@ -252,5 +217,59 @@ public class Wolf extends MobEntity implements SmartMovement {
 			p.cancel();
 		new Thread(p).start();
 		taskExecuting = true;
+	}
+
+	@Override
+	public boolean follow(List<Vector2D> v, double speed) {
+		move(movementToPlayer.get(movementToPlayer.size() - 1).scalarMultiply(-1).scalarMultiply(speed));
+		if (getPosition().distanceSq(nextPosition) < Game.tileSize) {
+			movementToPlayer.remove(movementToPlayer.size() - 1);
+			if (movementToPlayer.size() > 0) {
+				Game.logger.log(Level.INFO, movementToPlayer.toString());
+				nextPosition = getPosition().add(movementToPlayer.get(movementToPlayer.size() - 1).scalarMultiply(-1)
+						.scalarMultiply(Game.tileSize));
+			} else {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void stop() {
+		this.state = "stop";
+		this.speed = 0.0;
+		ANIMATION_SPEED = 0;
+	}
+
+	public void walk() {
+		this.state = "walk";
+		this.speed = walkSpeed;
+		ANIMATION_SPEED = walkAnimationSpeed;
+		sizePlayerDetection = 250;
+	}
+
+	public void follow() {
+		this.state = "follow";
+		this.speed = runSpeed;
+		ANIMATION_SPEED = runAnimationSpeed;
+		sizePlayerDetection = 500;
+	}
+
+	public void smartFollow() {
+		this.state = "smartfollow";
+		this.speed = runSpeed;
+		ANIMATION_SPEED = runAnimationSpeed;
+		sizePlayerDetection = 500;
+	}
+
+	@Override
+	public Vector2D getPosition() {
+		return new Vector2D(getPosX(), getPosY() + (sizeTextureY * scale) - Game.tileSize);
+	}
+
+	@Override
+	public Vector2D getTilePosition() {
+		return new Vector2D(getPosX() / Game.tileSize,
+				(getPosY() + (sizeTextureY * scale) - Game.tileSize) / Game.tileSize);
 	}
 }

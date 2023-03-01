@@ -149,7 +149,7 @@ public class Skeleton extends MobEntity {
 			}
 
 			if (this.checkCollision(p)) {
-				Entity.knockback(p, this, 0.07, 1.0);
+//				Entity.knockback(p, this, 0.07, 1.0);
 				p.getAttacked(5);
 			}
 
