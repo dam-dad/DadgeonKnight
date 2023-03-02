@@ -22,16 +22,16 @@ public enum WorldData {
 					"/assets/levels/startedMap/StartMap_collitions.csv"
 					)
 			),
-//	LEVEL_1("level_1",
-//			new Vector2D(0, 0),
-//			TileSet.WORLD_BRIDGE_TILES,
-//			"/assets/levels/level1/DungeonLevel_Entities.csv",
-//			Layer.loadLayersFromFiles(
-//					"/assets/levels/level1/DungeonLevel_Mapa.csv",
-//					"/assets/levels/level1/DungeonBridgeLevel_details.csv",
-//					"/assets/levels/level1/DungeonLevel_Collitions.csv"
-//					)
-//			),
+	LEVEL_1("level_1",
+			new Vector2D(3, 14),
+			TileSet.WORLD_BRIDGE_TILES,
+			"/assets/levels/level1/entities.csv",
+			Layer.loadLayersFromFiles(
+					"/assets/levels/level1/DungeonBridgeLevel_map.csv",
+					"/assets/levels/level1/DungeonBridgeLevel_details.csv",
+					"/assets/levels/level1/DungeonBridgeLevel_collitions.csv"
+					)
+			),
 	LEVEL_2("level_2",
 			new Vector2D(22, 22),
 			TileSet.DANGEON_TILES,

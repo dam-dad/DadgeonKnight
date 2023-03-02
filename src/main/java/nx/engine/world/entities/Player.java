@@ -212,6 +212,7 @@ public class Player extends Entity {
 			move(movementX, movementY);
 			camera.setPosition(getPosX(), getPosY());
 		}
+
 		
 		animation = idle.get(direction);
 		
