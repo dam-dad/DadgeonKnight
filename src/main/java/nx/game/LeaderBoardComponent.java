@@ -21,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import nx.util.Global_stats;
+import nx.util.StopWatch;
 
 public class LeaderBoardComponent extends VBox implements Initializable {
 	
@@ -31,7 +32,7 @@ public class LeaderBoardComponent extends VBox implements Initializable {
     private TableView<Rank> leadersTavbleView;
 
     @FXML
-    private TableColumn<Rank, Integer> timeTableCollumn;
+    private TableColumn<Rank, String> timeTableCollumn;
 
     @FXML
     private TableColumn<Rank, String> userTableCollumn;
@@ -70,11 +71,11 @@ public class LeaderBoardComponent extends VBox implements Initializable {
 			        return new SimpleStringProperty(rank.getName());
 			    }
 			});
-			timeTableCollumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Rank, Integer>, ObservableValue<Integer>>() {
+			timeTableCollumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Rank, String>, ObservableValue<String>>() {
 			    @Override
-			    public ObservableValue<Integer> call(TableColumn.CellDataFeatures<Rank, Integer> param) {
+			    public ObservableValue<String> call(TableColumn.CellDataFeatures<Rank, String> param) {
 			        Rank rank = param.getValue();
-			        return new SimpleIntegerProperty(rank.getValue()).asObject();
+			        return new SimpleStringProperty(StopWatch.toString(rank.getValue()));
 			    }
 			});
 		} catch (Exception e) {

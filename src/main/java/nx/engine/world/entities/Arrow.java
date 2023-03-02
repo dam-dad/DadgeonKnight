@@ -9,6 +9,7 @@ import nx.engine.particles.Particle;
 import nx.engine.tile.TileSet;
 import nx.engine.tile.TileSetManager;
 import nx.engine.world.MobEntity;
+import nx.game.App;
 import nx.util.Music;
 import nx.util.Vector2f;
 
@@ -67,7 +68,10 @@ public class Arrow extends Entity {
         if (entities.size() > 0)
             getWorld().removeEntity(this);
 
-        entities.forEach(mobEntity -> mobEntity.getAttacked(DAMAGE));
+        entities.forEach(mobEntity -> {
+        	mobEntity.getAttacked(DAMAGE);
+        	App.mixer.addGameSound("arrow_hit_target.mp3").play();
+        });
     }
 
     /**

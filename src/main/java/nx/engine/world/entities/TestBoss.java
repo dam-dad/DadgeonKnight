@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import nx.engine.Camera;
 import nx.engine.Game;
+import nx.engine.scenes.FinalScene;
 import nx.engine.scenes.TextScene;
 import nx.engine.scenes.WorldScene;
 import nx.engine.world.MobEntity;
@@ -90,15 +91,7 @@ public class TestBoss extends MobEntity {
     public void update(double deltaTime) {
         if (mobHealth <= 0) {
             getWorld().removeEntity(this);
-            try {
-                TextScene textScene = new TextScene("/assets/levels/endScene/ending.csv");
-                textScene.setOnEndingAction(() -> {
-                    App.mainStage.setScene(App.menuScene);
-                });
-                Game.changeScene(textScene);
-            } catch (Exception e) {
-
-            }
+            Game.changeScene(new FinalScene("You Win"));
             return;
         }
 

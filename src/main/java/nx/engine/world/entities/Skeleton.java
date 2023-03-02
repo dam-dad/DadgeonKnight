@@ -19,13 +19,9 @@ import nx.engine.Game;
 import nx.engine.world.MobEntity;
 import nx.util.*;
 
-/**
- * Represents a skeleton entity
- */
 public class Skeleton extends MobEntity {
 
 	String walkSet = "/assets/textures/skeleton/skeleton_walk.png";
-	String idleSet = "/assets/textures/skeleton/skeleton-idle.png";
 
 	public double ANIMATION_SPEED = 0.2;
 	private double walkAnimationSpeed;
@@ -38,9 +34,10 @@ public class Skeleton extends MobEntity {
 
 	public String state = "walk";
 	private double initialSpeed;
-	private Player player;
-
 	private double runSpeed;
+	
+	private static final double attackDelay = 0.8;
+	private double timeSinceLastAttack = 0.0;
 
 	Player p = Player.get();
 
@@ -55,13 +52,6 @@ public class Skeleton extends MobEntity {
 		}
 	};
 
-	/**
-	 * Constructor
-	 * @param posX Spawn position X
-	 * @param posY Spawn position Y
-	 * @param speed Entity speed
-	 * @param runSpeed Entity run speed
-	 */
 	public Skeleton(double posX, double posY, double speed, double runSpeed) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 
@@ -139,13 +129,18 @@ public class Skeleton extends MobEntity {
 				&& getPosX() - Game.tileSize < Player.get().getCamera().getX() + Game.screenWidth
 				&& getPosY() + Game.tileSize > Player.get().getCamera().getY() - Game.screenheigth
 				&& getPosY() - Game.tileSize < Player.get().getCamera().getY() + Game.screenheigth) {
+			
+			if (this.mobHealth < 0) {
+				getWorld().removeEntity(this);
+				return;
+			}
 
 			double lastAnimationSpeed = ANIMATION_SPEED;
 			double distancePlayer = getDistanceToEntity(p);
 			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
 
 			if (!state.equals("alerted") && (distancePlayer < this.sizePlayerDetection)) {
-				if (!state.equals("follow")) {
+				if (!state.equals("follow") && timeSinceLastAttack > attackDelay) {
 					follow();
 					if (!sklOptional.isEmpty()) {
 						for (Optional<Skeleton> s : sklOptional) {
@@ -160,10 +155,16 @@ public class Skeleton extends MobEntity {
 				}
 			}
 
-			if (this.checkCollision(p)) {
-				Entity.knockback(p, this, 0.07, 1.0);
-				p.getAttacked(5);
+			if (timeSinceLastAttack > attackDelay && this.checkCollision(Game.player)) {
+				timeSinceLastAttack = 0;
+				Game.inputHandler.ClearActiveKeys();
+				this.pushOut(Player.get(),Player.PLAYER_FORCE * 5);
+				Game.player.getAttacked(1);
+				walk();
+				return;
+
 			}
+			timeSinceLastAttack += deltaTime;
 
 			switch (state) {
 

@@ -10,6 +10,7 @@ import nx.engine.Game;
 import nx.engine.tile.TileSet;
 import nx.engine.tile.TileSetManager;
 import nx.engine.world.MobEntity;
+import nx.game.App;
 
 /**
  * Represents a sword entity
@@ -60,6 +61,7 @@ public class Sword extends PickableEntity {
 			nearMobs.forEach(e -> {
 				if(e.isPresent() && this.checkCollision(e.get())) {
 					e.get().getAttacked(SwordDamage);
+					App.mixer.addGameSound("sword-hit.mp3").play();
 				}
 			});
 			break;
@@ -68,6 +70,7 @@ public class Sword extends PickableEntity {
 			nearMobs.forEach(e -> {
 				if(e.isPresent() && this.checkCollision(e.get())) {
 					e.get().getAttacked(SwordDamage);
+					App.mixer.addGameSound("sword-hit.mp3").play();
 				}
 			});
 			break;
@@ -76,6 +79,7 @@ public class Sword extends PickableEntity {
 			nearMobs.forEach(e -> {
 				if(e.isPresent() && this.checkCollision(e.get())) {
 					e.get().getAttacked(SwordDamage);
+					App.mixer.addGameSound("sword-hit.mp3").play();
 				}
 			});
 			break;
@@ -84,11 +88,13 @@ public class Sword extends PickableEntity {
 			nearMobs.forEach(e -> {
 				if(e.isPresent() && this.checkCollision(e.get())) {
 					e.get().getAttacked(SwordDamage);
+					App.mixer.addGameSound("sword-hit.mp3").play();
 				}
 			});
 			break;
 		default:
 			break;
+			
 		}
 		Game.inputHandler.ClearActiveKeys();
 	}

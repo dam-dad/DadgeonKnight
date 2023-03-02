@@ -2,12 +2,15 @@ package nx.engine;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import nx.engine.scenes.FinalScene;
 import nx.engine.scenes.Scene;
 import nx.engine.scenes.TextScene;
 import nx.engine.scenes.WorldScene;
@@ -16,6 +19,7 @@ import nx.engine.world.WorldData;
 import nx.engine.world.entities.Player;
 import nx.game.App;
 import nx.game.GameController;
+import nx.util.StopWatch;
 
 public class Game extends AnimationTimer {
 	
@@ -61,7 +65,8 @@ public class Game extends AnimationTimer {
 	private static int transitionDirection = 1;
 	
 	public static Font font = Font.loadFont(TextScene.class.getResourceAsStream("/assets/fonts/PressStart2P-Regular.ttf"), 10);
-
+	public static Font fontBIG = Font.loadFont(TextScene.class.getResourceAsStream("/assets/fonts/PressStart2P-Regular.ttf"), 20);
+	public StopWatch stopWatch = new StopWatch();
 	/**
 	 * Constructor
 	 * @param canvas Canvas to draw the game on
@@ -145,6 +150,7 @@ public class Game extends AnimationTimer {
 
 			if (alpha > 1) {
 				mainScene = sceneToChangeTo;
+				Player.get().setPosition(World.spawn);
 				sceneToChangeTo = null;
 				if(mainScene instanceof WorldScene) {
 					Player.get().setPosition(World.spawn);
@@ -177,13 +183,13 @@ public class Game extends AnimationTimer {
 		
 		lastTime = currentNanoTime;
 	}
-
 	/**
 	 * Updates the current scene
 	 */
 	public void update() {
 		if(mainScene instanceof TextScene textScene) {
 			if(textScene.hasEnded() || inputHandler.getActiveKeys().contains(KeyCode.ESCAPE)) {
+//				mainScene = new FinalScene("You Win.Now place your name below");
 				textScene.getOnEndingAction().run();
 			}
 		}
@@ -223,5 +229,15 @@ public class Game extends AnimationTimer {
 	public static Scene getMainScene() {
 		return Game.mainScene;
 	}
+
+	public StopWatch getStopWatch() {
+		return stopWatch;
+	}
+
+	public void setStopWatch(StopWatch stopWatch) {
+		this.stopWatch = stopWatch;
+	}
+	
+	
 
 }

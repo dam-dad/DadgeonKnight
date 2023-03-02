@@ -2,14 +2,16 @@ package nx.engine.world.entities;
 
 import javafx.scene.image.Image;
 import nx.engine.Game;
+import nx.engine.world.MobEntity;
+import nx.util.Direction;
 import nx.util.Vector2f;
 
 /**
  * Represents a wizard entity
  */
-public class Wizard extends Entity implements Enemy {
+public class Wizard extends MobEntity implements Enemy {
 
-    protected static final Image sprite = new Image("/assets/textures/player/kevin_idle_00.png");
+    protected static final Image sprite = new Image("/assets/textures/wizard/wizardTexture.png");
     private static final double attackDelay = 1.0;
     private static final double RADIUS = 5;
 	protected boolean canDie = true;
@@ -22,19 +24,21 @@ public class Wizard extends Entity implements Enemy {
      * @param x Spawn position X
      * @param y Spawn position Y
      */
-    public Wizard(int x,int y) {
-        super(x * Game.tileSize, y * Game.tileSize, sprite);
-        height = Game.tileSize;
+    public Wizard(double x,double y) {
+        super(x * Game.tileSize, y * Game.tileSize);
+        
+        this.image = sprite;
+        
+		this.scale = 1;
+		
+		this.sizeTextureX = 16;
+		this.sizeTextureY = 32;
+		
+		this.hasDamage = false;
+		this.canDie = false;
+		this.direction = Direction.SOUTH;
     }
 
-    /**
-     * Constructor
-     * @param parseDouble Spawn position X
-     * @param parseDouble2 Spawn position Y
-     */
-    public Wizard(double parseDouble, double parseDouble2) {
-    	this((int) parseDouble,(int) parseDouble2);
-	}
 
     /**
      * Executes when this entity is attacked

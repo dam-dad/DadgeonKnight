@@ -15,7 +15,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
  */
 public class Bow extends PickableEntity {
 
-	private static final double SHOT_DELAY = 0.1;
+	private static final double SHOT_DELAY = 1;
 
 	private double lastShot = SHOT_DELAY;
 

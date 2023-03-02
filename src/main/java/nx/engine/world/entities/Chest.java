@@ -36,7 +36,11 @@ public class Chest extends StaticEntity {
 	}
 
 	public Chest(double x, double y,String inventory) {
-		this(x,y,Entity.getByName(inventory, x, y));
+		this(x,y,inventory.isBlank() ? null : Entity.getByName(inventory, x, y));
+
+	}
+	public Chest(double x, double y) {
+		this(x,y,"");
 
 	}
 
@@ -65,9 +69,12 @@ public class Chest extends StaticEntity {
 					App.mixer.addGameSound("chestOpen.mp3").play();
 					this.image = open;
 					closed = false;
-					inventory.forEach(e -> {
-						Player.get().getInventory().addEntityToInventory((PickableEntity) e);
-					});
+					if(inventory != null) {
+						inventory.forEach(e -> {
+							Player.get().getInventory().addEntityToInventory((PickableEntity) e);
+						});
+					}
+
 				}
 			}
 		}

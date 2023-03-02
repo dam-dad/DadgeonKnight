@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.scene.canvas.GraphicsContext;
+import nx.engine.Game;
 import nx.engine.world.entities.Entity;
 import nx.engine.world.entities.PickableEntity;
 import nx.engine.world.entities.Player;
@@ -30,8 +31,8 @@ public class Inventory implements UI {
 					Player.TOTAL_PLAYER_HEALTH = Player.INITIAL_MAX_HEALTH * 2;
 					Player.HEALTH = Player.TOTAL_PLAYER_HEALTH;
 				}
+				break;
 			default:
-				Player.SPEED = Player.INITIAL_SPEED;
 				break;
 			}
 		});
@@ -44,11 +45,13 @@ public class Inventory implements UI {
 		if((selectionInventory + 1) >= getInventory().size())
 			return;
 		selectionInventory++;
+		Game.inputHandler.ClearActiveKeys();
 	}
 	public void previousItem() {
 		if(selectionInventory <=  0)
 			return;
 		selectionInventory--;
+		Game.inputHandler.ClearActiveKeys();
 	}
 	public Entity getItemSelected() {
 		return getInventory().size() > 0 ? this.getInventory().get(selectionInventory) : new PickableEntity();

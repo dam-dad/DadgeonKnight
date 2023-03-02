@@ -28,7 +28,9 @@ public class Wolf extends MobEntity {
 
 	public String state = "walk";
 	private double initialSpeed;
-	private Player player;
+	
+	private static final double attackDelay = 0.4;
+	private double timeSinceLastAttack = 0.0;
 
 	@SuppressWarnings("serial")
 	private final Map<Direction, Animation> walk = new HashMap<>() {
@@ -47,13 +49,12 @@ public class Wolf extends MobEntity {
 	 * @param speed Entity speed
 	 * @param player Player to attack
 	 */
-	public Wolf(double posX, double posY, double speed, Player player) {
+	public Wolf(double posX, double posY, double speed) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 
 		this.speed = speed;
 		initialSpeed = speed;
 		this.scale = 2;
-		this.player = player;
 		
 		this.sizeTextureX = tileSizeX;
 		this.sizeTextureY = tileSizeY;
@@ -98,57 +99,81 @@ public class Wolf extends MobEntity {
 	 */
 	@Override
 	public void update(double deltaTime) {
-		double distance = getDistanceToEntity(player);
-
-		double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
-
-		if (distance > this.sizePlayerDetection) {
-			if (!state.equals("walk")) {
-				state = "walk";
-				this.speed = initialSpeed;
+		if(getPosX() + Game.tileSize > Player.get().getCamera().getX() - Game.screenWidth &&
+				getPosX() - Game.tileSize < Player.get().getCamera().getX() + Game.screenWidth &&
+				getPosY() + Game.tileSize > Player.get().getCamera().getY() - Game.screenheigth &&
+				getPosY() - Game.tileSize  < Player.get().getCamera().getY() + Game.screenheigth){
+			
+			if (this.mobHealth < 0) {
+				getWorld().removeEntity(this);
+				return;
 			}
-		} else {
-			if (!state.equals("follow")) {
-				state = "follow";
-				this.speed = initialSpeed * 2;
+			
+			double distance = getDistanceToEntity(Player.get());
+
+			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
+
+			if (distance > this.sizePlayerDetection) {
+				if (!state.equals("stop")) {
+					state = "stop";
+					this.speed = initialSpeed;
+				}
+			} else {
+				if (!state.equals("follow") && timeSinceLastAttack > attackDelay) {
+					state = "follow";
+					this.speed = initialSpeed * 2;
+				}
 			}
+			
+			if (timeSinceLastAttack > attackDelay && this.checkCollision(Game.player)) {
+				timeSinceLastAttack = 0;
+				Game.inputHandler.ClearActiveKeys();
+				Player.get().setVectorMovement(new Vector2D(0,0));
+				this.pushOut(Player.get(),Player.PLAYER_FORCE * 10);
+				Game.player.getAttacked(3);
+				state = "stop";
+				return;
+
+			}
+			timeSinceLastAttack += deltaTime;
+
+			switch (state) {
+			case "stop":
+				break;
+			case "walk":
+				time += deltaTime;
+
+				if (time > timeToChange) {
+					changeDirection();
+					time = 0;
+				}
+
+				if (direction == Direction.EAST) {
+					this.setPosX(this.getPosX() + realSpeed);
+				} else if (direction == Direction.WEST) {
+					this.setPosX(this.getPosX() - realSpeed);
+				} else if (direction == Direction.NORTH) {
+					this.setPosY(this.getPosY() - realSpeed);
+				} else if (direction == Direction.SOUTH) {
+					this.setPosY(this.getPosY() + realSpeed);
+				}
+				break;
+			case "follow":
+				Vector2D direction = getVector2DToEntity(Player.get());
+				this.direction = getDirectionFromVector2D(direction);
+				animation = walk.get(this.direction);
+				direction = direction.scalarMultiply(realSpeed);
+
+				this.setPosX(this.getPosX() + direction.getX());
+				this.setPosY(this.getPosY() + direction.getY());
+				break;
+			default:
+				break;
+
+			}
+
+			animation.update(deltaTime);
 		}
 
-		switch (state) {
-		case "stop":
-			break;
-		case "walk":
-			time += deltaTime;
-
-			if (time > timeToChange) {
-				changeDirection();
-				time = 0;
-			}
-
-			if (direction == Direction.EAST) {
-				this.setPosX(this.getPosX() + realSpeed);
-			} else if (direction == Direction.WEST) {
-				this.setPosX(this.getPosX() - realSpeed);
-			} else if (direction == Direction.NORTH) {
-				this.setPosY(this.getPosY() - realSpeed);
-			} else if (direction == Direction.SOUTH) {
-				this.setPosY(this.getPosY() + realSpeed);
-			}
-			break;
-		case "follow":
-			Vector2D direction = getVector2DToEntity(player);
-			this.direction = getDirectionFromVector2D(direction);
-			animation = walk.get(this.direction);
-			direction = direction.scalarMultiply(realSpeed);
-
-			this.setPosX(this.getPosX() + direction.getX());
-			this.setPosY(this.getPosY() + direction.getY());
-			break;
-		default:
-			break;
-
-		}
-
-		animation.update(deltaTime);
 	}
 }

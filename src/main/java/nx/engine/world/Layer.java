@@ -19,7 +19,8 @@ public class Layer {
      */
     public Layer(int[][] tiles) {
         this.tiles = tiles;
-
+        
+        
         this.layerWidth = tiles.length;
         this.layerHeight = tiles[0].length;
     }

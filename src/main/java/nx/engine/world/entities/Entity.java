@@ -2,6 +2,7 @@ package nx.engine.world.entities;
 
 import javafx.concurrent.Task;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Shape;
 import nx.engine.Camera;
@@ -134,6 +135,9 @@ public abstract class Entity {
 					case "orc":
 						toReturn.add(new Orc(Double.parseDouble(e[1]), Double.parseDouble(e[2]), Double.parseDouble(e[3]), Double.parseDouble(e[4])));
 						break;
+					case "skeleton":
+						toReturn.add(new Skeleton(Double.parseDouble(e[1]), Double.parseDouble(e[2]), Double.parseDouble(e[3]), Double.parseDouble(e[4])));
+						break;
 					case "goblin":
 						toReturn.add(new Goblin(Double.parseDouble(e[1]), Double.parseDouble(e[2]), Double.parseDouble(e[3]), Double.parseDouble(e[4])));
 						break;
@@ -167,6 +171,9 @@ public abstract class Entity {
 					case "chest":
 						toReturn.add(new Chest(Double.parseDouble(e[1]), Double.parseDouble(e[2]),e[3]));
 						break;
+					case "wolf":
+						toReturn.add(new Wolf(Double.parseDouble(e[1]),Double.parseDouble(e[2]),Double.parseDouble(e[3])));
+						break;
 					default:
 						break;
 					case "portal":
@@ -196,6 +203,8 @@ public abstract class Entity {
 		switch (str.toLowerCase()) {
 		case "orc":
 			return new Orc(posX,posY,0.1,2);
+		case "skeleton":
+			return new Skeleton(posX,posY,0.1,2);
 		case "wizard":
 			return new Wizard(posX,posY);
 		case "sword":
@@ -210,6 +219,10 @@ public abstract class Entity {
 			return new TestBoss(posX, posY);
 		case "villager":
 			return new Villager(posX,posY);
+		case "armor":
+			return new Armor(TileSet.ITEMS_TILES,posX,posY,"ARMOR");
+		case "enchantedring":
+			return new EnchantedRing(posX,posY,"SPEED");
 		default:
 			break;
 		}

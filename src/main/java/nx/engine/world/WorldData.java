@@ -22,45 +22,47 @@ public enum WorldData {
 					"/assets/levels/startedMap/StartMap_collitions.csv"
 					)
 			),
-	
-	DUNGEON("dungeon",
-			new Vector2D(10, 10),
-			TileSet.DANGEON_TILES,
-			"/assets/levels/level1/DungeonLevel_Entities.csv",
+	LEVEL_1("level_1",
+			new Vector2D(3, 14),
+			TileSet.WORLD_BRIDGE_TILES,
+			"/assets/levels/level1/entities.csv",
 			Layer.loadLayersFromFiles(
-					"/assets/levels/level1/DungeonLevel_Mapa.csv",
-					"/assets/levels/level1/DungeonLevel_Collitions.csv"
-					)
-			),
-	SECRET("secret",
-			new Vector2D(5, 5),
-			TileSet.SECRET_TILES,
-			"/assets/levels/secret/entities.csv",
-			Layer.loadLayersFromFiles(
-					"/assets/levels/secret/Secret_Floor.csv",
-					"/assets/levels/secret/Secret_Collisions.csv"
+					"/assets/levels/level1/DungeonBridgeLevel_map.csv",
+					"/assets/levels/level1/DungeonBridgeLevel_details.csv",
+					"/assets/levels/level1/DungeonBridgeLevel_collitions.csv"
 					)
 			),
 	LEVEL_2("level_2",
-			new Vector2D(2, 5),
+			new Vector2D(22, 22),
 			TileSet.DANGEON_TILES,
 			"/assets/levels/level2/nivel-2_entidades.csv",
 			Layer.loadLayersFromFiles(
-					"/assets/levels/level2/nivel-2_base.csv",
-					"/assets/levels/level2/nivel-2_detalles.csv",
-					"/assets/levels/level2/nivel-2_colisiones.csv"
+					"/assets/levels/level2/level-2_base.csv",
+					"/assets/levels/level2/level-2_detalles.csv",
+					"/assets/levels/level2/level-2_colisiones.csv"
+					)
+			),
+	LEVEL_3("level_3",
+			new Vector2D(55, 13),
+			TileSet.LAVA_TILES,
+			"/assets/levels/level4/nivel-4_entidades.csv",
+			Layer.loadLayersFromFiles(
+					"/assets/levels/level4/nivel-4_base.csv",
+					"/assets/levels/level4/nivel-4_detalles.csv",
+					"/assets/levels/level4/nivel-4_escaleras.csv",
+					"/assets/levels/level4/nivel-4_colisiones.csv"
+					)
+			),
+	BOSS_LEVEL("boss",
+			new Vector2D(6, 29),
+			TileSet.SECRET_TILES,
+			"/assets/levels/bossRoom/entities.csv",
+			Layer.loadLayersFromFiles(
+					"/assets/levels/bossRoom/BossRoom_Ground.csv",
+					"/assets/levels/bossRoom/BossRoom_Collissions.csv"
 					)
 			);
-//	BRIDGE("bridge",
-//			new Vector2D(0, 0),
-//			TileSet.WORLD_BRIDGE_TILES,
-//			"/assets/levels/level3/DungeonBridgeLevel_entities.csv",
-//			Layer.loadLayersFromFiles(
-//					"/assets/levels/level3/map.csv",
-//					"/assets/levels/level3/DungeonBridgeLevel_details.csv",
-//					"/assets/levels/secret/Secret_collitions.csv"
-//					)
-//			);
+
 
 	private final String name;
 	private Vector2D spawn;

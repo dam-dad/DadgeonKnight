@@ -21,6 +21,7 @@ import nx.engine.UI.Inventory;
 import nx.engine.tile.Tile;
 import nx.engine.world.Level;
 import nx.engine.world.World;
+import nx.game.App;
 import nx.util.Direction;
 
 /**
@@ -150,6 +151,8 @@ public class Player extends Entity {
 			getWorld().onPlayerDeath();
 			return;
 		}
+		
+		System.out.println(getTilePosition());
 
 		Set<KeyCode> activeKeys = Game.inputHandler.getActiveKeys();
 		Set<MouseButton> activeButtons = Game.inputHandler.getActiveButtons();
@@ -209,6 +212,7 @@ public class Player extends Entity {
 			move(movementX, movementY);
 			camera.setPosition(getPosX(), getPosY());
 		}
+
 		
 		animation = idle.get(direction);
 		
@@ -325,6 +329,7 @@ public class Player extends Entity {
 		HEALTH -= damage;
 		Player.HEALTH -= damage;
 		timeSinceLastHit = 0;
+		App.mixer.addGameSound("hit_player.mp3").play();
 	}
 	
 	public boolean isWalking() {
