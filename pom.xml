@@ -19,6 +19,30 @@
 	  </repository>
 	</repositories>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>io.github.fvarrui</groupId>
+				<artifactId>javapackager</artifactId>
+				<version>1.7.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>package</goal>
+						</goals>
+						<configuration>
+							<mainClass>nx.game.Main</mainClass>
+							<bundleJre>true</bundleJre>
+							<customizedJre>false</customizedJre>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
