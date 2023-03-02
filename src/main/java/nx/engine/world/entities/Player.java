@@ -151,8 +151,6 @@ public class Player extends Entity {
 			getWorld().onPlayerDeath();
 			return;
 		}
-		
-		System.out.println(getTilePosition());
 
 		Set<KeyCode> activeKeys = Game.inputHandler.getActiveKeys();
 		Set<MouseButton> activeButtons = Game.inputHandler.getActiveButtons();
