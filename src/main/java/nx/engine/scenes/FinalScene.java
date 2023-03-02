@@ -21,58 +21,56 @@ import nx.game.MenuController;
 import nx.util.CSV;
 import nx.util.Global_stats;
 
-public class FinalScene implements nx.engine.scenes.Scene{
-	
+public class FinalScene implements nx.engine.scenes.Scene {
+
 	private TextAnimation animation;
-	
+
 	private String id;
-	private String username =  "";
-	
-	private String time;
+	public static String username = "";
+
+	public static String time;
 	private long timeNano;
-	
+
 	private boolean registered = false;
-	
+
 	private File file = new File(FinalScene.class.getResource("/utils/text/idPlayer.txt").getPath());
-	
+
 	public FinalScene(String text) {
 		animation = new TextAnimation(Arrays.asList(text));
-		
+
 		time = Game.get().stopWatch.toString();
 		timeNano = Game.get().stopWatch.elapsed();
-		
+
 		username = "";
-		
+
 		animation.play();
 	}
 
-
 	@Override
 	public void update(double delta) {
-		
-		if(!registered) {
+
+		if (!registered) {
 			for (KeyCode keyCode : Game.inputHandler.getActiveKeys()) {
-				if(keyCode.equals(KeyCode.ENTER)) {
+				if (keyCode.equals(KeyCode.ENTER)) {
 					String id = Global_stats.CreateNewUserStatistics(username, timeNano);
 					App.mainStage.close();
 				}
-				if(keyCode.equals(KeyCode.BACK_SPACE)) {
-					if(username.length() > 0)
+				if (keyCode.equals(KeyCode.BACK_SPACE)) {
+					if (username.length() > 0)
 						username = username.substring(0, username.length() - 1);
 				}
-				if(keyCode.equals(KeyCode.SPACE)) {
+				if (keyCode.equals(KeyCode.SPACE)) {
 					username += " ";
 				}
-				if(Character.isLetterOrDigit(keyCode.getChar().charAt(0))) {
+				if (Character.isLetterOrDigit(keyCode.getChar().charAt(0))) {
 					username += keyCode.getChar();
 				}
-				
+
 				break;
 			}
 			Game.inputHandler.ClearActiveKeys();
 		}
 
-		
 		animation.update(delta);
 	}
 
@@ -80,10 +78,21 @@ public class FinalScene implements nx.engine.scenes.Scene{
 	public void draw(GraphicsContext gc) {
 		gc.setFont(Game.fontBIG);
 		gc.setFill(Color.WHITESMOKE);
-		gc.fillText(time, Game.SCREEN_CENTER_X - ((time.length()/2) * Game.fontBIG.getSize()), 100);
+		gc.fillText(time, Game.SCREEN_CENTER_X - ((time.length() / 2) * Game.fontBIG.getSize()), 100);
 		gc.setFont(Game.font);
-		gc.fillText(animation.getCurrentFrame(), Game.SCREEN_CENTER_X - ((animation.getCurrentLine().length()/2) * Game.font.getSize()), 200 + Game.font.getSize());
-		gc.fillText(username, Game.SCREEN_CENTER_X - ((animation.getCurrentLine().length()/2) * Game.font.getSize()), Game.SCREEN_CENTER_Y);
+		gc.fillText(animation.getCurrentFrame(),
+				Game.SCREEN_CENTER_X - ((animation.getCurrentLine().length() / 2) * Game.font.getSize()),
+				200 + Game.font.getSize());
+		gc.fillText(username, Game.SCREEN_CENTER_X - ((animation.getCurrentLine().length() / 2) * Game.font.getSize()),
+				Game.SCREEN_CENTER_Y);
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }
