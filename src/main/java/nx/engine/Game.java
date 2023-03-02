@@ -117,7 +117,8 @@ public class Game extends AnimationTimer {
 		try {
 			TextScene textScene = new TextScene("/assets/levels/intro/introEN.csv");
 			textScene.setOnEndingAction(() -> {
-				App.mixer.getMusic().fadeOut(20);
+				if(App.mixer.getMusic() != null)
+					App.mixer.getMusic().fadeOut(20);
 				changeScene(new WorldScene(WorldData.START_LEVEL));
 			});
 			mainScene = textScene;

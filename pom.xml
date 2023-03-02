@@ -35,7 +35,6 @@
 							<mainClass>nx.game.Main</mainClass>
 							<bundleJre>true</bundleJre>
 							<customizedJre>false</customizedJre>
-							<platform>linux</platform>
 						</configuration>
 					</execution>
 				</executions>
