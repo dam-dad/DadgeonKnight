@@ -1,2 +1,9 @@
 chest,57,32,armor
-portal,55,53,level_1
+portal,54,53,boss
+skeleton,38,12,0.1,2
+skeleton,32,10,0.1,2
+wizard,55,19
+orc,16,22,0.1,2
+wizard,57,42
+wolf,52,45,2
+orc,40,56,0.1,2

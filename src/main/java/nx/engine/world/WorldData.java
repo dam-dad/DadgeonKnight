@@ -52,6 +52,15 @@ public enum WorldData {
 					"/assets/levels/level4/nivel-4_escaleras.csv",
 					"/assets/levels/level4/nivel-4_colisiones.csv"
 					)
+			),
+	BOSS_LEVEL("boss",
+			new Vector2D(6, 29),
+			TileSet.SECRET_TILES,
+			"/assets/levels/bossRoom/entities.csv",
+			Layer.loadLayersFromFiles(
+					"/assets/levels/bossRoom/BossRoom_Ground.csv",
+					"/assets/levels/bossRoom/BossRoom_Collissions.csv"
+					)
 			);
 
 

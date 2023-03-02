@@ -12,4 +12,6 @@ skeleton,29,30,0.1,2
 skeleton,22,35,0.1,2
 wizard,50,49
 portal,49,43,level_3
-chest,21,49,enchantedring
+chest,33,33,enchantedring
+wolf,48,34,2
+orc,22,48,0.1,2

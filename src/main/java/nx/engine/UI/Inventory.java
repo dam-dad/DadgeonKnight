@@ -31,8 +31,8 @@ public class Inventory implements UI {
 					Player.TOTAL_PLAYER_HEALTH = Player.INITIAL_MAX_HEALTH * 2;
 					Player.HEALTH = Player.TOTAL_PLAYER_HEALTH;
 				}
+				break;
 			default:
-				Player.SPEED = Player.INITIAL_SPEED;
 				break;
 			}
 		});
