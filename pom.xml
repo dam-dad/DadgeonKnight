@@ -11,6 +11,30 @@
 		<javafx.version>17.0.1</javafx.version>
 		<exec.mainClass>nx.game.Main</exec.mainClass>
 	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>io.github.fvarrui</groupId>
+				<artifactId>javapackager</artifactId>
+				<version>1.7.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>package</goal>
+						</goals>
+						<configuration>
+							<mainClass>nx.game.Main</mainClass>
+							<bundleJre>true</bundleJre>
+							<customizedJre>false</customizedJre>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
 	
 	<repositories>
 	  <repository>
@@ -56,7 +80,5 @@
 		    <version>0.1.0</version>
 		</dependency>
 	</dependencies>
-
-
 
 </project>
