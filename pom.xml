@@ -35,7 +35,7 @@
 							<mainClass>nx.game.Main</mainClass>
 							<bundleJre>true</bundleJre>
 							<customizedJre>false</customizedJre>
-							<platform>auto</platform>
+							<platform>linux</platform>
 						</configuration>
 					</execution>
 				</executions>
@@ -79,6 +79,11 @@
 		    <groupId>io.github.fvarrui</groupId>
 		    <artifactId>globalstats-java-client</artifactId>
 		    <version>0.1.0</version>
+		</dependency>
+		<dependency>
+    		<groupId>net.sf.jasperreports</groupId>
+    		<artifactId>jasperreports</artifactId>
+    		<version>6.19.1</version>
 		</dependency>
 	</dependencies>
 
