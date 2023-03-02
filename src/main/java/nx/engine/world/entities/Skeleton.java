@@ -36,7 +36,7 @@ public class Skeleton extends MobEntity {
 	private double initialSpeed;
 	private double runSpeed;
 	
-	private static final double attackDelay = 0.4;
+	private static final double attackDelay = 0.8;
 	private double timeSinceLastAttack = 0.0;
 
 	Player p = Player.get();
@@ -129,13 +129,18 @@ public class Skeleton extends MobEntity {
 				&& getPosX() - Game.tileSize < Player.get().getCamera().getX() + Game.screenWidth
 				&& getPosY() + Game.tileSize > Player.get().getCamera().getY() - Game.screenheigth
 				&& getPosY() - Game.tileSize < Player.get().getCamera().getY() + Game.screenheigth) {
+			
+			if (this.mobHealth < 0) {
+				getWorld().removeEntity(this);
+				return;
+			}
 
 			double lastAnimationSpeed = ANIMATION_SPEED;
 			double distancePlayer = getDistanceToEntity(p);
 			double realSpeed = this.speed * Game.LastFrameRate * deltaTime;
 
 			if (!state.equals("alerted") && (distancePlayer < this.sizePlayerDetection)) {
-				if (!state.equals("follow")) {
+				if (!state.equals("follow") && timeSinceLastAttack > attackDelay) {
 					follow();
 					if (!sklOptional.isEmpty()) {
 						for (Optional<Skeleton> s : sklOptional) {
@@ -153,8 +158,7 @@ public class Skeleton extends MobEntity {
 			if (timeSinceLastAttack > attackDelay && this.checkCollision(Game.player)) {
 				timeSinceLastAttack = 0;
 				Game.inputHandler.ClearActiveKeys();
-				Player.get().setVectorMovement(new Vector2D(0,0));
-				Player.get().pushOut(this,Player.PLAYER_FORCE * 5);
+				this.pushOut(Player.get(),Player.PLAYER_FORCE * 5);
 				Game.player.getAttacked(1);
 				walk();
 				return;

@@ -2,6 +2,7 @@ package nx.engine.world.entities;
 
 import javafx.concurrent.Task;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Shape;
 import nx.engine.Camera;
@@ -215,6 +216,10 @@ public abstract class Entity {
 			return new TestBoss(posX, posY);
 		case "villager":
 			return new Villager(posX,posY);
+		case "armor":
+			return new Armor(TileSet.ITEMS_TILES,posX,posY,"ARMOR");
+		case "enchantedring":
+			return new EnchantedRing(posX,posY,"SPEED");
 		default:
 			break;
 		}
