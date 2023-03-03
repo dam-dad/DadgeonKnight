@@ -12,7 +12,7 @@ import nx.util.Vector2f;
 public class MagicSphere extends Entity {
 
     private static final Image IMAGE = new Image("/assets/textures/magic2.gif");
-    private static final float DEFAULT_SPEED = 30 * Game.tileSize;
+    private static final float DEFAULT_SPEED = 15 * Game.tileSize;
     private static final double MAX_TIME_ALIVE = 4.5f;
     private static final double RADIUS = 48;
     public static final double WAIT_TIME = 1.5;
@@ -67,7 +67,7 @@ public class MagicSphere extends Entity {
         if (new Vector2f((float) getPosX(), (float) getPosY()).distance(player.getPosX(), player.getPosY()) > RADIUS)
             return;
 
-        player.getAttacked(5);
+        player.getAttacked(3);
         getWorld().removeEntity(this);
 
         App.mixer.addGameSound("explosion.wav").setVolume(0.04).play();

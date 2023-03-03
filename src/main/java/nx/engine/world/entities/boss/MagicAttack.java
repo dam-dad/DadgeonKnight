@@ -13,7 +13,7 @@ public class MagicAttack extends BossAttack {
 
     private static final double ATTACK_RADIUS = 10;
     private static final double SPHERE_DELAY = 0.1;
-    private static final int MAX_SPHERES = 8;
+    private static final int MAX_SPHERES = 6;
     private static final int SPHERE_RADIUS = 2 * Game.tileSize;
 
     private double timeSinceLastSphere = 0.0;

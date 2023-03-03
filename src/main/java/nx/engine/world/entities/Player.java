@@ -147,7 +147,7 @@ public class Player extends Entity {
 		if (HEALTH <= 0) {
 			setPosX(World.spawn.getX());
 			setPosY(World.spawn.getY());
-			HEALTH = 10;
+			HEALTH = TOTAL_PLAYER_HEALTH;
 			getWorld().onPlayerDeath();
 			return;
 		}

@@ -12,9 +12,9 @@ import nx.util.Vector2f;
 public class FireAttack extends BossAttack {
 
     private static final double RADIUS = 10;
-    private static final float FIREBALL_SPEED = 10 * Game.tileSize;
+    private static final float FIREBALL_SPEED = 8 * Game.tileSize;
     private static final double MAX_ATTACK_TIME = 2.0;
-    private static final double ATTACK_DELAY = 0.125;
+    private static final double ATTACK_DELAY = 0.25;
 
     private double timeAttacking = 0.0;
     private double timeSinceLastAttack = 0.0;

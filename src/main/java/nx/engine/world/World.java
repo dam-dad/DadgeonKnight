@@ -7,6 +7,7 @@ import nx.engine.UI.Dialog;
 import nx.engine.scenes.WorldScene;
 import nx.engine.tile.TileSet;
 import nx.engine.world.entities.*;
+import nx.game.App;
 import nx.util.CSV;
 
 import java.util.*;
@@ -106,6 +107,7 @@ public class World {
 
         TestBoss boss = bossOptional.get();
         removeEntity(boss);
+        App.mixer.getMusic().pause();
 
         TestBoss newBoss = new TestBoss(boss.getInitialX(), boss.getInitialY());
         addEntity(newBoss);

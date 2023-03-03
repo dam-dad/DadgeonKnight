@@ -176,7 +176,7 @@ public class Game extends AnimationTimer {
 		}
 
 		if (timer >= 1000000000) {
-			Game.logger.log(Level.CONFIG,"FPS: " + drawCount);
+			Game.logger.log(Level.INFO,"FPS: " + drawCount);
 			LastFrameRate = drawCount;
 			drawCount = 0;
 			timer = 0;

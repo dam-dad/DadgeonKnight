@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>dad</groupId>
   <artifactId>DadgeonKnight</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1.0</version>
   
   	<properties>
 		<maven.compiler.target>17</maven.compiler.target>
@@ -29,11 +29,8 @@
 							<bundleJre>true</bundleJre>
 							<customizedJre>false</customizedJre>
 							<winConfig>
-								<headerType>console</headerType>
+								<icoFile>icon.ico</icoFile>
 							</winConfig>
-							<linuxConfig>
-								<headerType>console</headerType>
-							</linuxConfig>
 						</configuration>
 					</execution>
 				</executions>

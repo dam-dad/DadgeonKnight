@@ -102,7 +102,7 @@ public class TestBoss extends MobEntity {
 
             if (player.getDistanceToEntity(this) < RADIUS) {
                 musicPlayed = true;
-                App.mixer.addGameSound("battleThemeA.mp3").setVolume(0.5).play();
+                App.mixer.setMusic("battleThemeA.mp3").play();
             }
             return;
         }
