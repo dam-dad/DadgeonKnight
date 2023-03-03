@@ -4,12 +4,13 @@ import javafx.scene.image.Image;
 import nx.engine.Game;
 import nx.engine.particles.Particle;
 import nx.game.App;
-import nx.util.Music;
 import nx.util.Vector2f;
 
 import java.util.Optional;
-import java.util.Random;
 
+/**
+ * Represents a fireball entity
+ */
 public class Fireball extends Entity {
 
     private static final Image IMAGE = new Image("/assets/textures/bola_du_fogo.gif");
@@ -21,10 +22,23 @@ public class Fireball extends Entity {
     private final float speed;
     private double timeAlive = 0.0;
 
+    /**
+     * Constructor
+     * @param x Spawn position X
+     * @param y Spawn position Y
+     * @param direction Direction
+     */
     public Fireball(double x, double y, Vector2f direction) {
         this(x, y, direction, DEFAULT_SPEED);
     }
 
+    /**
+     * Constructor
+     * @param x Spawn position X
+     * @param y Spawn position Y
+     * @param direction Direction
+     * @param speed Speed
+     */
     public Fireball(double x, double y, Vector2f direction, float speed) {
         super(x, y, IMAGE);
 
@@ -32,6 +46,10 @@ public class Fireball extends Entity {
         this.direction = direction.normalize();
     }
 
+    /**
+     * Updates the entity
+     * @param deltaTime Frame delta
+     */
     @Override
     public void update(double deltaTime) {
         setPosX(getPosX() + direction.x * deltaTime * speed);
@@ -40,6 +58,12 @@ public class Fireball extends Entity {
         timeAlive += deltaTime;
         if (timeAlive > MAX_TIME_ALIVE) {
             getWorld().removeEntity(this);
+            return;
+        }
+
+        if (getWorld().getLevel().isSolid((int) Math.floor(getPosX() / Game.tileSize), (int) Math.floor(getPosY() / Game.tileSize))) {
+            getWorld().removeEntity(this);
+            createParticleEffect(getPosX(), getPosY(), 10);
             return;
         }
 
@@ -53,36 +77,27 @@ public class Fireball extends Entity {
             if (new Vector2f((float) getPosX(), (float) getPosY()).distance(player.getPosX(), player.getPosY()) > RADIUS)
                 return;
 
-            player.getAttacked(3);
+            player.getAttacked(2);
             getWorld().removeEntity(this);
 
             App.mixer.addGameSound("explosion.wav").setVolume(0.04).play();
 
-            createParticleEffect(getPosX(), getPosY());
+            createParticleEffect(getPosX(), getPosY(), 30);
         }
     }
-    
 
-
-    private void createParticleEffect(double posX, double posY) {
-    	//TODO No se si es esto pero cuando las particulas son creadas generan un poco de lag.
-    	//cambie Random por Math.random por si pudiera ser eso.
-    	// P.S cambie el tiempo de vida de las particulas y su velocidad para que se queden cerca del jugador.
-
-        for (int i = 0; i < 20; i++) {
+    /**
+     * Creates a particle effect
+     * @param posX Spawn position X
+     * @param posY Spawn position Y
+     * @param particleAmount
+     */
+    private void createParticleEffect(double posX, double posY, int particleAmount) {
+        for (int i = 0; i < particleAmount; i++) {
             float directionX = randomFromInterval(-1.0f, 1.0f);
             float directionY = randomFromInterval(-1.0f, 1.0f);
             getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(directionX, directionY).normalize(), image, randomFromInterval(1.0f, 200.0f) + 100.0f));
         }
-        
-    	
-//      Random random = new Random();
-
-//      for (int i = 0; i < 20; i++) {
-//          float directionX = (random.nextFloat(2) - 1);
-//          float directionY = (random.nextFloat(2) - 1);
-//          getWorld().addEntity(new Particle((float) posX, (float) posY, new Vector2f(directionX, directionY).normalize(), image, random.nextFloat(200) + 300));
-//      }
     }
 
 }

@@ -3,6 +3,9 @@ package nx.engine.world;
 import nx.engine.tile.Tile;
 import nx.util.CSV;
 
+/**
+ * Represents a layer of the level
+ */
 public class Layer {
 
     private int layerWidth, layerHeight;
@@ -10,13 +13,22 @@ public class Layer {
 
     private final int[][] tiles;
 
+    /**
+     * Constructor
+     * @param tiles Tiles the layer has
+     */
     public Layer(int[][] tiles) {
         this.tiles = tiles;
 
         this.layerWidth = tiles.length;
         this.layerHeight = tiles[0].length;
     }
-    
+
+    /**
+     * Constructor
+     * @param width Layer width
+     * @param height Layer height
+     */
     public Layer(int width,int height) {
     	this.tiles = new int[height][width];
 
@@ -30,6 +42,10 @@ public class Layer {
     	}
 	}
 
+    /**
+     * Sets the level this layer belongs to
+     * @param level
+     */
     public void setLevel(Level level) {
         this.level = level;
         level.setMapSize(layerWidth, layerHeight);
@@ -46,7 +62,11 @@ public class Layer {
     public int[][] getTilesValues() {
         return tiles;
     }
-    
+
+    /**
+     * Returns the tiles of the layer
+     * @return
+     */
     public Tile[][] getTiles() {
     	int[][] values = getTilesValues();
     	Tile[][] toReturn = new Tile[values.length][values[0].length];
@@ -61,6 +81,11 @@ public class Layer {
     	return toReturn;
     }
 
+    /**
+     * Loads an array of layers from an array of files
+     * @param fileNames Files to load the layers from
+     * @return Array of layers loaded
+     */
     public static Layer[] loadLayersFromFiles(String... fileNames) {
         Layer[] layers = new Layer[fileNames.length];
         for (int i = 0; i < layers.length; i++) {

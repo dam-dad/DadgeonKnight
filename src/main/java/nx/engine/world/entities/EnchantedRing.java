@@ -9,10 +9,10 @@ import nx.engine.world.Effect;
 
 public class EnchantedRing extends PickableEntity {
 	
-	public EnchantedRing(double x, double y) {
+	public EnchantedRing(double x, double y,String effect) {
 		super(TileSetManager.loadImageFromTileSet(TileSet.ITEMS_TILES, 26, 16, 16), x, y, Game.tileSize, Game.tileSize);
 		this.canBeSelected = false;
-		this.setEffect(Effect.SPEED);
+		this.setEffect(Effect.valueOf(effect));
 	}
 	
 	@Override

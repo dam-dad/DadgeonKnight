@@ -12,12 +12,20 @@ import nx.engine.tile.TileSetManager;
 import nx.engine.world.MobEntity;
 import nx.util.Direction;
 
+/**
+ * Represents a villager entity
+ */
 public class Villager extends MobEntity {
 	
 	String walkTileSet = "/assets/textures/npc/Green-Cap-Character-16x18.png";
 	
 	public boolean isFinish = false;
 
+	/**
+	 * Constructor
+	 * @param posX Spawn position X
+	 * @param posY Spawn position Y
+	 */
 	public Villager(double posX, double posY) {
 		super(posX * Game.tileSize, posY * Game.tileSize);
 		

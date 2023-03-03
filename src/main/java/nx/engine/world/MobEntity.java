@@ -9,13 +9,15 @@ import nx.engine.Camera;
 import nx.engine.Game;
 import nx.util.Direction;
 
+/**
+ * Represents a mob, with animation, health and movement
+ */
 public class MobEntity extends Entity {
 	
 	public static final double TIME_SHOWING_ATTACK = 0.5;
 
 	protected double speed;
 	protected boolean hasDamage;
-	protected double damageValue;
 	
 	protected boolean canDie = true;
 	protected double mobHealth = 10;
@@ -30,19 +32,37 @@ public class MobEntity extends Entity {
 	
 	protected int sizePlayerDetection;
 	protected int sizeMobDetection;
-	
+
+	/**
+	 * Constructor
+	 * @param posX Spawn position X
+	 * @param posY Spawn position Y
+	 */
 	public MobEntity(double posX, double posY) {
 		super(posX, posY);
 	}
 
+	/**
+	 * Updates the MobEntity
+	 * @param deltaTime Frame delta
+	 */
 	@Override
 	public void update(double deltaTime) {}
-	
+
+	/**
+	 * Subtract health to the mob
+	 * @param damage Damage to deal
+	 */
 	public void getAttacked(int damage) {
 		mobHealth -= canDie? damage : 0;
 		timeSinceLastHit = 0;
 	}
 
+	/**
+	 * Draws the entity
+	 * @param gc GraphicsContext to draw on
+	 * @param camera World camera
+	 */
 	@Override
 	public void draw(GraphicsContext gc, Camera camera) {
 		double screenX = Game.SCREEN_CENTER_X - camera.getX() + getPosX();
@@ -71,15 +91,13 @@ public class MobEntity extends Entity {
 		}
 
 	}
-	
+
+	/**
+	 * @return Collision shape for the MobEntity
+	 */
 	@Override
 	public Shape getCollisionShape() {
 		return new Rectangle(getPosX(), getPosY(), sizeTextureX * scale, sizeTextureY * scale);
 	}
-
-	public double getHealth() {
-		return mobHealth;
-	}
-	
 
 }

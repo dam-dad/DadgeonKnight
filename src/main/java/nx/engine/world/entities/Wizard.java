@@ -4,6 +4,9 @@ import javafx.scene.image.Image;
 import nx.engine.Game;
 import nx.util.Vector2f;
 
+/**
+ * Represents a wizard entity
+ */
 public class Wizard extends Entity implements Enemy {
 
     protected static final Image sprite = new Image("/assets/textures/player/kevin_idle_00.png");
@@ -14,19 +17,37 @@ public class Wizard extends Entity implements Enemy {
 
     private double timeSinceLastAttack = 0.0;
 
+    /**
+     * Constructor
+     * @param x Spawn position X
+     * @param y Spawn position Y
+     */
     public Wizard(int x,int y) {
         super(x * Game.tileSize, y * Game.tileSize, sprite);
         height = Game.tileSize;
     }
 
+    /**
+     * Constructor
+     * @param parseDouble Spawn position X
+     * @param parseDouble2 Spawn position Y
+     */
     public Wizard(double parseDouble, double parseDouble2) {
     	this((int) parseDouble,(int) parseDouble2);
 	}
-    
+
+    /**
+     * Executes when this entity is attacked
+     * @param damage Damage to deal
+     */
 	public void getAttacked(int damage) {
 		mobHealth -= canDie? damage : 0;
 	}
 
+    /**
+     * Updates the entity
+     * @param deltaTime Frame delta
+     */
 	@Override
     public void update(double deltaTime) {
         timeSinceLastAttack += deltaTime;
@@ -52,6 +73,10 @@ public class Wizard extends Entity implements Enemy {
         }
     }
 
+    /**
+     * Executes when this entity is attacked
+     * @param damage Damage dealt
+     */
     @Override
     public void getAttacked(double damage) {
         this.mobHealth -= damage;

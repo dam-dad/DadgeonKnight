@@ -22,8 +22,7 @@ public class Music {
 
 	/**
 	 * Constructor que recibe el nombre del archivo de musica
-	 * 
-	 * @param el fichero de musica
+	 * @param file fichero de musica
 	 */
 	public Music(String file) {
 		try {
@@ -63,6 +62,11 @@ public class Music {
 		}
 	}
 
+	/**
+	 * Sets the volume
+	 * @param i New volume
+	 * @return {@code this}
+	 */
 	public Music setVolume(double i) {
 		player.setVolume(i);
 		return this;
@@ -84,6 +88,10 @@ public class Music {
 		this.media = media;
 	}
 
+	/**
+	 * Makes a fade out effect
+	 * @param fadeTime Effect duration
+	 */
 	public void fadeOut(double fadeTime) {
 		MediaPlayer player = this.player;
 		Task<Void> task = new Task<Void>() {
@@ -118,6 +126,12 @@ public class Music {
 			new Thread(task).start();
 	}
 
+	/**
+	 * Makes a fade in effect
+	 * @param min Minimum volume
+	 * @param max Maximum volume
+	 * @param fadeTime Effect duration
+	 */
 	public void fadeIn(double min, double max, double fadeTime) {
 		MediaPlayer player = this.player;
 		Task<Void> task = new Task<Void>() {
