@@ -28,6 +28,12 @@
 							<mainClass>nx.game.Main</mainClass>
 							<bundleJre>true</bundleJre>
 							<customizedJre>false</customizedJre>
+							<winConfig>
+								<headerType>console</headerType>
+							</winConfig>
+							<linuxConfig>
+								<headerType>console</headerType>
+							</linuxConfig>
 						</configuration>
 					</execution>
 				</executions>
