@@ -46,7 +46,7 @@ public class TextAnimation {
 	 * @throws Exception
 	 */
 	public TextAnimation(String texts) throws URISyntaxException, Exception {
-		this(CSV.readAllLinesTogether(Paths.get(CSV.class.getResource(texts).toURI())));
+		this(CSV.readAllLinesTogether(CSV.class.getResourceAsStream(texts)));
 		for(int i = 0; i < this.texts.size(); i++) {
 			int numOfSplits = (int)((this.texts.get(i).length() * Game.font.getSize()) / (Game.screenWidth - 100));
 			if(numOfSplits > 0) {

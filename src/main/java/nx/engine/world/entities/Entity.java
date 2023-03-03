@@ -128,7 +128,7 @@ public abstract class Entity {
 	 */
 	public static List<Entity> loadEntititiesFromCSV(String str) {
 		try {
-			List<String[]> a = CSV.readAllLines(Paths.get(CSV.class.getResource(str).toURI()));
+			List<String[]> a = CSV.readAllLines(CSV.class.getResourceAsStream(str));
 			List<Entity> toReturn  = new ArrayList<Entity>();
 			a.forEach(e -> {
 				switch (e[0].toLowerCase()) {

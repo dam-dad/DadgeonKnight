@@ -1,5 +1,7 @@
 package nx.util;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,13 +20,12 @@ public class CSV {
 
 	/**
 	 * Parses a CSV file to a list of strings
-	 * @param filePath
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<String[]> readAllLines(Path filePath) throws Exception {
+	public static List<String[]> readAllLines(InputStream is) throws Exception {
 
-	    try (Reader reader = Files.newBufferedReader(filePath)) {
+	    try (Reader reader = new InputStreamReader(is)) {
 	        try (CSVReader csvReader = new CSVReader(reader)) {
 	            return csvReader.readAll();
 	        }
@@ -33,13 +34,12 @@ public class CSV {
 
 	/**
 	 * Parses a CSV file to a list of strings
-	 * @param filePath
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<String> readAllLinesTogether(Path filePath) throws Exception {
+	public static List<String> readAllLinesTogether(InputStream is) throws Exception {
 	    List<String> lines = new ArrayList<>();	
-	    try (Reader reader = Files.newBufferedReader(filePath)) {
+	    try (Reader reader = new InputStreamReader(is)) {
 	        try (CSVReader csvReader = new CSVReader(reader)) {
 	            List<String[]> csvLines = csvReader.readAll();
 	            for (String[] line : csvLines) {
@@ -57,7 +57,7 @@ public class CSV {
 	 */
 	public static int[][] loadMapValues(String url) {
 		try {
-			List<String[]> mapCSV =  CSV.readAllLines(Paths.get(CSV.class.getResource(url).toURI()));
+			List<String[]> mapCSV =  CSV.readAllLines(CSV.class.getResourceAsStream(url));
 
 			int[][] mapValue = new int[mapCSV.size()][mapCSV.get(0).length];
 
