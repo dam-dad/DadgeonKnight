@@ -130,7 +130,7 @@ public class Wolf extends MobEntity {
 				Game.inputHandler.ClearActiveKeys();
 				Player.get().setVectorMovement(new Vector2D(0,0));
 				this.pushOut(Player.get(),Player.PLAYER_FORCE * 10);
-				Game.player.getAttacked(3);
+				Game.player.getAttacked(2);
 				state = "stop";
 				return;
 

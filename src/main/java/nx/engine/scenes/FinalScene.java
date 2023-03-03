@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import net.sf.jasperreports.engine.JRException;
 import nx.engine.Game;
 import nx.engine.TextAnimation;
 import nx.game.App;
@@ -20,6 +21,7 @@ import nx.game.GameController;
 import nx.game.MenuController;
 import nx.util.CSV;
 import nx.util.Global_stats;
+import nx.util.report.JasperGenerator;
 
 public class FinalScene implements nx.engine.scenes.Scene {
 
@@ -53,6 +55,11 @@ public class FinalScene implements nx.engine.scenes.Scene {
 			for (KeyCode keyCode : Game.inputHandler.getActiveKeys()) {
 				if (keyCode.equals(KeyCode.ENTER)) {
 					String id = Global_stats.CreateNewUserStatistics(username, timeNano);
+					try {
+						JasperGenerator.generarPdf();
+					} catch (JRException | IOException e) {
+						e.printStackTrace();
+					}
 					App.mainStage.close();
 				}
 				if (keyCode.equals(KeyCode.BACK_SPACE)) {

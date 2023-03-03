@@ -128,7 +128,7 @@ public class Orc extends MobEntity implements SmartMovement {
 				Game.inputHandler.ClearActiveKeys();
 				Player.get().setVectorMovement(new Vector2D(0,0));
 				this.pushOut(Player.get(),Player.PLAYER_FORCE * 10);
-				Game.player.getAttacked(5);
+				Game.player.getAttacked(4);
 				walk();
 				return;
 

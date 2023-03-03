@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Score" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ec46ff53-a2fd-4f6a-ac39-2ac08ae516c6">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="USER_SCORE" class="java.lang.String"/>
+	<parameter name="USER_NAME" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="107" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="100" y="18" width="701" height="66" forecolor="#F54335" backcolor="#F44335" uuid="e1472a5a-c833-4614-9e5d-0c1b88e49757"/>
+				<staticText>
+					<reportElement key="" x="0" y="0" width="701" height="66" forecolor="#FFFFFF" uuid="a2aa702c-a51e-4637-a32f-ebd8c6aad7a0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Dialog" size="32" isBold="true"/>
+						<paragraph lineSpacing="1_1_2"/>
+					</textElement>
+					<text><![CDATA[Score Report]]></text>
+				</staticText>
+				<textField pattern="MMMMM dd, yyyy">
+					<reportElement x="600" y="46" width="100" height="20" uuid="c3914170-7bba-4090-bdce-c6e0ab373795"/>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+			<image>
+				<reportElement x="0" y="3" width="90" height="100" uuid="50085ca8-dca5-49a7-8471-6418ab026d23"/>
+				<imageExpression><![CDATA["src/main/resources/assets/icons/helmet-64x64.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="37" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="600" height="32" forecolor="#000000" backcolor="#241E1E" uuid="3b6f4643-df7f-4495-87c8-4dc2d733c02c"/>
+				<staticText>
+					<reportElement x="0" y="1" width="470" height="27" forecolor="#FFFFFF" uuid="14815645-5d71-4883-abaa-af7b66873839"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="16" isBold="true"/>
+					</textElement>
+					<text><![CDATA[User Name]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="600" y="0" width="201" height="32" forecolor="#000000" backcolor="#241E1E" uuid="109d8d1f-83a3-44d5-b17f-747c51c79b62"/>
+				<staticText>
+					<reportElement x="10" y="1" width="191" height="30" forecolor="#FFFFFF" uuid="9a34fbfe-c590-4208-88e7-8193675a0559"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="16" isBold="true"/>
+					</textElement>
+					<text><![CDATA[User score]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="0" width="590" height="30" uuid="3bdd54b1-08c8-4b4b-ac14-302b8821ef3b"/>
+				<textFieldExpression><![CDATA[$P{USER_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="610" y="0" width="191" height="30" uuid="9c082f55-5f1c-45d9-abf0-987b40f0c895"/>
+				<textFieldExpression><![CDATA[$P{USER_SCORE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="46" splitType="Stretch">
+			<textField>
+				<reportElement x="351" y="10" width="100" height="30" uuid="ed607778-ea66-4999-8f95-85dea73a7c8e"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
